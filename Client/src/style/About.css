@@ -1,0 +1,243 @@
+.about-image {
+  opacity: 0;
+  transform: perspective(1200px) rotateY(180deg);
+  transform-origin: left center;
+
+  transition:
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 1s ease;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.about-image.visible {
+  opacity: 1;
+  transform: perspective(1200px) rotateY(0deg);
+}
+/* 1. Initial Hidden / Flipped State */
+
+.animation {
+  opacity: 0;
+  transform: translateX(
+    -100px
+  ); /* Moves it 100px left from its normal position */
+
+  transition:
+    transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.8s ease;
+
+  will-change:
+    transform, opacity; /* Activates GPU acceleration for smooth motion */
+}
+
+/* 2. Active Triggered State: Slides smoothly to its natural center layout */
+.animation.active {
+  opacity: 1;
+  transform: translateX(0); /* Returns to normal layout spot */
+}
+.second_animation {
+  opacity: 0;
+  transform: translateX(
+    100px
+  ); /* Moves it 100px left from its normal position */
+
+  transition:
+    transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.8s ease;
+
+  will-change:
+    transform, opacity; /* Activates GPU acceleration for smooth motion */
+}
+
+/* 2. Active Triggered State: Slides smoothly to its natural center layout */
+.second_animation.active {
+  opacity: 1;
+  transform: translateX(0); /* Returns to normal layout spot */
+}
+
+/* Initial State: Tiny/invisible and centered */
+.iconOne,
+.iconTwo {
+  opacity: 0;
+  transform: scale(0.3);
+
+  /* Smooth timing with a subtle elastic pop at the end */
+  transition:
+    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.5s ease;
+
+  will-change: transform, opacity;
+}
+
+/* Active State: Zooms up to its normal full size */
+.iconOne.active,
+.iconTwo.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* **************************************** */
+
+/* **************************************** */
+
+.about-image img {
+  transition: transform 0.4s ease;
+}
+
+.about-image:hover img {
+  transform: scale(1.03);
+}
+/* **************************************** */
+/* Container Form Styling */
+.scroll {
+  background-color: #ebf5ff; /* Light blue background matching the design */
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.enquiry-form label {
+  font-weight: 600;
+  color: #111111;
+  font-size: 14px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.enquiry-form label span.text-danger {
+  color: #ff3b30 !important;
+}
+
+/* Custom Horizontal Input Row alignment */
+.custom-input-group {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #ffffff;
+  margin-bottom: 12px;
+}
+
+/* Accent Lime-Green Icon Containers */
+.input-icon-block {
+  background-color: #8cc617; /* Matches the exact green variant in design */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  min-width: 45px;
+  font-size: 16px;
+}
+
+/* Input boxes over-rides */
+.custom-input {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  height: 40px;
+  padding: 6px 12px;
+}
+
+/* Mock dropdown match for Country Field */
+.country-display-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  cursor: default;
+  user-select: none;
+}
+
+.flag-img {
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
+}
+
+.country-text {
+  color: #495057;
+  font-size: 15px;
+  flex-grow: 1;
+}
+
+.dropdown-arrow {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+/* Phone input sub-group grid splits */
+.phone-input-combined {
+  display: flex;
+  width: 100%;
+}
+
+.prefix-input {
+  width: auto; /* ❌ Removed static width */
+  max-width: 48px; /* Sets a strict ceiling footprint */
+  padding: 6px 4px !important; /* Reduced left/right inner padding to 4px */
+  font-size: 14px; /* Keeps text readable but compact */
+  text-align: center;
+  color: #495057;
+  background-color: #ffffff !important;
+  border: none !important;
+  border-right: 1px solid #ced4da !important; /* Visual line break */
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  height: 40px;
+}
+.number-input {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex-grow: 1;
+  height: 40px;
+}
+
+/* Textarea height adjustment overrides */
+.alignment-stretch {
+  align-items: stretch;
+}
+
+.textarea-icon-block {
+  display: flex;
+  align-items: center;
+}
+
+.custom-textarea {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  resize: vertical;
+  padding: 8px 12px;
+}
+
+/* Full Width Dark Olive/Green Button */
+.btn-submit-enquiry {
+  background-color: #557a07; /* Darker green matching image button */
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  border: none;
+  padding: 10px 0;
+  border-radius: 6px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-submit-enquiry:hover {
+  background-color: #466505;
+}
+
+/* Inline Error Text placeholders */
+.error-text {
+  display: block;
+  font-size: 12px;
+  color: #ff3b30;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
