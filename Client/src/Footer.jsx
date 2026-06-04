@@ -1,10 +1,16 @@
 // Fixed: Capitalized Link import statement
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+// Added prop parameters to dynamically capture Property Category and Name if available
+const Footer = ({ currentCategory = "Real Estate", propertyName = "510earth" }) => {
   const handleSubscribe = (e) => {
     e.preventDefault();
   };
+
+  // Safe encoding for the pre-filled WhatsApp chat text
+  const whatsappText = encodeURIComponent(
+    `Hi there, Interested In ${currentCategory} Property (Property Name: ${propertyName})!`
+  );
 
   return (
     <>
@@ -253,6 +259,17 @@ const Footer = () => {
           </div>
         </div>
       </footer>
+
+      {/* --- ADDED SECTION: Floating WhatsApp Sticky Widget --- */}
+      <div id="whatsAppDiv" className="whatsapp_area">
+        <a 
+          href={`https://api.whatsapp.com/send?phone=919832064905&text=${whatsappText}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <img src="/images/whatsapp_btn.png" alt="WhatsApp Chat" />
+        </a>
+      </div>
     </>
   );
 };

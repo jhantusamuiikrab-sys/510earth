@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../src/style/Navbar.css";
 import { FiChevronRight } from "react-icons/fi";
+import OurServices from "./OurServices";
 
 const Navbar = () => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
