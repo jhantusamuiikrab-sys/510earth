@@ -994,10 +994,10 @@ footer .bot_ftr p {
 	font-size: 16px;
 }
 /******** INNER PAGES ********/
-.mrgn_tp {
+/* .mrgn_tp {
 	margin-top: 80px;
 	border-top: 2px solid #35b1fe;
-}
+} */
 .inner_pad {
 	padding: 40px 0px;
 }

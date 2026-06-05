@@ -56,7 +56,7 @@ function Partner() {
   return (
     <>
       {/* SECTION 1: Welcome Header */}
-      <section className="inner_page mrgn_tp inner_pad">
+      <section className="inner_page  inner_pad">
         <div className="container">
           <div className="row">
             <div className="col-md-7">

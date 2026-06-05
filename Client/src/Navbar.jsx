@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "../src/style/Navbar.css";
+import "../src/style/Navbar.css"; 
 import { FiChevronRight, FiMenu, FiX } from "react-icons/fi";
 
 const Navbar = () => {
@@ -81,7 +81,7 @@ const Navbar = () => {
         </Link>
 
         <button
-          className="navbar-toggler d-flex align-items-center justify-content-center"
+          className="navbar-toggler d-lg-none d-flex align-items-center justify-content-center"
           type="button"
           onClick={handleNavCollapse}
           aria-label="Toggle navigation"

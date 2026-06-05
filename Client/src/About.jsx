@@ -231,7 +231,7 @@ function About() {
             </div>
           </div>
         </div>
-        <section className="inner_page mrgn_tp inner_pad">
+        <section className="inner_page inner_pad">
           <div className="container">
             <h1>ABOUT US</h1>
             <p>

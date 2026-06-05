@@ -18,7 +18,6 @@
   transform: rotateY(360deg); /* Performs a full horizontal 360 spin flip */
 }
 
-
 /* ==========================================================================
     Dynamic Height Push Layout (Removes the need for pre-defined margins)
    ========================================================================== */
@@ -26,72 +25,114 @@
 .main_header {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #0084ff !important;
 }
 
+.navbar-nav .nav-item {
+  margin: 0 10px;
+}
+
+/* ==========================================================================
+    Desktop Layout Adjustments (Clean Overlay Mode)
+   ========================================================================== */
+/* ==========================================================================
+    Desktop Layout Adjustments (Clean Overlay Mode)
+   ========================================================================== */
 @media (min-width: 992px) {
-  .navbar-nav .nav-item.dropdown {
-    position: static !important; 
+  /* 1. Force hide the mobile hamburger icon button on desktop */
+  .navbar-toggler {
+    display: none !important;
   }
 
-  /* Structural block transition for primary dropdown lists */
+  /* Restores the expected floating behavior of Bootstrap dropdowns */
+  .navbar-nav .nav-item.dropdown {
+    position: relative !important;
+  }
+
+  /* Structural configurations for primary sliding menu popups */
   .navbar-nav .dropdown-menu {
-    position: relative !important; 
-    top: auto !important;
-    left: auto !important;
-    float: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    background-color: transparent !important; 
-    
-    display: block !important;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(-10px);
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 4px !important;
+    min-width: 240px;
     margin: 0 !important;
     padding: 0 !important;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s ease,
-                transform 0.4s ease;
+
+    /* FIXED: Swapped buggy max-height transitions for standard pointer/visibility controls */
+    display: none !important;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
   }
 
+  /* Trigger state on active hover interaction */
   .navbar-nav .dropdown.show > .dropdown-menu {
-    max-height: 300px; /* Elevated slightly to leave room for expanded submenus */
+    display: block !important; /* Forces layout calculation */
     opacity: 1;
     transform: translateY(0);
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+    padding: 8px 0 !important;
   }
 
+  /* Restores items to traditional vertical lists inside the menu block */
   .navbar-nav .dropdown-menu li {
-    display: inline-block; 
-    vertical-align: top;
-    margin-right: 20px;
+    display: block !important;
+    width: 100%;
+    margin-right: 0 !important;
   }
 
-  /* Specific handling for nested Sub-dropdown block configuration */
+  /* Text color flipped to dark since background is now light */
+  .navbar-nav .dropdown-item {
+    color: #333333 !important;
+    padding: 10px 20px;
+    transition: all 0.2s ease;
+  }
+
+  .navbar-nav .dropdown-item:hover {
+    background-color: #f8f9fa !important; /* Gentle off-white highlight */
+    color: #000000 !important;
+  }
+
+  /* Structural layout for nested submenus floating rightwards */
+  .navbar-nav .dropdown-menu .dropend {
+    position: relative !important;
+  }
+
+  /* FIXED: Residential sub-menu styling */
   .navbar-nav .dropdown-menu .sub_menu {
-    position: absolute !important; /* Forces sub-menu to float nicely over horizontal block layout on desktop */
-    background-color: #343a40 !important; /* Matches classic bootstrap dark layout */
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2) !important;
-    border-radius: 4px !important;
-    z-index: 1050;
+    position: absolute !important;
+    top: 0 !important;
+    /* CHANGED: 99% instead of 100% acts as an invisible bridge. 
+       This prevents your cursor from hitting a "dead zone" gap between menus */
+    left: 99% !important;
+    margin-top: -8px !important;
+    background-color: #ffffff !important;
+    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    z-index: 9999 !important;
+
+    /* FIXED: Keep design uniform with parent dropdown */
+    display: none !important;
+    opacity: 0;
   }
 
+  /* FIXED: Show the nested submenu perfectly when parent li has the .show class */
   .navbar-nav .dropdown-menu .dropend.show > .sub_menu {
-    max-height: 200px;
+    display: block !important;
     opacity: 1;
-    transform: translateY(0);
-    padding: 8px !important;
+    padding: 8px 0 !important;
   }
-  
-  .navbar-nav .dropdown-menu .sub_menu li {
-    display: block; /* Stacks items vertically inside the nested sub-menu popup box */
-    margin-right: 0;
+  .navbar-nav .dropdown-item:hover {
+    background-color: #f0f7ff !important; /* Ultra-light blue tint background */
+    color: #0084ff !important; /* Clean blue text focus */
   }
 }
-
 /* ==========================================================================
     Mobile Setup Compatibility (Keeps mobile working exactly the same)
    ========================================================================== */
@@ -101,7 +142,9 @@
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+    transition:
+      max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.4s ease-in-out;
   }
 
   .custom-navbar-collapse.open {
@@ -114,7 +157,9 @@
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition:
+      max-height 0.3s ease,
+      opacity 0.3s ease;
     padding-left: 15px; /* Visual nesting shift for clarity */
   }
 
@@ -122,5 +167,9 @@
   .navbar-nav .dropdown-menu .dropend.show > .sub_menu {
     max-height: 400px;
     opacity: 1;
+  }
+  .navbar-nav .nav-item:hover > .nav-link,
+  .navbar-nav .nav-link:hover {
+    color: #0084ff !important; /* Matches your navbar's bottom border blue */
   }
 }
