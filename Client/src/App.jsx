@@ -7,12 +7,15 @@ import Navbar from "./Navbar";
 import Contact from "./Contact";
 import OurServices from "./OurServices";
 import PropertyManagement from "./PropertyManagement";
+import Home from "./Home";
+
 function App() {
   
   return (
     <BrowserRouter>
       <Navbar />
-      <Routes>
+      <Routes>        
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/partner" element={<Partner />} />
         <Route path="/contact" element={<Contact />} />

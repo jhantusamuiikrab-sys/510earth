@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../src/assets/Font/css/style.css";
 import "../src/assets/content/style.css";
 
+
 function Partner() {
   // 1. Establish state hooks to track user input updates across form fields
   const [formData, setFormData] = useState({
