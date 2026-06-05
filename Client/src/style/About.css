@@ -241,3 +241,11 @@
   margin-top: -8px;
   margin-bottom: 8px;
 }
+/* Fix for mobile horizontal scrolling / overflow layout blowouts */
+.inner_page, 
+.about_top_panel, 
+.about_mdl_panel, 
+.about_bottom_panel {
+  overflow-x: hidden;
+  width: 100%;
+}

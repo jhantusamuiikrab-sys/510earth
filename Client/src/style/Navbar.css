@@ -1,106 +1,126 @@
-/* Main dropdowns */
-.navbar .dropdown-menu {
-  min-width: 220px;
-  border-radius: 8px;
-  border: 0;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+/* ==========================================================================
+    Logo 3D Intersection Flip Animation
+   ========================================================================== */
+
+.logo-container {
+  display: inline-block;
+  perspective: 1000px; /* Gives the 3D depth appearance during the flip */
 }
 
-/* Desktop */
-@media (min-width: 992px) {
-  .dropdown-menu .dropend {
-    position: relative;
-  }
-
-  .dropdown-menu .dropend .sub_menu {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    min-width: 220px;
-    display: none;
-    margin-left: 0.25rem;
-  }
-
-  .dropdown-menu .dropend.show .sub_menu {
-    display: block;
-  }
+.logo-img {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  backface-visibility: visible;
 }
 
-/* Mobile */
-@media (max-width: 991px) {
-  .dropdown-menu {
-    border: none;
-    box-shadow: none;
-    /* background: transparent; */
-  }
-
-  .dropdown-menu .sub_menu {
-    position: static;
-    display: block;
-    margin-left: 1rem;
-    border: none;
-    box-shadow: none;
-    background: transparent;
-  }
-
-  .dropdown-menu .dropdown-item {
-    padding-left: 1rem;
-  }
-
-  .dropdown-menu .sub_menu .dropdown-item {
-    padding-left: 2rem;
-  }
-}
-.navbar .dropdown-menu.show {
-  display: block;
+/* When the navbar leaves the top threshold, the flip class triggers */
+.logo-container.flipped .logo-img {
+  transform: rotateY(360deg); /* Performs a full horizontal 360 spin flip */
 }
 
-.dropdown-menu .dropend {
-  position: relative;
+
+/* ==========================================================================
+    Dynamic Height Push Layout (Removes the need for pre-defined margins)
+   ========================================================================== */
+
+.main_header {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 @media (min-width: 992px) {
-  .dropdown-menu .dropend .sub_menu {
-    top: 0;
-    left: 100%;
-    display: none;
-    position: absolute;
-    min-width: 220px;
+  .navbar-nav .nav-item.dropdown {
+    position: static !important; 
   }
 
-  .dropdown-menu .dropend.show .sub_menu {
-    display: block;
+  /* Structural block transition for primary dropdown lists */
+  .navbar-nav .dropdown-menu {
+    position: relative !important; 
+    top: auto !important;
+    left: auto !important;
+    float: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important; 
+    
+    display: block !important;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    margin: 0 !important;
+    padding: 0 !important;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                transform 0.4s ease;
+  }
+
+  .navbar-nav .dropdown.show > .dropdown-menu {
+    max-height: 300px; /* Elevated slightly to leave room for expanded submenus */
+    opacity: 1;
+    transform: translateY(0);
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .navbar-nav .dropdown-menu li {
+    display: inline-block; 
+    vertical-align: top;
+    margin-right: 20px;
+  }
+
+  /* Specific handling for nested Sub-dropdown block configuration */
+  .navbar-nav .dropdown-menu .sub_menu {
+    position: absolute !important; /* Forces sub-menu to float nicely over horizontal block layout on desktop */
+    background-color: #343a40 !important; /* Matches classic bootstrap dark layout */
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2) !important;
+    border-radius: 4px !important;
+    z-index: 1050;
+  }
+
+  .navbar-nav .dropdown-menu .dropend.show > .sub_menu {
+    max-height: 200px;
+    opacity: 1;
+    transform: translateY(0);
+    padding: 8px !important;
+  }
+  
+  .navbar-nav .dropdown-menu .sub_menu li {
+    display: block; /* Stacks items vertically inside the nested sub-menu popup box */
+    margin-right: 0;
   }
 }
 
-@media (max-width: 991px) {
-  .dropdown-menu .sub_menu {
-    position: static;
-    padding-left: 1rem;
-    border: none;
-    box-shadow: none;
-    /* background: transparent; */
+/* ==========================================================================
+    Mobile Setup Compatibility (Keeps mobile working exactly the same)
+   ========================================================================== */
+@media (max-width: 991.98px) {
+  .custom-navbar-collapse {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
   }
-}
-.submenu-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
-.submenu-icon {
-  font-size: 20px;
-  transition: all 0.3s ease;
-}
+  .custom-navbar-collapse.open {
+    max-height: 1000px; /* Boosted layout depth for stacked dropdown layers */
+    opacity: 1;
+  }
 
-/* Hover effect */
-.submenu-toggle:hover .submenu-icon {
-  transform: translateX(4px);
-  color: #fff;
-}
+  .navbar-nav .dropdown-menu {
+    display: block !important;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    padding-left: 15px; /* Visual nesting shift for clarity */
+  }
 
-/* Open state */
-.dropend.show .submenu-icon,
-.dropend:hover .submenu-icon {
-  transform: translateX(6px);
+  .navbar-nav .dropdown.show > .dropdown-menu,
+  .navbar-nav .dropdown-menu .dropend.show > .sub_menu {
+    max-height: 400px;
+    opacity: 1;
+  }
 }

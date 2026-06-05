@@ -1,0 +1,67 @@
+/* =========================================================
+   1. REGISTRATION FORM: High-Intensity 3D Back-to-Front
+   ========================================================= */
+.perspective-wrapper {
+  /* DROPPED from 1400px to 650px. 
+     Lowering this values acts like a wide-angle 3D lens, making the depth much more aggressive! */
+  perspective: 650px; 
+  perspective-origin: 50% 100%; /* Positions the horizon line at the bottom center */
+  overflow: visible;
+}
+
+.partner-reg-form.animate-3d-form {
+  opacity: 0;
+  
+  /* - translateY(120px): Pushes it much further down initially
+     - scale(0.65): Shrinks it heavily so it looks way far back in deep space
+     - rotateX(-45deg): Aggressively tilts the top away into the distance
+     - translateZ(-200px): Physically shoves it backward along the depth axis 
+  */
+  transform: translateY(120px) translateZ(-200px) scale(0.65) rotateX(-45deg);
+  
+  /* Pivots right on the baseline edge */
+  transform-origin: bottom center;
+  
+  /* Using a spring-like cubic-bezier so it snaps forward dynamically */
+  transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.1),
+              opacity 0.9s ease-out;
+              
+  will-change: transform, opacity;
+}
+
+/* Snaps beautifully forward flat into position */
+.partner-reg-form.animate-3d-form.visible {
+  opacity: 1;
+  transform: translateY(0) translateZ(0) scale(1) rotateX(0deg);
+}
+
+
+/* =========================================================
+   2. WHY CHOOSE US: Staggered Right-to-Left (With 3D Drift)
+   ========================================================= */
+
+/* Giving the icons area its own wrapper depth setup so they look like they fly in horizontally from the right background */
+.partner_mdl_panel .row {
+  perspective: 1000px;
+}
+
+.why-choose-box.animate-right-left {
+  opacity: 0;
+  /* Implemented a Y-axis rotation so the boxes face the right side before swinging forward facing the user */
+  transform: translateX(150px) translateZ(-100px) rotateY(35deg);
+  transform-origin: left center;
+  
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.8s ease-out;
+  will-change: transform, opacity;
+}
+
+.why-choose-box.animate-right-left.visible {
+  opacity: 1;
+  transform: translateX(0) translateZ(0) rotateY(0deg);
+}
+
+/* Staggering thresholds remain the same to let them ripple down the page */
+.why-choose-box.animate-right-left:nth-child(2) { transition-delay: 0s; }
+.why-choose-box.animate-right-left:nth-child(3) { transition-delay: 0.18s; }
+.why-choose-box.animate-right-left:nth-child(4) { transition-delay: 0.36s; }
