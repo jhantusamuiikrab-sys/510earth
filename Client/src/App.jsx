@@ -10,9 +10,9 @@ import PropertyManagement from "./PropertyManagement";
 import Home from "./Home";
 
 function App() {
-  
   return (
     <BrowserRouter>
+
       <Navbar />
       <Routes>        
         <Route path="/" element={<Home />} />
@@ -21,8 +21,10 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/services" element={<OurServices />} />
         <Route path="/property-management" element={<PropertyManagement />} />
-      </Routes>
 
+      
+      </Routes>
+ 
       {/* Footer stays at the bottom of all pages */}
       <Footer />
     </BrowserRouter>
