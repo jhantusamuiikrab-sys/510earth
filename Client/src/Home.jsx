@@ -5,6 +5,9 @@ import HeroSection from './Home/HeroSection';
 import ReraSection from './Home/ReraSection';
 import LeadingSection from './Home/LeadingSection';
 import ChooseSection from './Home/ChooseSection';
+import ServiceSection from './Home/ServiceSection';
+import PropertyTypeSection from './Home/PropertyTypeSection';
+import BenefitSection from './Home/BenefitSection';
 
 const Home = () => {
   return (
@@ -14,7 +17,10 @@ const Home = () => {
       <HeroSection />     
       <ReraSection />
       <LeadingSection />
-      <ChooseSection />s
+      <ChooseSection />
+      <ServiceSection />
+      <PropertyTypeSection />
+      <BenefitSection />
       {/* <Footer /> */}
     </div>
   );

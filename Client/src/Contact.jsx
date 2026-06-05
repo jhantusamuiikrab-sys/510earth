@@ -8,7 +8,9 @@ const Contact = () => {
     <>
       {/* <EnquirySidebar /> */}
 
-      <section className="inner_page  inner_pad">
+
+      <section className="inner_page inner_pad">
+
         <div className="contact_page">
           <div className="container">
             <h1>CONTACT</h1>

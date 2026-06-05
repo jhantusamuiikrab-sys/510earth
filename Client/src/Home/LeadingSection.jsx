@@ -1,10 +1,11 @@
 import React from 'react';
 // Import your layout stylesheet safely
 import '../assets/Font/NewHome/style.css'; 
+import '../assets/Content/style.css';
 
 const LeadingSection = () => {
   return (
-    <section className="leading_area py-5 bg-white">
+    <section className="leading_area py-5 ">
       <div className="container">
         <div className="row">
           <div className="col-md-12">

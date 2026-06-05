@@ -56,7 +56,9 @@ const Services = () => {
 
   return (
     <>
-      <section className="inner_page  inner_pad">
+
+      <section className="inner_page inner_pad">
+
         <div className="container">
           <h1>SERVICES</h1>
 

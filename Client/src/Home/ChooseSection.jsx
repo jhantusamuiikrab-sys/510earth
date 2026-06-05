@@ -1,6 +1,7 @@
 import React from 'react';
 // Import your custom styling file safely
 import '../assets/Font/NewHome/style.css'; 
+import '../assets/Content/style.css';
 
 
 const ChooseSection = () => {
