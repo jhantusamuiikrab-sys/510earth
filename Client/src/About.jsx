@@ -228,13 +228,10 @@ function About() {
         <div className="container">
           <h1>ABOUT US</h1>
           <p>
-            We are one of the most dynamic and admired organizations in the Real Estate in India. 
-            510 earth is among India's leading real estate firms that has been helping customers 
-            across India to achieve their dream reality space...
+            We are one of the most dynamic and admired organizations in the Real Estate in India. 510 earth is among India's leading real estate firms that has been helping customers across India to achieve their dream reality space for commercial real estate broker and residential purposes under one roof. It was founded in 2020 with the vision to offer dream real estate. 510 earth is a youth organisation of Teesta Networks Pvt Ltd with over 100 affiliates across India. It is also one of the few Indian startups that has succeeded across India. We are one of the real estate consultant companies that provide exceptional value to property owners and Customers. 510 earth analyses the business to determine the optimal approach for every brand we represent such as flats for sale. We are a pioneer in shaping skylines and lifestyles across India, developing vibrant communities that have redefined real estate development services. We focus on developing residential and commercial projects all over India. We are changing people's perception of quality in the Indian real estate sector.
           </p>
           <p>
-            Since our founding in 2020, we have delivered world-class real estate projects, 
-            including commercial, residential, IT parks, and retail spaces...
+            Since our founding in 2020, we have delivered world-class real estate projects, including commercial, residential, IT parks, and retail spaces, featuring superior design, materials, engineering, and architecture and also worked as real estate consultant. 
           </p>
         </div>
       </section>
@@ -255,7 +252,7 @@ function About() {
               <h2>WHAT WE ARE</h2>
               <p>
                 <strong>
-                  510earth is a well-known real estate consultancy in India, operating as a brand of Teesta Networks...
+                  510earth is a well-known real estate consultancy in India, which operates as a brand of Teesta Networks, specializing in residential, commercial, and land/plot transactions. 510earth collaborates with reputed builders, and they offer top-quality services & help our clients get the most favourable deals. 
                 </strong>
               </p>
             </div>
