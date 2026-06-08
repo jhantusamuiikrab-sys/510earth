@@ -59,7 +59,7 @@ p{font-size:14px;}
 .hamburger {display: none;}
 .bnnr_form ul{justify-content:center;}
 
-.banner_area{background:url(../images/banner.webp) no-repeat 0 0;position: relative;z-index: 1;height: 700px;}
+.banner_area{background:url(../images/510banner.webp) no-repeat 0 0;position: relative;z-index: 1;height: 700px;}
 .banner_area:after{content:"";background: url(../images/real_banner.webp) no-repeat center;background-size: cover;width: 100%;height: 100%;position: absolute;left: 0;top: 0;}
 .banner_cont{margin: auto 0; width: 100%;}
 .banner_area .container{z-index: 2; position: relative;}
@@ -151,7 +151,7 @@ p{font-size:14px;}
 
 .choose_area {padding: 70px 0;position:relative;z-index:1; background:#02476b;}
 .choose_area p{color:#fff; text-align:center;}
-.choose_area:after{content:"";background: url(/images/about_top_bg.webp) repeat left bottom; position:absolute; left:0; top:0; width:100%; height:100%;z-index:-1;opacity: 0.5;background-size: cover;}
+.choose_area:after{content:"";background: url(../images/about_top_bg.webp) repeat left bottom; position:absolute; left:0; top:0; width:100%; height:100%;z-index:-1;opacity: 0.5;background-size: cover;}
 .choose_area h3{color: #fff;font-size:22px;font-weight: bold;margin-bottom:10px;text-align:center}
 .choose_box{margin: 20px 0;background: #2cadff;padding: 20px;border-radius: 20px;box-shadow: 0 0 20px rgba(0,0,0,0.5);}
 .choose_box h4{color:#fff; font-size:20px; margin:0 0 10px;font-weight:bold; display:flex;}

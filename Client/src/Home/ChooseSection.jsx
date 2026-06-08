@@ -34,16 +34,16 @@ const ChooseSection = () => {
   ];
 
   return (
-    <section className="choose_area py-5 bg-light">
+    <section className="choose_area">
       <div className="container">
         <div className="row">
           <div className="col-md-12">
             
             {/* Header Content */}
-            <h3 className="fw-bold mb-2">
-              Why Choose 510earth as Your <span className="text-primary">Real Estate Agent?</span>
+            <h3 className="fw-bold mb-2 ">
+              Why Choose 510earth as Your <span className="text-white">Real Estate Agent?</span>
             </h3>
-            <p className="choose_para text-secondary mb-4 pb-2" style={{ fontSize: '16px' }}>
+            <p className="choose_para text-white mb-4 pb-2" style={{ fontSize: '16px' }}>
               Investing in real estate is a significant commitment. Here is why our clients chose us as the best-trusted real estate broker.
             </p>
 
@@ -52,12 +52,20 @@ const ChooseSection = () => {
               {features.map((item) => (
                 <div 
                   key={item.id}
-                  className="choose_box p-4 bg-white border rounded shadow-sm wow fadeInLeft animated" 
+                  className="choose_box wow fadeInLeft animated animated" 
                   style={{ visibility: 'visible', animationName: 'fadeInLeft' }}
                 >
                   {/* Title & Icon Header Flex Container */}
                   <div className="d-flex align-items-center gap-3 mb-3">
-                    <span className="bg-light p-2 rounded-circle border d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px', flexShrink: 0 }}>
+                    <span 
+                      className="rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                      style={{ 
+                        backgroundColor: '#2471a3', 
+                        width: '55px', 
+                        height: '55px', 
+                        flexShrink: 0 
+                      }}
+                    >
                       <img 
                         src={item.icon} 
                         alt={item.title} 
@@ -65,11 +73,11 @@ const ChooseSection = () => {
                         style={{ maxHeight: '28px' }}
                       />
                     </span> 
-                    <h4 className="h5 fw-bold mb-0 text-dark">{item.title}</h4>
+                    <h4 className="h5 fw-bold mb-0 text-white">{item.title}</h4>
                   </div>
                   
                   {/* Feature Body Text Description */}
-                  <p className="text-secondary mb-0 lh-base" style={{ fontSize: '14.5px', textAlign: 'justify' }}>
+                  <p className="text-white mb-0 lh-base" style={{ fontSize: '14.5px', textAlign: 'justify' }}>
                     {item.description}
                   </p>
                 </div>

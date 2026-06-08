@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// Import your style sheet safely here
 import '../assets/Font/NewHome/style.css'; 
 
 const HeroSection = () => {
@@ -8,15 +7,13 @@ const HeroSection = () => {
 
   // Dropdown Visibility States
   const [showResBudget, setShowResBudget] = useState(false);
-  const [showCmrSqft, setShowCmrSqft] = useState(false);
-  const [showCmrBudget, setShowCmrBudget] = useState(false);
 
   // Form Field States
   const [residentialForm, setResidentialForm] = useState({
-    location: '', projectType: '0', status: [], rooms: [], minPrice: '', maxPrice: ''
+    location: '', projectType: '0', status: '', rooms: '', minPrice: '', maxPrice: ''
   });
   const [commercialForm, setCommercialForm] = useState({
-    location: '', projectType: '0', status: [], minSqft: '', maxSqft: '', minPrice: '', maxPrice: ''
+    location: '', projectType: '0', status: '', minSqft: '', maxSqft: '', minPrice: '', maxPrice: ''
   });
   const [landForm, setLandForm] = useState({ location: '' });
 
@@ -27,79 +24,81 @@ const HeroSection = () => {
     if (tabType === 'Land') console.log('Land Query:', landForm);
   };
 
+  // Helper function to return colors based on active tab matching screenshot
+  const getTabBgColor = (tab) => {
+    if (activeTab !== tab) return 'transparent';
+    return tab === 'Residential' ? '#007bff' : '#8cc63f';
+  };
+
   return (
-    /* 1. Added inline background styling wrapper to structure the banner image.
-         Replace 'YOUR_BANNER_IMAGE_URL' with your real asset path if your style.css doesn't handle it.
-    */
-    <section 
-      className="main_banner_section position-relative d-flex align-items-center justify-content-center"
-      style={{
-        minHeight: '550px',
-        backgroundPosition: 'center center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        padding: '80px 0'
-      }}
-    >
+    /* CHANGE 1: Changed 'align-items-center' to 'align-items-end' to align content to the bottom */
+    <section className="banner_area d-flex align-items-end justify-content-center" style={{ paddingBottom: '0px' }}>
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-lg-10 position-relative" style={{ zIndex: 10 }}>
+          {/* CHANGE 2: Adjusted column widths (col-xl-10 col-lg-11) to perfectly align with the content in the original design layout */}
+          <div className="col-xl-10 col-lg-11 position-relative" style={{ zIndex: 10, bottom: '50px' }}>
             
-            {/* Search Box Wrapper matched to your exact screenshot styling */}
-            <div className="bg-white p-0 rounded-3 shadow bnnr_frm_box overflow-hidden border">
+            {/* CHANGE 3: Removed 'maxWidth' and 'margin: 0 auto' to let the container expand to its natural grid bounds */}
+            <div className="bg-white rounded-3 shadow border overflow-hidden">
               
-              {/* Navigation Tabs Header */}
-              <div className="p-3 bg-light border-bottom">
-                <ul className="nav nav-pills gap-2" id="myTab" role="tablist">
-                  {['Residential', 'Commercial', 'Land'].map((tab) => (
-                    <li key={tab} className="nav-item" role="presentation">
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab(tab)}
-                        className={`btn px-4 py-2 fw-bold text-uppercase border-0 rounded-1 transition-all ${
-                          activeTab === tab 
-                            ? 'btn-primary text-white' 
-                            : 'btn-outline-secondary text-dark bg-white'
-                        }`}
-                        style={{
-                          backgroundColor: activeTab === tab ? '#007bff' : '#fff',
-                          color: activeTab === tab ? '#fff' : '#000',
-                          fontSize: '14px',
-                          letterSpacing: '0.5px'
-                        }}
-                      >
-                        {tab === 'Land' ? 'Land / Plot' : tab}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              {/* Navigation Tabs Header - Zero padding matching screenshot layout */}
+              <div className="d-flex border-bottom bg-light">
+                {['Residential', 'Commercial', 'Land'].map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setActiveTab(tab)}
+                    className="btn fw-bold text-uppercase border-0 transition-all text-center"
+                    style={{
+                      backgroundColor: getTabBgColor(tab),
+                      color: activeTab === tab ? '#fff' : '#495057',
+                      fontSize: '14px',
+                      padding: '14px 30px',
+                      borderRadius: '0px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {tab === 'Land' ? 'Land / Plot' : tab}
+                  </button>
+                ))}
               </div>
 
-              {/* Dynamic Form Padding */}
+              {/* Dynamic Form Content Wrapper */}
               <div className="p-4 bg-white">
                 <div className="tab-content" id="myTabContent">
                   
                   {/* RESIDENTIAL TAB */}
                   {activeTab === 'Residential' && (
                     <form onSubmit={(e) => handleSearchSubmit(e, 'Residential')}>
-                      <div className="row g-3 align-items-center">
-                        <div className="col-lg-9 form-group">
+                      {/* Top Row: Search input field + Search Action Button */}
+                      <div className="row g-2 mb-3">
+                        <div className="col-md-9">
                           <input 
                             type="text" 
-                            className="form-control form-control-lg border-2" 
-                            style={{ fontSize: '15px' }}
+                            className="form-control form-control-lg border" 
+                            style={{ fontSize: '15px', borderRadius: '4px', height: '50px' }}
                             placeholder="Enter an Property Name, City / Location, Neighborhood, Address or Pincode"
                             value={residentialForm.location}
                             onChange={(e) => setResidentialForm({...residentialForm, location: e.target.value})}
                           />
                         </div>
-                        <div className="col-lg-3 form-group">
-                          <button type="submit" className="btn btn-primary btn-lg w-100 fw-bold shadow-sm">Search</button>
+                        <div className="col-md-3">
+                          <button 
+                            type="submit" 
+                            className="btn btn-primary btn-lg w-100 fw-bold border-0"
+                            style={{ backgroundColor: '#007bff', height: '50px', borderRadius: '4px', fontSize: '16px' }}
+                          >
+                            Search
+                          </button>
                         </div>
+                      </div>
 
-                        <div className="col-lg-3 form-group mt-3">
+                      {/* Bottom Row: Secondary Dropdowns Filter Matrix */}
+                      <div className="row g-2">
+                        <div className="col-md-3">
                           <select 
-                            className="form-select"
+                            className="form-select form-select-lg"
+                            style={{ height: '45px', fontSize: '14px', color: '#495057' }}
                             value={residentialForm.projectType}
                             onChange={(e) => setResidentialForm({...residentialForm, projectType: e.target.value})}
                           >
@@ -109,8 +108,13 @@ const HeroSection = () => {
                           </select>
                         </div>
 
-                        <div className="col-lg-3 form-group mt-3">
-                          <select className="form-select" onChange={(e) => setResidentialForm({...residentialForm, status: [e.target.value]})}>
+                        <div className="col-md-3">
+                          <select 
+                            className="form-select form-select-lg"
+                            style={{ height: '45px', fontSize: '14px', color: '#495057' }}
+                            value={residentialForm.status}
+                            onChange={(e) => setResidentialForm({...residentialForm, status: e.target.value})}
+                          >
                             <option value="">Select Project Status</option>
                             <option value="1">Under Construction</option>
                             <option value="2">Ready to move</option>
@@ -118,8 +122,13 @@ const HeroSection = () => {
                           </select>
                         </div>
 
-                        <div className="col-lg-3 form-group mt-3">
-                          <select className="form-select" onChange={(e) => setResidentialForm({...residentialForm, rooms: [e.target.value]})}>
+                        <div className="col-md-3">
+                          <select 
+                            className="form-select form-select-lg"
+                            style={{ height: '45px', fontSize: '14px', color: '#495057' }}
+                            value={residentialForm.rooms}
+                            onChange={(e) => setResidentialForm({...residentialForm, rooms: e.target.value})}
+                          >
                             <option value="">Select BHK</option>
                             <option value="1">1BHK</option>
                             <option value="2">2BHK</option>
@@ -128,11 +137,11 @@ const HeroSection = () => {
                           </select>
                         </div>
 
-                        {/* Budget Dropdown Dropdown context */}
-                        <div className="col-lg-3 form-group mt-3 position-relative">
+                        {/* Budget Multi-Selection Custom Popover Dropdown */}
+                        <div className="col-md-3 position-relative">
                           <div 
-                            className="form-select bg-white text-muted cursor-pointer text-truncate"
-                            style={{ cursor: 'pointer' }}
+                            className="form-select form-select-lg bg-white text-muted cursor-pointer text-truncate d-flex align-items-center"
+                            style={{ cursor: 'pointer', height: '45px', fontSize: '14px' }}
                             onClick={() => setShowResBudget(!showResBudget)}
                           >
                             {residentialForm.minPrice || residentialForm.maxPrice 
@@ -149,10 +158,6 @@ const HeroSection = () => {
                                     value={residentialForm.minPrice}
                                     onChange={(e) => setResidentialForm({...residentialForm, minPrice: e.target.value})}
                                   />
-                                  <div className="overflow-auto" style={{ maxHeight: '120px', fontSize: '12px' }}>
-                                    <div className="p-1 btn-light text-start" style={{ cursor: 'pointer' }} onClick={() => setResidentialForm({...residentialForm, minPrice: '500000'})}>₹5 Lac</div>
-                                    <div className="p-1 btn-light text-start" style={{ cursor: 'pointer' }} onClick={() => setResidentialForm({...residentialForm, minPrice: '1000000'})}>₹10 Lac</div>
-                                  </div>
                                 </div>
                                 <div className="col-6">
                                   <input 
@@ -160,10 +165,6 @@ const HeroSection = () => {
                                     value={residentialForm.maxPrice}
                                     onChange={(e) => setResidentialForm({...residentialForm, maxPrice: e.target.value})}
                                   />
-                                  <div className="overflow-auto" style={{ maxHeight: '120px', fontSize: '12px' }}>
-                                    <div className="p-1 btn-light text-start" style={{ cursor: 'pointer' }} onClick={() => setResidentialForm({...residentialForm, maxPrice: '500000'})}>₹5 Lac</div>
-                                    <div className="p-1 btn-light text-start" style={{ cursor: 'pointer' }} onClick={() => { setResidentialForm({...residentialForm, maxPrice: '1000000'}); setShowResBudget(false); }}>₹10 Lac</div>
-                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -176,16 +177,16 @@ const HeroSection = () => {
                   {/* COMMERCIAL TAB */}
                   {activeTab === 'Commercial' && (
                     <form onSubmit={(e) => handleSearchSubmit(e, 'Commercial')}>
-                      <div className="row g-3 align-items-center">
-                        <div className="col-lg-9 form-group">
+                      <div className="row g-2 mb-3">
+                        <div className="col-md-9">
                           <input 
-                            type="text" className="form-control form-control-lg border-2" placeholder="Enter City/Location"
+                            type="text" className="form-control form-control-lg border" style={{ height: '50px', fontSize: '15px' }} placeholder="Enter City/Location"
                             value={commercialForm.location}
                             onChange={(e) => setCommercialForm({...commercialForm, location: e.target.value})}
                           />
                         </div>
-                        <div className="col-lg-3 form-group">
-                          <button type="submit" className="btn btn-primary btn-lg w-100 fw-bold">Search</button>
+                        <div className="col-md-3">
+                          <button type="submit" className="btn btn-lg w-100 fw-bold text-white border-0" style={{ backgroundColor: '#8cc63f', height: '50px' }}>Search</button>
                         </div>
                       </div>
                     </form>
@@ -194,16 +195,16 @@ const HeroSection = () => {
                   {/* LAND / PLOT TAB */}
                   {activeTab === 'Land' && (
                     <form onSubmit={(e) => handleSearchSubmit(e, 'Land')}>
-                      <div className="row g-3 align-items-center">
-                        <div className="col-lg-9 form-group">
+                      <div className="row g-2 mb-3">
+                        <div className="col-md-9">
                           <input 
-                            type="text" className="form-control form-control-lg border-2" placeholder="Enter City/Location"
+                            type="text" className="form-control form-control-lg border" style={{ height: '50px', fontSize: '15px' }} placeholder="Enter City/Location"
                             value={landForm.location}
                             onChange={(e) => setLandForm({ location: e.target.value })}
                           />
                         </div>
-                        <div className="col-lg-3 form-group">
-                          <button type="submit" className="btn btn-primary btn-lg w-100 fw-bold">Search</button>
+                        <div className="col-md-3">
+                          <button type="submit" className="btn btn-lg w-100 fw-bold text-white border-0" style={{ backgroundColor: '#8cc63f', height: '50px' }}>Search</button>
                         </div>
                       </div>
                     </form>
