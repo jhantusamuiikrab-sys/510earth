@@ -1,12 +1,12 @@
+/* ==========================================================================
+   1. Dynamic Animations & Rendering Configurations
+   ========================================================================== */
+
 .about-image {
   opacity: 0;
-  transform: perspective(1200px) rotateY(180deg);
+  transform: perspective(1200px) rotateY(90deg); /* Better transitional angle than 180 */
   transform-origin: left center;
-
-  transition:
-    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
-    opacity 1s ease;
-
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -15,100 +15,67 @@
   opacity: 1;
   transform: perspective(1200px) rotateY(0deg);
 }
-/* 1. Initial Hidden / Flipped State */
 
-.animation {
-  opacity: 0;
-  transform: translateX(
-    -100px
-  ); /* Moves it 100px left from its normal position */
-
-  transition:
-    transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
-    opacity 0.8s ease;
-
-  will-change:
-    transform, opacity; /* Activates GPU acceleration for smooth motion */
+.about-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
-/* 2. Active Triggered State: Slides smoothly to its natural center layout */
-.animation.active {
-  opacity: 1;
-  transform: translateX(0); /* Returns to normal layout spot */
+.about-image:hover img {
+  transform: scale(1.02);
 }
+
+/* Slide elements optimize hardware acceleration layer layout triggers */
+.animation,
 .second_animation {
   opacity: 0;
-  transform: translateX(
-    100px
-  ); /* Moves it 100px left from its normal position */
-
-  transition:
-    transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
-    opacity 0.8s ease;
-
-  will-change:
-    transform, opacity; /* Activates GPU acceleration for smooth motion */
+  will-change: transform, opacity;
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
 }
 
-/* 2. Active Triggered State: Slides smoothly to its natural center layout */
+.animation { transform: translateX(-30px); }
+.second_animation { transform: translateX(30px); }
+
+.animation.active,
 .second_animation.active {
   opacity: 1;
-  transform: translateX(0); /* Returns to normal layout spot */
+  transform: translateX(0);
 }
 
-/* Initial State: Tiny/invisible and centered */
-.iconOne,
-.iconTwo {
+.iconOne, .iconTwo {
   opacity: 0;
-  transform: scale(0.3);
-
-  /* Smooth timing with a subtle elastic pop at the end */
-  transition:
-    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.5s ease;
-
+  transform: scale(0.5);
   will-change: transform, opacity;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
 }
 
-/* Active State: Zooms up to its normal full size */
 .iconOne.active,
 .iconTwo.active {
   opacity: 1;
   transform: scale(1);
 }
 
-/* **************************************** */
+/* ==========================================================================
+   2. Container Layout Corrections
+   ========================================================================== */
 
-/* **************************************** */
-
-.about-image img {
-  transition: transform 0.4s ease;
-}
-
-.about-image:hover img {
-  transform: scale(1.03);
-}
-/* **************************************** */
-/* Container Form Styling */
 .scroll {
-  background-color: #ebf5ff; /* Light blue background matching the design */
-  padding: 5px;
-  border-radius: 4px;
+  background-color: #ebf5ff;
+  padding: 16px;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
 .enquiry-form label {
   font-weight: 600;
   color: #111111;
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   display: block;
 }
 
-.enquiry-form label span.text-danger {
-  color: #ff3b30 !important;
-}
-
-/* Custom Horizontal Input Row alignment */
 .custom-input-group {
   display: flex;
   align-items: stretch;
@@ -116,39 +83,42 @@
   border-radius: 4px;
   overflow: hidden;
   background: #ffffff;
-  margin-bottom: 12px;
+  margin-bottom: 14px; /* Uniform programmatic margin spacing */
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Accent Lime-Green Icon Containers */
 .input-icon-block {
-  background-color: #8cc617; /* Matches the exact green variant in design */
+  background-color: #8cc617;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 45px;
   min-width: 45px;
-  font-size: 16px;
 }
 
-/* Input boxes over-rides */
-.custom-input {
+.custom-input, 
+.custom-textarea {
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  height: 40px;
-  padding: 6px 12px;
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
 }
 
-/* Mock dropdown match for Country Field */
+.custom-input {
+  height: 42px;
+}
+
+/* Country Display Dropdowns */
 .country-display-wrapper {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 12px;
+  padding: 0 12px;
   background: #fff;
-  cursor: default;
-  user-select: none;
 }
 
 .flag-img {
@@ -159,72 +129,38 @@
 
 .country-text {
   color: #495057;
-  font-size: 15px;
+  font-size: 14px;
   flex-grow: 1;
 }
 
-.dropdown-arrow {
-  color: #6c757d;
-  font-size: 12px;
-}
-
-/* Phone input sub-group grid splits */
+/* Combined Sub-Inputs Layout Structure */
 .phone-input-combined {
   display: flex;
   width: 100%;
 }
 
 .prefix-input {
-  width: auto; /* ❌ Removed static width */
-  max-width: 48px; /* Sets a strict ceiling footprint */
-  padding: 6px 4px !important; /* Reduced left/right inner padding to 4px */
-  font-size: 14px; /* Keeps text readable but compact */
+  width: 55px;
   text-align: center;
   color: #495057;
   background-color: #ffffff !important;
   border: none !important;
-  border-right: 1px solid #ced4da !important; /* Visual line break */
+  border-right: 1px solid #ced4da !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  height: 40px;
-}
-.number-input {
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  flex-grow: 1;
-  height: 40px;
+  height: 42px;
 }
 
-/* Textarea height adjustment overrides */
-.alignment-stretch {
-  align-items: stretch;
-}
-
-.textarea-icon-block {
-  display: flex;
-  align-items: center;
-}
-
-.custom-textarea {
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  resize: vertical;
-  padding: 8px 12px;
-}
-
-/* Full Width Dark Olive/Green Button */
 .btn-submit-enquiry {
-  background-color: #557a07; /* Darker green matching image button */
+  background-color: #557a07;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   width: 100%;
   border: none;
-  padding: 10px 0;
+  padding: 12px 0;
   border-radius: 6px;
-  margin-top: 15px;
+  margin-top: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -233,19 +169,52 @@
   background-color: #466505;
 }
 
-/* Inline Error Text placeholders */
 .error-text {
   display: block;
   font-size: 12px;
   color: #ff3b30;
-  margin-top: -8px;
-  margin-bottom: 8px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }
-/* Fix for mobile horizontal scrolling / overflow layout blowouts */
+
+/* Container overflow structural security shield placement */
+.about-component-wrapper,
 .inner_page, 
 .about_top_panel, 
 .about_mdl_panel, 
 .about_bottom_panel {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   3. Fluid Responsive Device Adaptation Rules
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Deactivates complex multi-axis entry transforms on slower rendering chipsets */
+  .animation, 
+  .second_animation {
+    transform: none !important;
+    transition: opacity 0.4s ease;
+  }
+  
+  .about-image {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .enquiry-form label,
+  .country-text,
+  .prefix-input {
+    font-size: 13px;
+  }
+
+  .btn-submit-enquiry {
+    font-size: 15px;
+    padding: 11px 0;
+  }
 }
