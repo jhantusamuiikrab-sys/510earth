@@ -66,17 +66,19 @@ const ServiceSection = () => {
         
         {/* Services Layout Grid */}
         <div className="service_inner wow bounceIn">
-          <div className="row g-4">
+          {/* ADJUSTMENT 1: Changed g-4 to g-3 to reduce vertical spacing between the rows */}
+          <div className="row g-3">
             {servicesData.map((service) => (
               <div className="col-md-6" key={service.id}>
-                <div className={`cont_text p-4 ${service.animationClass}`}>
+                {/* ADJUSTMENT 2: Changed p-4 to py-3 px-4 to make the individual blue sections shorter vertically */}
+                <div className={`cont_text py-3 px-4 ${service.animationClass}`}>
                   
                   {/* Picture Icon Wrapper linked to Services page */}
-                  <div className="icon_sec mb-3">
+                  <div className="icon_sec mb-2"> {/* Reduced bottom margin slightly */}
                     <Link to="/services">
                       <picture>
-                        <source type="image/webp" srcset={service.webp} />
-                        <source type="image/jpeg" srcset={service.jpg} />
+                        <source type="image/webp" srcSet={service.webp} />
+                        <source type="image/jpeg" srcSet={service.jpg} />
                         <img src={service.png} alt={service.altText} className="img-fluid" style={{ maxWidth: '60px' }} />
                       </picture>
                     </Link>
@@ -93,7 +95,8 @@ const ServiceSection = () => {
           </div>
 
           {/* Bottom Action Button Row */}
-          <div className="row mt-5">
+          {/* ADJUSTMENT 3: Changed mt-5 to mt-4 to pull the "Know More" button closer to the cards */}
+          <div className="row mt-4">
             <div className="col-md-12 text-center">
               <div className="service_btn">
                 <Link to="/services" className="btn btn-warning px-5 py-2 fw-bold text-white shadow-sm">
@@ -107,9 +110,8 @@ const ServiceSection = () => {
         {/* Dynamic Structural Shadow Bottom Element */}
         <h4 className="text-center mt-4 mb-0">
           <picture>
-            <source type="image/webp" srcset="/images/btm_shadow.webp" />
-            <source type="image/jpeg" srcset="/images/btm_shadow.jpg" />
-            {/* <img src="/Front/NewHome/images/btm_shadow.png" className="img-fluid mx-auto d-block" alt="real estate investment consultant" /> */}
+            <source type="image/webp" srcSet="/images/btm_shadow.webp" />
+            <source type="image/jpeg" srcSet="/images/btm_shadow.jpg" />
           </picture>
         </h4>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../assets/Font/NewHome/style.css'; 
+import ParticleBackground from './ParticleBackground';
 
 const HeroSection = () => {
   // Tab Management State
@@ -32,10 +33,21 @@ const HeroSection = () => {
 
   return (
     /* CHANGE 1: Changed 'align-items-center' to 'align-items-end' to align content to the bottom */
-    <section className="banner_area d-flex align-items-end justify-content-center" style={{ paddingBottom: '0px' }}>
-      <div className="container">
+    <section 
+      className="banner_area d-flex align-items-end justify-content-center position-relative overflow-hidden" 
+      style={{ 
+        paddingBottom: '0px', 
+        minHeight: '650px' // Provides a predictable height canvas area to render web vectors safely
+      }}
+    >
+      {/* Background Interactive Layer (Controlled via internal zIndex: 1) */}
+      <ParticleBackground />
+
+      {/* Elevated Container: Forces form buttons, dropdown layers, and text selectors 
+         to float reliably above our background canvas without mouse interaction blockages.
+      */}
+      <div className="container position-relative" style={{ zIndex: 5 }}>
         <div className="row justify-content-center">
-          {/* CHANGE 2: Adjusted column widths (col-xl-10 col-lg-11) to perfectly align with the content in the original design layout */}
           <div className="col-xl-10 col-lg-11 position-relative" style={{ zIndex: 10, bottom: '50px' }}>
             
             {/* CHANGE 3: Removed 'maxWidth' and 'margin: 0 auto' to let the container expand to its natural grid bounds */}

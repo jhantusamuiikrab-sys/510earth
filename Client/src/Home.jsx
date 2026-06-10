@@ -14,8 +14,8 @@ const Home = () => {
   return (
     <div className="home-page-wrapper">
       {/* 2. Render the HeroSection component */}
-      <FeatureProperty />
       <HeroSection />
+      <FeatureProperty />
       <ReraSection />
       <LeadingSection />
       <ChooseSection />

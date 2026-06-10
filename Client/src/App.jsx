@@ -8,6 +8,7 @@ import Contact from "./Contact";
 import OurServices from "./OurServices";
 import PropertyManagement from "./PropertyManagement";
 import Home from "./Home";
+import LandListing from "./LandListing";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/services" element={<OurServices />} />
         <Route path="/property-management" element={<PropertyManagement />} />
+        <Route path="/land" element={<LandListing />} />
 
       
       </Routes>
