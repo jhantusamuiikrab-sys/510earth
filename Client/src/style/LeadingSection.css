@@ -1,0 +1,37 @@
+/* ==========================================================================
+   1. High-Impact Dynamic Animations (Hard Entry Effect)
+   ========================================================================== */
+
+.animation,
+.second_animation {
+  opacity: 0;
+  /* 'will-change' forces hardware acceleration for smooth rendering of hard animations */
+  will-change: transform, opacity;
+  /* A sharper cubic-bezier curve creates an aggressive, snapping speed curve */
+  transition: transform 0.65s cubic-bezier(3.16, 3, 3.3, 3), opacity 0.5s ease-out;
+}
+
+/* Hard Left-to-Right Entry: Increased distance and added a slight starting compression */
+.animation { 
+  transform: translateX(-140px) scale(0.92); 
+}
+
+/* Hard Right-to-Left Entry: Shifting content aggressively from the right */
+.second_animation { 
+  transform: translateX(140px); 
+}
+
+/* Hard Snapping Activation State */
+.animation.active,
+.second_animation.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Subtle image hover element pop effect */
+.leading_left img {
+  transition: transform 0.3s ease;
+}
+.leading_left:hover img {
+  transform: scale(1.02);
+}

@@ -34,7 +34,7 @@ const Navbar = () => {
       observer.observe(navbarRef.current);
     }
 
-    // SINGLE clean up function for everything
+    // SINGLE clean up function for everything  
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
       if (navbarRef.current) {

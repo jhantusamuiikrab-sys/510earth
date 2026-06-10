@@ -188,7 +188,7 @@ export default function RealEstatePanel() {
       </div>
     );
   };
-
+  
   return (
     <>
       {/* FEATURED PANEL SECTION */}
