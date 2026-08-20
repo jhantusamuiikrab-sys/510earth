@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../../src/style/FeatureProperty.css";
+import "../../../src/style/FeatureProperty.css";
 // Mock data representing the real-life properties array
 const featuredProperties = [
   {

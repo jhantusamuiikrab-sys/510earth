@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react"; // Added useEffect import
 // Import your layout stylesheet safely
-import "../assets/Font/NewHome/style.css";
-import "../assets/Content/style.css";
-import "../../src/style/LeadingSection.css";
+import "../../assets/Font/NewHome/style.css";
+import "../../assets/Content/style.css";
+import "../../../src/style/LeadingSection.css";
 
 const LeadingSection = () => {
   const [visibility, setVisibility] = useState({

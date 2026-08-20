@@ -1,7 +1,8 @@
 import React from "react";
 // 1. Import the HeroSection component from the same directory
 
-import HeroSection from "./Home/HeroSection";
+//import HeroSection from "../Home/HeroSection";
+import HeroSection from "./Home/HeroSection"; // Adjusted import path for consistency
 import ReraSection from "./Home/ReraSection";
 import LeadingSection from "./Home/LeadingSection";
 import ChooseSection from "./Home/ChooseSection";

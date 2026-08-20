@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../assets/Font/NewHome/style.css'; 
+import '../../assets/Font/NewHome/style.css'; 
 import ParticleBackground from './ParticleBackground';
 
 const HeroSection = () => {

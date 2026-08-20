@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "../src/style/OurServices.css";
+import "../../src/style/OurServices.css";
 
 const Services = () => {
   const services = [

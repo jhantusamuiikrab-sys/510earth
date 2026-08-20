@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "../src/assets/Font/css/style.css";
-import "../src/assets/content/style.css";
-import "../src/style/Partner.css"; // Ensure your animation CSS file is imported here!
+import "../../src/assets/Font/css/style.css";
+import "../../src/assets/content/style.css";
+import "../../src/style/Partner.css"; // Ensure your animation CSS file is imported here!
 
 
 function Partner() {

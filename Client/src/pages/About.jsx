@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../src/assets/Font/css/style.css";
-import "../src/assets/content/style.css";
-import "../src/style/About.css";
+import "../../src/assets/Font/css/style.css";
+import "../../src/assets/content/style.css";
+import "../../src/style/About.css";
 
 function About() {
   const [isSidebarActive, setIsSidebarActive] = useState(false);

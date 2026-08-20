@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // Import your custom layout stylesheet safely
-import '../assets/Font/NewHome/style.css'; 
-import '../assets/Content/style.css';
+import '../../assets/Font/NewHome/style.css'; 
+import '../../assets/Content/style.css';
 
 const PropertyTypeSection = () => {
   // Manage current active tab via state ('residential', 'commercial', 'land')

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/Font/NewHome/style.css'; // Importing CSS specific to ReraSection
+import '../../assets/Font/NewHome/style.css'; // Importing CSS specific to ReraSection
 
 const ReraSection = () => {
   // Keeping RERA details in an array makes it easy to add more states later 

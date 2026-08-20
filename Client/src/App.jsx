@@ -1,14 +1,16 @@
 // App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Footer from "./Footer";
-import About from "./About";
-import Partner from "./Partner";
-import Navbar from "./Navbar";
-import Contact from "./Contact";
-import OurServices from "./OurServices";
-import PropertyManagement from "./PropertyManagement";
-import Home from "./Home";
-import LandListing from "./LandListing";
+
+import Footer from "./pages/Footer";
+import About from "./pages/About";
+import Partner from "./pages/Partner";
+import Contact from "./pages/Contact";
+import OurServices from "./pages/OurServices";
+import PropertyManagement from "./pages/PropertyManagement";
+import Home from "./pages/Home";
+import LandListing from "./pages/LandListing";
+import Navbar from "./pages/Navbar";
+
 
 function App() {
   return (

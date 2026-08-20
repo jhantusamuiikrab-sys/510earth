@@ -2,7 +2,7 @@ import React from 'react';
 // Import Link from react-router-dom for your routing needs
 import { Link } from 'react-router-dom';
 // Import your custom styling stylesheet safely
-import '../assets/Font/NewHome/style.css'; 
+import '../../assets/Font/NewHome/style.css'; 
 
 const ServiceSection = () => {
   // Data array for clean, scalable rendering of your services

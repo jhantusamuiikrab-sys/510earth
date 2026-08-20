@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "../src/style/Navbar.css"; 
+import "../../src/style/Navbar.css";
 import { FiChevronRight, FiMenu, FiX } from "react-icons/fi";
 
 const Navbar = () => {

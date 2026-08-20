@@ -1,6 +1,6 @@
 import React from 'react';
 // Import your custom styling file safely
-import '../assets/Font/NewHome/style.css'; 
+import '../../assets/Font/NewHome/style.css'; 
 
 const BenefitSection = () => {
   // Organizing card data in an array keeps the markup clean and easy to scale
