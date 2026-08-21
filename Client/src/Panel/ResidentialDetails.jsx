@@ -10,6 +10,7 @@ import Amenities from "./ResidentialDetails/Amenities";
 import PropertyGallery from "./ResidentialDetails/PropertyGallery";
 import ResidentialProperties from "./ResidentialDetails/ResidentialProperties";
 import SitePlan from "./ResidentialDetails/SitePlan";
+import Video from "./ResidentialDetails/Video";
 
 const ResidentialDetails = () => {
 
@@ -34,6 +35,7 @@ const ResidentialDetails = () => {
       <PropertyOverview property={property} />
       <Amenities property={property} />
       <PropertyGallery property={property} />
+      <Video property={property} />
       <PropertyDetails/>
       <CommercialFloorPlan/>
       <FloorPlans/>
@@ -41,6 +43,7 @@ const ResidentialDetails = () => {
       <LocationMap/>
       <LocationAdvantage/>
       <ResidentialProperties/>
+      
       
       
 
