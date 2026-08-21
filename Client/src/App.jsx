@@ -10,6 +10,7 @@ import PropertyManagement from "./pages/PropertyManagement";
 import Home from "./pages/Home";
 import LandListing from "./pages/LandListing";
 import Navbar from "./pages/Navbar";
+import ResidentialDetails from "./Panel/ResidentialDetails"; 
 
 
 function App() {
@@ -25,8 +26,7 @@ function App() {
         <Route path="/services" element={<OurServices />} />
         <Route path="/property-management" element={<PropertyManagement />} />
         <Route path="/land" element={<LandListing />} />
-
-      
+        <Route path="/residential-details" element={<ResidentialDetails />} />
       </Routes>
  
       {/* Footer stays at the bottom of all pages */}
