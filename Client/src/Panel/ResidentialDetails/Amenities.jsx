@@ -1,175 +1,101 @@
-import React, { useState } from "react";
-
-import "../../../src/assets/Font/css/style.css";
-import "../../../src/assets/content/style.css";
 import "../../assets/paneldesign/css/Amenities.css";
 
+import React, { useState } from "react";
+import { 
+  Droplets, 
+  Camera, 
+  Zap, 
+  Flame, 
+  PhoneCall, 
+  ArrowUpDown, 
+  ShieldCheck, 
+  Trees, 
+  Car, 
+  Dumbbell 
+} from 'lucide-react';
 
-const testAmenities = [
-  {
-    _id: 1,
-    Name: "24/7 Water Supply",
-    Image: "637370611025675969_a19.png"
-  },
-  {
-    _id: 2,
-    Name: "Amphitheatre",
-    Image: "637314420455464097_a2.png"
-  },
-  {
-    _id: 3,
-    Name: "Car Parking/ Reserved Parking",
-    Image: "637370613500050864_a16.png"
-  },
-  {
-    _id: 4,
-    Name: "CCTV Camera",
-    Image: "637370627064425762_a35.png"
-  },
-  {
-    _id: 5,
-    Name: "Children's Play Area",
-    Image: "637370613995832356_a13.png"
-  },
-  {
-    _id: 6,
-    Name: "Club House",
-    Image: "637370618070051024_a28.png"
-  },
-  {
-    _id: 7,
-    Name: "Coffee Lounge & Restaurants",
-    Image: "637370627787707732_a38.png"
-  },
-  {
-    _id: 8,
-    Name: "Covered Fountain",
-    Image: "637370609876457154_a1.png"
-  },
 
-  // Add all remaining amenities from your API here
+const DEFAULT_AMENITIES = [
+  { id: 1, name: '24/7 Water Supply', icon: <Droplets className="am-icon" /> },
+  { id: 2, name: 'CCTV Camera', icon: <Camera className="am-icon" /> },
+  { id: 3, name: 'Earthquake Resistance', icon: <Zap className="am-icon" /> },
+  { id: 4, name: 'Firefighting Systems', icon: <Flame className="am-icon" /> },
+  { id: 5, name: 'Intercom', icon: <PhoneCall className="am-icon" /> },
+  { id: 6, name: 'Lift', icon: <ArrowUpDown className="am-icon" /> },
+  { id: 7, name: '24/7 Security', icon: <ShieldCheck className="am-icon" /> },
+  { id: 8, name: 'Children\'s Play Area', icon: <Trees className="am-icon" /> },
+  { id: 9, name: 'Car Parking', icon: <Car className="am-icon" /> },
+  { id: 10, name: 'Gymnasium', icon: <Dumbbell className="am-icon" /> },
 ];
 
-
-const getAmenityImage = (imageName) => {
-  return new URL(
-    `../../assets/paneldesign/images/Amenity/${imageName}`,
-    import.meta.url
-  ).href;
-};
-
-
-const Amenities = ({ property }) => {
-
+function Amenities({ property }) {
   const [showMore, setShowMore] = useState(false);
 
-  const amenities =
-    property?.amenities?.length > 0
-      ? property.amenities
-      : testAmenities;
+  const amenitiesList = property?.amenities?.length > 0 
+    ? property.amenities 
+    : DEFAULT_AMENITIES;
 
-
-  /*
-   * Keep API order.
-   * DO NOT sort alphabetically because the reference
-   * follows the supplied amenity order.
-   */
-  const sortedAmenities = [...amenities];
-
-
-  const visibleAmenities = showMore
-    ? sortedAmenities
-    : sortedAmenities.slice(0, 6);
-
+  const initialAmenities = amenitiesList.slice(0, 6);
+  const extraAmenities = amenitiesList.slice(6);
 
   return (
-    <section
-      className={`amenities_area ${
-        showMore ? "amenities_expanded" : ""
-      }`}
-      id="amenities"
-    >
-
-      {/* Background */}
-      <div className="amenities_overlay"></div>
-
-
-      <div className="container amenities_content">
-
-        {/* ==========================================
-            AMENITIES HEADING
-        ========================================== */}
-
-        <div className="aminitiens-holder">
-
-          <div className="aminitiens-holder-box">
-
-            <h3>AMENITIES</h3>
-
-          </div>
-
+    <div className="am-wrapper">
+      {/* Ribbon Banner (Placed outside section so clip-path won't chop it off) */}
+      <div className="am-ribbon-wrapper">
+        <div className="am-ribbon-ear-left"></div>
+        <div className="am-ribbon-badge">
+          <h3>AMENITIES</h3>
         </div>
-
-
-        {/* ==========================================
-            AMENITIES GRID
-        ========================================== */}
-
-        <div className="amenities_grid">
-
-          {visibleAmenities.map((item, index) => (
-
-            <div
-              className="amenity_item"
-              key={item._id || index}
-            >
-
-              <div className="ame_box">
-
-                <div className="amenity_icon">
-
-                  <img
-                    src={getAmenityImage(item.Image)}
-                    alt={item.Name}
-                  />
-
-                </div>
-
-                <p>{item.Name}</p>
-
-              </div>
-
-            </div>
-
-          ))}
-
-        </div>
-
-
-        {/* ==========================================
-            SHOW MORE / SHOW LESS
-        ========================================== */}
-
-        {sortedAmenities.length > 6 && (
-
-          <button
-            type="button"
-            className="amenities_show_btn"
-            onClick={() => setShowMore((prev) => !prev)}
-            aria-expanded={showMore}
-          >
-
-            {showMore ? "SHOW LESS" : "SHOW MORE"}
-
-          </button>
-
-        )}
-
+        <div className="am-ribbon-ear-right"></div>
       </div>
 
-    </section>
-  );
-};
+      <section className={`am-section ${showMore ? 'am-is-open' : 'am-is-closed'}`}>
+        {/* Blueprint Overlay */}
+        <div className="am-grid-overlay"></div>
 
+        <div className="am-container">
+          {/* Always Visible Items */}
+          <div className="am-items-grid">
+            {initialAmenities.map((item, index) => (
+              <div className="am-item" key={item.id || index}>
+                <div className="am-icon-box">{item.icon}</div>
+                <p className="am-item-name">{item.name || item.Name}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Smooth Keyframe Expandable Container */}
+          {extraAmenities.length > 0 && (
+            <div className={`am-expandable-wrapper ${showMore ? 'am-expand' : 'am-collapse'}`}>
+              <div className="am-expandable-inner">
+                <div className="am-items-grid am-extra-grid">
+                  {extraAmenities.map((item, index) => (
+                    <div className="am-item am-animated-item" key={item.id || index + 6}>
+                      <div className="am-icon-box">{item.icon}</div>
+                      <p className="am-item-name">{item.name || item.Name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Toggle Button */}
+          {amenitiesList.length > 6 && (
+            <div className="am-btn-wrapper">
+              <button 
+                type="button" 
+                className="am-show-btn"
+                onClick={() => setShowMore((prev) => !prev)}
+              >
+                {showMore ? 'SHOW LESS' : 'SHOW MORE'}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
 
 export default Amenities;

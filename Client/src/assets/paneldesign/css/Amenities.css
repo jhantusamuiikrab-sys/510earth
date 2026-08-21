@@ -1,547 +1,289 @@
-/* =========================================================
-   AMENITIES SECTION
-========================================================= */
-
-.amenities_area {
-    position: relative;
-
-    width: 100%;
-
-    min-height: 550px;
-
-    margin: 0;
-    padding: 0 0 70px 0;
-
-    background-image: url("../images/aments_bg.jpg");
-
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-
-    overflow: hidden;
+/* Outer Wrapper */
+.am-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 16px;
+  background-color: #f4f4f4;
+  margin-bottom: 50px;
 }
 
+/* Main Container Section */
+.am-section {
+  position: relative;
+  width: 100%;
+  background-color: #0d5c9c;
+  background-image: 
+    linear-gradient(rgba(13, 92, 156, 0.82), rgba(13, 92, 156, 0.82)),
+    url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  padding: 40px 20px 85px 20px; /* Extra bottom padding for the curve space */
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 
-/* =========================================================
-   DARK / BLUE OVERLAY
-========================================================= */
-
-.amenities_overlay {
-    position: absolute;
-
-    inset: 0;
-
-    background: rgba(0, 71, 125, 0.12);
-
-    z-index: 0;
-
-    pointer-events: none;
+  /* 
+    Curved Bottom Edge using Ellipse:
+    ellipse(width height at X-center Y-center)
+  */
+  clip-path: ellipse(85% 100% at 50% 0%);
+  transition: clip-path 0.5s ease-in-out, padding 0.5s ease-in-out;
 }
 
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.amenities_content {
-    position: relative;
-
-    z-index: 2;
-
-    padding-top: 0;
+/* Adjusted cutout depth when expanded */
+.am-section.am-is-open {
+  clip-path: ellipse(90% 100% at 50% 0%);
+  padding-bottom: 75px;
 }
 
-
-/* =========================================================
-   AMENITIES HEADING HOLDER
-=========================================================
-
-   Reference:
-
-             BLACK
-          /----------\
-         |  AMENITIES |
-          \----------/
-             BLUE
-
-========================================================= */
-
-.aminitiens-holder {
-    position: absolute;
-
-    top: -27px;
-    left: 50%;
-
-    width: 320px;
-    height: 84px;
-
-    margin: 0;
-
-    transform: translateX(-50%);
-
-    z-index: 20;
-
-    pointer-events: none;
+/* Blueprint Overlay */
+.am-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 1;
 }
 
-
-/* =========================================================
-   BLACK RIBBON
-========================================================= */
-
-.aminitiens-holder::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 320px;
-    height: 30px;
-
-    background: #000;
-
-    clip-path: polygon(
-        0 100%,
-        10% 0,
-        90% 0,
-        100% 100%
-    );
-
-    z-index: 0;
+.am-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 2;
 }
 
-
-/* =========================================================
-   GREEN TITLE BOX
-========================================================= */
-
-.aminitiens-holder-box {
-    position: absolute;
-
-    top: 0;
-    left: 24px;
-
-    width: 272px;
-    height: 76px;
-
-    margin: 0;
-    padding: 0;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: #a8d400;
-
-    z-index: 2;
+/* 3D Ribbon Badge */
+/* Container positioned exactly on the top edge of the section */
+.am-ribbon-wrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centers the ribbon vertically on the top border line */
+  display: flex;
+  align-items: flex-end;
+  z-index: 50; /* Keeps ribbon on top of grid overlays */
 }
 
-
-/* =========================================================
-   TITLE
-========================================================= */
-
-.aminitiens-holder-box h3 {
-    margin: 0;
-
-    padding: 0;
-
-    color: #ffffff;
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    font-size: 40px;
-    font-weight: 400;
-
-    line-height: 1;
-
-    letter-spacing: 0;
-
-    text-align: center;
-
-    text-transform: uppercase;
-
-    white-space: nowrap;
+/* Green Badge Box */
+.am-ribbon-badge {
+  background-color: #8cc63f;
+  padding: 10px 48px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.45);
 }
 
-
-/* =========================================================
-   REMOVE OLD UNDERLINE
-========================================================= */
-
-.aminitiens-holder-down {
-    display: none !important;
+/* Text Styling */
+.am-ribbon-badge h3 {
+  margin: 0;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
-
-/* =========================================================
-   AMENITIES GRID
-========================================================= */
-
-.amenities_grid {
-
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(6, minmax(0, 1fr));
-
-    column-gap: 0;
-
-    row-gap: 18px;
-
-    padding-top: 105px;
+/* Left Black Triangle Fold (Angled Up & Left) */
+.am-ribbon-ear-left {
+  width: 0;
+  height: 0;
+  border-bottom: 18px solid #000000;
+  border-left: 24px solid transparent;
+  position: relative;
+  z-index: 1;
 }
 
-
-/* =========================================================
-   AMENITY ITEM
-========================================================= */
-
-.amenity_item {
-    min-width: 0;
-
-    display: flex;
-
-    justify-content: center;
+/* Right Black Triangle Fold (Angled Up & Right) */
+.am-ribbon-ear-right {
+  width: 0;
+  height: 0;
+  border-bottom: 18px solid #000000;
+  border-right: 24px solid transparent;
+  position: relative;
+  z-index: 1;
 }
 
-
-/* =========================================================
-   AMENITY BOX
-========================================================= */
-
-.ame_box {
-
-    width: 100%;
-
-    max-width: 170px;
-
-    min-height: 125px;
-
-    padding: 0 8px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: flex-start;
-
-    text-align: center;
-
-    transition: transform 0.25s ease;
+/* Grid Layouts */
+.am-items-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  padding-top: 30px;
 }
 
-
-/* =========================================================
-   HOVER
-========================================================= */
-
-.ame_box:hover {
-    transform: translateY(-4px);
+.am-extra-grid {
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
-
-/* =========================================================
-   ICON CONTAINER
-========================================================= */
-
-.amenity_icon {
-
-    width: 90px;
-    height: 90px;
-
-    margin: 0 auto 7px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
+.am-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-
-/* =========================================================
-   ICON
-========================================================= */
-
-.amenity_icon img {
-
-    width: 72px;
-    height: 72px;
-
-    object-fit: contain;
-
-    display: block;
-
-    transition:
-        transform 0.25s ease,
-        filter 0.25s ease;
+.am-icon-box {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
-
-/* =========================================================
-   ICON HOVER
-========================================================= */
-
-.ame_box:hover .amenity_icon img {
-
-    transform: scale(1.08);
-
-    filter:
-        drop-shadow(
-            0 3px 5px
-            rgba(0, 0, 0, 0.35)
-        );
+.am-icon {
+  width: 52px;
+  height: 52px;
+  color: #a8d400;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-
-/* =========================================================
-   AMENITY NAME
-========================================================= */
-
-.ame_box p {
-
-    width: 100%;
-
-    margin: 0;
-
-    padding: 0;
-
-    color: #ffffff;
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    font-size: 16px;
-
-    font-weight: 500;
-
-    line-height: 1.25;
-
-    text-align: center;
+.am-item-name {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
+/* CSS GRID KEYFRAME SMOOTH HEIGHT EXPANSION & COLLAPSE */
+.am-expandable-wrapper {
+  display: grid;
+  overflow: hidden;
+}
+.am-expandable-wrapper.am-expand {
+  animation: amGridExpand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
 
-/* =========================================================
-   SHOW MORE / SHOW LESS
-========================================================= */
+.am-expandable-wrapper.am-collapse {
+  animation: amGridCollapse 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
 
-.amenities_show_btn {
+.am-expandable-inner {
+  min-height: 0;
+}
 
-    display: block;
+/* Smooth Fade-in Effects for Items */
+.am-expand .am-animated-item {
+  animation: amFadeIn 0.5s ease-in-out forwards;
+}
 
-    width: 183px;
-    height: 44px;
+.am-collapse .am-animated-item {
+  animation: amFadeOut 0.3s ease-in-out forwards;
+}
 
-    margin: 12px auto 0;
+/* Keyframes Definitions */
+@keyframes amGridExpand {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+  to {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
 
-    padding: 0;
+@keyframes amGridCollapse {
+  from {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  to {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
 
-    border: 0;
+@keyframes amFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    border-radius: 0;
+@keyframes amFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
 
-    background: #a8d400;
+/* Show More Button */
+.am-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
 
-    color: #ffffff;
+.am-show-btn {
+  background-color: #a8d400;
+  color: #ffffff;
+  border: none;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
 
-    font-family: Arial, Helvetica, sans-serif;
+.am-show-btn:hover {
+  background-color: #94bd00;
+  transform: translateY(-1px);
+}
 
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .am-items-grid {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .am-section {
+    clip-path: polygon(0 0, 100% 0, 100% 95%, 50% 88%, 0 95%);
+    padding-bottom: 50px;
+  }
+
+  .am-ribbon-badge h3 {
     font-size: 18px;
-
-    font-weight: 700;
-
-    line-height: 44px;
-
-    text-align: center;
-
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    position: relative;
-
-    z-index: 10;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.amenities_show_btn:hover {
-
-    background: #94bd00;
-
-    transform: translateY(-1px);
-}
-
-
-.amenities_show_btn:focus {
-
-    outline: 2px solid #ffffff;
-    outline-offset: 2px;
-}
-
-
-/* =========================================================
-   EXPANDED SECTION
-========================================================= */
-
-.amenities_expanded {
-
-    min-height: 900px;
-
-    padding-bottom: 80px;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 991px) {
-
-    .amenities_grid {
-
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-
-        row-gap: 25px;
-
-    }
-
-    .amenitiens-holder {
-        transform: translateX(-50%) scale(0.9);
-        transform-origin: top center;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 767px) {
-
-    .amenities_area {
-
-        min-height: 500px;
-
-        padding-bottom: 55px;
-
-    }
-
-
-    .amenities_grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-        row-gap: 22px;
-
-        padding-top: 95px;
-
-    }
-
-
-    .aminitiens-holder {
-
-        top: -22px;
-
-        transform:
-            translateX(-50%)
-            scale(0.72);
-
-        transform-origin: top center;
-    }
-
-
-    .amenity_icon {
-
-        width: 70px;
-        height: 70px;
-
-    }
-
-
-    .amenity_icon img {
-
-        width: 56px;
-        height: 56px;
-
-    }
-
-
-    .ame_box {
-
-        min-height: 105px;
-
-        max-width: 150px;
-
-    }
-
-
-    .ame_box p {
-
-        font-size: 13px;
-
-    }
-
-
-    .amenities_show_btn {
-
-        width: 170px;
-        height: 42px;
-
-        line-height: 42px;
-
-        font-size: 16px;
-
-    }
-
-
-    .amenities_expanded {
-
-        min-height: 900px;
-
-    }
-
-}
-
-
-/* =========================================================
-   VERY SMALL MOBILE
-========================================================= */
-
-@media (max-width: 400px) {
-
-    .amenities_grid {
-
-        row-gap: 18px;
-
-    }
-
-
-    .aminitiens-holder {
-
-        transform:
-            translateX(-50%)
-            scale(0.62);
-
-    }
-
-
-    .ame_box p {
-
-        font-size: 12px;
-
-    }
-
+  }
+
+  .am-ribbon-badge {
+    padding: 8px 24px;
+  }
+
+  .am-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 20px;
+  }
+
+  .am-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .am-item-name {
+    font-size: 12px;
+  }
 }
