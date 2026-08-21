@@ -1,0 +1,38 @@
+/* CSS Grid Container Technique for Dynamic Smooth Height Transition */
+.overview_expandable {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease-in-out;
+  visibility: hidden;
+}
+
+/* Inner wrapper necessary for grid-template-rows animation */
+.overview_expandable_inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Expanded State */
+.overview_expandable.is-expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Button Styling & Hover Polish */
+.overview_btn {
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 10px;
+  color: #0d5c9c;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.overview_btn:hover {
+  color: #8cc63f;
+  transform: translateY(-1px);
+}
