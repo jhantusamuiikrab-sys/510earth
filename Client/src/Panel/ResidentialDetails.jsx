@@ -1,5 +1,8 @@
 import PropertyHero from "./ResidentialDetails/PropertyHero";
 import PropertyPrice from "./ResidentialDetails/PropertyPrice";
+import PropertyOverview from "./ResidentialDetails/PropertyOverview";
+import Amenities from "./ResidentialDetails/Amenities";
+import PropertyGallery from "./ResidentialDetails/PropertyGallery";
 
 const ResidentialDetails = () => {
 
@@ -21,6 +24,9 @@ const ResidentialDetails = () => {
 
       <PropertyHero property={property} />
       <PropertyPrice property={property} />
+      <PropertyOverview property={property} />
+      <Amenities property={property} />
+      <PropertyGallery property={property} />
 
     </div>
   );

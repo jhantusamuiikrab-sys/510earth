@@ -1,0 +1,542 @@
+/* ==========================================
+   GALLERY SLIDER
+========================================== */
+
+.gallery_slide {
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 45px;
+}
+
+
+/* ==========================================
+   IMAGE CONTAINER
+========================================== */
+
+.gallery_images {
+    display: flex;
+    flex-direction: row;
+
+    gap: 15px;
+
+    width: 100%;
+
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   EACH IMAGE BOX
+========================================== */
+
+.gallery_images .gallerylight_box {
+    flex: 0 0 calc(25% - 12px);
+    max-width: calc(25% - 12px);
+}
+
+
+/* ==========================================
+   IMAGE WRAPPER
+========================================== */
+
+.gallery_image_wrapper {
+    position: relative;
+
+    width: 100%;
+    height: 220px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   IMAGE
+========================================== */
+
+.gallery_image_wrapper img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.5s ease;
+}
+
+
+/* ==========================================
+   IMAGE HOVER ZOOM
+========================================== */
+
+.gallery_image_wrapper:hover img {
+    transform: scale(1.08);
+}
+
+
+/* ==========================================
+   DARK HOVER OVERLAY
+========================================== */
+
+.gallery_zoom_overlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.40);
+
+    opacity: 0;
+
+    transition: opacity 0.3s ease;
+
+    pointer-events: none;
+}
+
+
+.gallery_image_wrapper:hover .gallery_zoom_overlay {
+    opacity: 1;
+}
+
+
+/* ==========================================
+   MAGNIFYING GLASS CONTAINER
+========================================== */
+
+.gallery_zoom_icon {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: scale(0.7);
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+.gallery_image_wrapper:hover .gallery_zoom_icon {
+    transform: scale(1);
+}
+
+
+/* ==========================================
+   MAGNIFYING GLASS
+========================================== */
+
+.magnifying_glass {
+    position: relative;
+
+    width: 40px;
+    height: 40px;
+
+    border: 3px solid #ffffff;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ==========================================
+   MAGNIFYING GLASS HANDLE
+========================================== */
+
+.magnifying_glass::after {
+    content: "";
+
+    position: absolute;
+
+    width: 18px;
+    height: 3px;
+
+    background: #ffffff;
+
+    right: -13px;
+    bottom: -7px;
+
+    transform: rotate(45deg);
+
+    border-radius: 3px;
+}
+
+
+/* ==========================================
+   PLUS SIGN
+   CENTER OF MAGNIFYING GLASS
+========================================== */
+
+.magnify_plus {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 400;
+
+    line-height: 1;
+
+    background: transparent;
+
+    width: auto;
+    height: auto;
+
+    display: block;
+}
+
+
+/* ==========================================
+   SLIDER ARROWS
+========================================== */
+
+.gallery_arrow {
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    color: #ffffff;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.gallery_arrow:hover {
+    background: #000000;
+
+    transform:
+        translateY(-50%)
+        scale(1.1);
+}
+
+
+.gallery_arrow_left {
+    left: 0;
+}
+
+
+.gallery_arrow_right {
+    right: 0;
+}
+
+
+/* ==========================================
+   SCROLL POP-IN ANIMATION
+========================================== */
+
+.gallery_item {
+    opacity: 0;
+
+    transform:
+        translateY(35px)
+        scale(0.90);
+
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
+
+.gallery_item_visible {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* ==========================================
+   LIGHTBOX
+========================================== */
+
+.gallery_lightbox {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 99999;
+
+    background: rgba(0, 0, 0, 0.92);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    animation:
+        galleryLightboxIn 0.3s ease;
+}
+
+
+/* ==========================================
+   LIGHTBOX CONTENT
+========================================== */
+
+.gallery_lightbox_content {
+    position: relative;
+
+    max-width: 85vw;
+    max-height: 85vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.gallery_lightbox_content img {
+    max-width: 85vw;
+    max-height: 82vh;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+
+    box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.6);
+}
+
+
+/* ==========================================
+   CLOSE BUTTON
+========================================== */
+
+.gallery_lightbox_close {
+    position: absolute;
+
+    top: 20px;
+    right: 30px;
+
+    width: 45px;
+    height: 45px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: 42px;
+
+    line-height: 40px;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.gallery_lightbox_close:hover {
+    transform: scale(1.2);
+}
+
+
+/* ==========================================
+   LIGHTBOX ARROWS
+========================================== */
+
+.gallery_lightbox_arrow {
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 50px;
+    height: 50px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    color: #ffffff;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.gallery_lightbox_arrow:hover {
+    background: rgba(255, 255, 255, 0.30);
+
+    transform:
+        translateY(-50%)
+        scale(1.1);
+}
+
+
+.gallery_lightbox_previous {
+    left: 30px;
+}
+
+
+.gallery_lightbox_next {
+    right: 30px;
+}
+
+
+/* ==========================================
+   IMAGE COUNTER
+========================================== */
+
+.gallery_image_counter {
+    position: absolute;
+
+    bottom: -35px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   LIGHTBOX ANIMATION
+========================================== */
+
+@keyframes galleryLightboxIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 767px) {
+
+    .gallery_slide {
+        padding: 0 35px;
+    }
+
+
+    .gallery_images {
+        gap: 10px;
+    }
+
+
+    .gallery_images .gallerylight_box {
+        flex: 0 0 calc(50% - 5px);
+        max-width: calc(50% - 5px);
+    }
+
+
+    .gallery_image_wrapper {
+        height: 180px;
+    }
+
+
+    .gallery_arrow {
+        width: 34px;
+        height: 34px;
+
+        font-size: 17px;
+    }
+
+
+    .gallery_lightbox_previous {
+        left: 10px;
+    }
+
+
+    .gallery_lightbox_next {
+        right: 10px;
+    }
+
+
+    .gallery_lightbox_content {
+        max-width: 80vw;
+    }
+
+
+    .gallery_lightbox_content img {
+        max-width: 80vw;
+        max-height: 75vh;
+    }
+
+
+    .gallery_lightbox_close {
+        top: 10px;
+        right: 15px;
+    }
+
+}
