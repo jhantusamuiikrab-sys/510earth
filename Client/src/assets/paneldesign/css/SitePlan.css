@@ -1,0 +1,149 @@
+/* Container Wrapper */
+.sp-main-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Title Section */
+.sp-title-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.sp-heading {
+  font-size: 32px;
+  font-weight: 700;
+  color: #bfa100; /* Muted yellow/gold title color */
+  letter-spacing: 1px;
+  margin: 0 0 12px 0;
+}
+
+.sp-heading-underline-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sp-blue-bar {
+  width: 140px;
+  height: 4px;
+  background-color: #1d4ed8; /* Blue underline bar */
+  border-radius: 2px;
+}
+
+/* Card Container */
+.sp-card-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Dark Blueprint Image Container */
+.sp-image-frame {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  background-color: #0d101d; /* Dark navy background matching the layout image */
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.sp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Bottom Overlay Label inside the image frame */
+.sp-blueprint-label {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #d1d5db;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 2px;
+}
+
+/* Bottom Highlight Card */
+.sp-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #ffffff;
+  padding: 22px 30px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.sp-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sp-info-icon {
+  width: 22px;
+  height: 22px;
+  color: #1d4ed8; /* Blue icon tone */
+}
+
+.sp-info-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e3a8a; /* Deep navy text tone */
+}
+
+.sp-info-divider {
+  width: 1px;
+  height: 35px;
+  background-color: #e2e8f0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 850px) {
+  .sp-image-frame {
+    height: 380px;
+  }
+
+  .sp-info-bar {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .sp-info-divider {
+    width: 80%;
+    height: 1px;
+  }
+
+  .sp-info-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .sp-image-frame {
+    height: 280px;
+  }
+
+  .sp-heading {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,159 @@
+/* Container & Background */
+.loc-adv-wrapper {
+  width: 100%;
+  background-color: #ebf3fa; /* Light ice-blue background matching the image */
+  padding: 60px 20px 80px 20px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.loc-adv-container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* Header & Title Styling */
+.loc-adv-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.loc-adv-title {
+  color: #a0c800; /* Yellow-green title color */
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+}
+
+/* Underline decoration */
+.loc-adv-underline-wrapper {
+  position: relative;
+  width: 260px;
+  margin: 0 auto;
+  height: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loc-adv-underline-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #bdcad8;
+}
+
+.loc-adv-underline-bar {
+  position: relative;
+  width: 120px;
+  height: 6px;
+  background-color: #2b619e; /* Dark blue bar */
+  z-index: 1;
+}
+
+/* 4-Column Grid Layout */
+.loc-adv-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 30px;
+  row-gap: 45px;
+}
+
+/* Individual Card Wrapper for 3D Drop Shadow Effect */
+.loc-adv-card-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card Body */
+.loc-adv-card {
+  position: relative;
+  z-index: 2;
+  background-color: transparent;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  transition: transform 0.25s ease;
+}
+
+.loc-adv-card-wrapper:hover .loc-adv-card {
+  transform: translateY(-2px);
+}
+
+/* Icon Box */
+.loc-adv-icon-box {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.loc-adv-icon {
+  color: #f7b928; /* Golden yellow icons */
+}
+
+/* Text Content */
+.loc-adv-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.loc-adv-item-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #333333;
+  margin: 0 0 3px 0;
+  line-height: 1.2;
+}
+
+.loc-adv-item-desc {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666666;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Soft Curved Bottom Drop Shadow */
+.loc-adv-card-shadow {
+  position: absolute;
+  bottom: -12px;
+  left: 5%;
+  width: 90%;
+  height: 18px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 0 14px 14px rgba(0, 0, 0, 0.22);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .loc-adv-grid {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  .loc-adv-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 40px;
+  }
+}
+
+@media (max-width: 580px) {
+  .loc-adv-grid {
+    grid-template-columns: 1fr;
+  }
+  .loc-adv-title {
+    font-size: 26px;
+  }
+}

@@ -81,7 +81,7 @@ function About() {
   return (
     <div className="about-component-wrapper">
       {/* SIDEBAR CONTACT PANEL */}
-      <div
+      <div  
         className={`sidebar-contact ${isSidebarActive ? "active" : ""}`}
         ref={sidebarRef}
       >

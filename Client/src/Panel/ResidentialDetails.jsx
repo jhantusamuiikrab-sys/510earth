@@ -1,8 +1,15 @@
+import CommercialFloorPlan from "./ResidentialDetails/CommercialFloorPlan";
+import FloorPlans from "./ResidentialDetails/FloorPlans";
+import LocationAdvantage from "./ResidentialDetails/LocationAdvantage";
+import LocationMap from "./ResidentialDetails/LocationMap";
+import PropertyDetails from "./ResidentialDetails/PropertyDetails";
 import PropertyHero from "./ResidentialDetails/PropertyHero";
 import PropertyPrice from "./ResidentialDetails/PropertyPrice";
 import PropertyOverview from "./ResidentialDetails/PropertyOverview";
 import Amenities from "./ResidentialDetails/Amenities";
 import PropertyGallery from "./ResidentialDetails/PropertyGallery";
+import ResidentialProperties from "./ResidentialDetails/ResidentialProperties";
+import SitePlan from "./ResidentialDetails/SitePlan";
 
 const ResidentialDetails = () => {
 
@@ -27,6 +34,15 @@ const ResidentialDetails = () => {
       <PropertyOverview property={property} />
       <Amenities property={property} />
       <PropertyGallery property={property} />
+      <PropertyDetails/>
+      <CommercialFloorPlan/>
+      <FloorPlans/>
+      <SitePlan/>
+      <LocationMap/>
+      <LocationAdvantage/>
+      <ResidentialProperties/>
+      
+      
 
     </div>
   );

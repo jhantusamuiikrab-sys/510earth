@@ -1,0 +1,89 @@
+/* Container Wrapper */
+.locmap-main-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Heading Section */
+.locmap-title-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.locmap-heading {
+  font-size: 32px;
+  font-weight: 700;
+  color: #bfa100; /* Muted yellow/gold heading matching previous section */
+  letter-spacing: 1px;
+  margin: 0 0 12px 0;
+}
+
+.locmap-heading-underline-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.locmap-blue-bar {
+  width: 140px;
+  height: 4px;
+  background-color: #1d4ed8; /* Blue bar line */
+  border-radius: 2px;
+}
+
+/* Map Frame Card Styling */
+.locmap-card-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 12px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* Soft elevated drop shadow */
+  border: 1px solid #e2e8f0;
+}
+
+.locmap-image-box {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 2px;
+  position: relative;
+}
+
+.locmap-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.locmap-card-wrapper:hover .locmap-img {
+  transform: scale(1.02);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+  .locmap-image-box {
+    height: 400px;
+  }
+}
+
+@media (max-width: 600px) {
+  .locmap-main-wrapper {
+    padding: 30px 15px;
+  }
+
+  .locmap-image-box {
+    height: 280px;
+  }
+
+  .locmap-heading {
+    font-size: 26px;
+  }
+}
