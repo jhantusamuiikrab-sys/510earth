@@ -1,6 +1,6 @@
 import ContactForm from "./ContactForm";
 // import EnquirySidebar from "../components/EnquirySidebar";
-import "../../src/assets/Font/css/style.css";
+
 import "../../src/assets/content/style.css";
 
 const Contact = () => {

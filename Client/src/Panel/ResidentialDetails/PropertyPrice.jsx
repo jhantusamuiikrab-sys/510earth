@@ -1,6 +1,5 @@
 import React from "react";
 
-import "../../../src/assets/Font/css/style.css";
 import "../../../src/assets/content/style.css";
 
 const PropertyPrice = ({ property }) => {

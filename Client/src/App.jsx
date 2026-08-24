@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import LandListing from "./pages/LandListing";
 import Navbar from "./pages/Navbar";
 import ResidentialDetails from "./Panel/ResidentialDetails"; 
+import LandDetails from "./Panel/LandDetails";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/property-management" element={<PropertyManagement />} />
         <Route path="/land" element={<LandListing />} />
         <Route path="/residential-details" element={<ResidentialDetails />} />
+        <Route path="/land-details" element={<LandDetails />} />
       </Routes>
  
       {/* Footer stays at the bottom of all pages */}

@@ -1,7 +1,7 @@
 import React from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-import "../../../src/assets/Font/css/style.css";
+
 import "../../../src/assets/content/style.css";
 
 import propertyPlaceholder from "../../../src/assets/paneldesign/images/DTC-Downtown-Cover-Image.png";

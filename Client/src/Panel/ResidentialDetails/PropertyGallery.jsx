@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import "../../../src/assets/Font/css/style.css";
+import "../../../src/assets/Font/css_new/style.css";
 import "../../../src/assets/content/style.css";
 import "../../assets/paneldesign/css/PropertyGallery.css";
 

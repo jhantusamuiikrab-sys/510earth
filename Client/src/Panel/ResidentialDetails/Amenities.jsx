@@ -4,7 +4,6 @@ import React, { useState } from "react";
 // import "../../../src/assets/content/style.css";
 import "../../assets/paneldesign/css/Amenities.css";
 
-import React, { useState } from "react";
 import { 
   Droplets, 
   Camera, 
