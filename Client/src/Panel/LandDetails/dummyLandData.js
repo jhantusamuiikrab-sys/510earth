@@ -108,12 +108,12 @@ const dummyLandData = {
 
     LOEGroundImgs: [
       "/images/LandPlot/2katha-ground-1.webp",
-      "/images/LandPlot/2katha-ground-2.webp"
+      
     ],
 
     LOEFirstImgs: [
       "/images/LandPlot/2katha-first-1.webp",
-      "/images/LandPlot/2katha-first-2.webp"
+      
     ],
 
     LOEGroundDes:
@@ -128,12 +128,12 @@ const dummyLandData = {
 
     LOEGroundImgs: [
       "/images/LandPlot/3katha-ground-1.webp",
-      "/images/LandPlot/3katha-ground-2.webp"
+      
     ],
 
     LOEFirstImgs: [
       "/images/LandPlot/3katha-first-1.webp",
-      "/images/LandPlot/3katha-first-2.webp"
+      
     ],
 
     LOEGroundDes:
@@ -167,63 +167,114 @@ const dummyLandData = {
   // FLOOR PLANS
   // ==========================================
 
+//   LfpTempModel: [
+//   {
+//     FloorPlanKatha: "2 Katha",
+
+//     FloorPlanGroundDes:
+//       "Smartly planned ground floor with spacious living and dining areas.",
+
+//     FloorPlanFirstDes:
+//       "Comfortable first floor with bedrooms and a private balcony.",
+
+//     FloorPlanGroundImgs: [
+//       "/images/LandPlot/2katha-ground-plan-1.webp",
+//       "/images/LandPlot/2katha-ground-plan-2.webp"
+//     ],
+
+//     FloorPlanFirstImgs: [
+//       "/images/LandPlot/2katha-first-plan-1.webp",
+//       "/images/LandPlot/2katha-first-plan-2.webp"
+//     ]
+//   },
+
+//   {
+//     FloorPlanKatha: "3 Katha",
+
+//     FloorPlanGroundDes:
+//       "Spacious ground floor layout suitable for a modern family.",
+
+//     FloorPlanFirstDes:
+//       "Well-designed first floor with additional living space.",
+
+//     FloorPlanGroundImgs: [
+//       "/images/LandPlot/3katha-ground-plan-1.webp"
+//     ],
+
+//     FloorPlanFirstImgs: [
+//       "/images/LandPlot/3katha-first-plan-1.webp"
+//     ]
+//   },
+
+//   {
+//     FloorPlanKatha: "4 Katha",
+
+//     FloorPlanGroundDes:
+//       "Large ground floor layout with premium spaces.",
+
+//     FloorPlanFirstDes:
+//       "Luxury first floor plan with spacious bedrooms.",
+
+//     FloorPlanGroundImgs: [
+//       "/images/LandPlot/4katha-ground-plan-1.webp"
+//     ],
+
+//     FloorPlanFirstImgs: [
+//       "/images/LandPlot/4katha-first-plan-2.webp"
+//     ]
+//   }
+// ],
+
+// ==========================================
+  // FLOOR PLANS (Multiple Images per Floor)
+  // ==========================================
   LfpTempModel: [
-  {
-    FloorPlanKatha: "2 Katha",
-
-    FloorPlanGroundDes:
-      "Smartly planned ground floor with spacious living and dining areas.",
-
-    FloorPlanFirstDes:
-      "Comfortable first floor with bedrooms and a private balcony.",
-
-    FloorPlanGroundImgs: [
-      "/images/LandPlot/2katha-ground-plan-1.webp",
-      "/images/LandPlot/2katha-ground-plan-2.webp"
-    ],
-
-    FloorPlanFirstImgs: [
-      "/images/LandPlot/2katha-first-plan-1.webp",
-      "/images/LandPlot/2katha-first-plan-2.webp"
-    ]
-  },
-
-  {
-    FloorPlanKatha: "3 Katha",
-
-    FloorPlanGroundDes:
-      "Spacious ground floor layout suitable for a modern family.",
-
-    FloorPlanFirstDes:
-      "Well-designed first floor with additional living space.",
-
-    FloorPlanGroundImgs: [
-      "/images/LandPlot/3katha-ground-plan-1.webp"
-    ],
-
-    FloorPlanFirstImgs: [
-      "/images/LandPlot/3katha-first-plan-1.webp"
-    ]
-  },
-
-  {
-    FloorPlanKatha: "4 Katha",
-
-    FloorPlanGroundDes:
-      "Large ground floor layout with premium spaces.",
-
-    FloorPlanFirstDes:
-      "Luxury first floor plan with spacious bedrooms.",
-
-    FloorPlanGroundImgs: [
-      "/images/LandPlot/4katha-ground-plan-1.webp"
-    ],
-
-    FloorPlanFirstImgs: [
-      "/images/LandPlot/4katha-first-plan-2.webp"
-    ]
-  }
-],
+    {
+      FloorPlanKatha: "2 Katha",
+      FloorPlanGroundDes:
+        "Smartly planned ground floor with spacious living and dining areas.",
+      FloorPlanFirstDes:
+        "Comfortable first floor with bedrooms and a private balcony.",
+      FloorPlanGroundImgs: [
+        "/images/LandPlot/2katha-ground-plan-1.webp",
+        "/images/LandPlot/2katha-ground-plan-2.webp"
+      ],
+      FloorPlanFirstImgs: [
+        "/images/LandPlot/2katha-first-plan-1.webp",
+        "/images/LandPlot/2katha-first-plan-2.webp"
+      ]
+    },
+    {
+      FloorPlanKatha: "3 Katha",
+      FloorPlanGroundDes:
+        "Spacious ground floor layout suitable for a modern family.",
+      FloorPlanFirstDes:
+        "Well-designed first floor with additional living space.",
+      FloorPlanGroundImgs: [
+        "/images/LandPlot/3katha-ground-plan-1.webp",
+        "/images/LandPlot/3katha-ground-plan-2.webp"
+      ],
+      FloorPlanFirstImgs: [
+        "/images/LandPlot/3katha-first-plan-1.webp",
+        "/images/LandPlot/3katha-first-plan-2.webp"
+      ]
+    },
+    {
+      FloorPlanKatha: "4 Katha",
+      FloorPlanGroundDes:
+        "Large ground floor layout with premium spaces.",
+      FloorPlanFirstDes:
+        "Luxury first floor plan with spacious bedrooms.",
+      FloorPlanGroundImgs: [
+        "/images/LandPlot/4katha-ground-plan-1.webp",
+        "/images/LandPlot/4katha-ground-plan-2.webp"
+      ],
+      FloorPlanFirstImgs: [
+        "/images/LandPlot/4katha-first-plan-1.webp",
+        "/images/LandPlot/4katha-first-plan-2.webp"
+      ]
+    }
+  ],
 
 
   // ==========================================

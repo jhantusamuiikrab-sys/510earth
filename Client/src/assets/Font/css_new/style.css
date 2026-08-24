@@ -1494,9 +1494,207 @@ font-size: 20px;}
     }
 }
 
+/* Scroll wrapper hiding overflowing elements */
+.elevation-image-scroll {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
 
+/* Flex track holding the dynamic slides */
+.elevation-gallery.animated-scroll {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: scrollInfinite 25s linear infinite;
+}
 
+/* Pause keyframe animation when hovering */
+.elevation-image-scroll:hover .elevation-gallery.animated-scroll {
+  animation-play-state: paused;
+}
 
+/* Individual Slide Dimensions */
+.elevation-slide {
+  flex: 0 0 auto;
+  width: 280px; /* Adjust slide width as needed */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.elevation-slide img {
+  width: 100%;
+  height: 200px; /* Adjust height as needed */
+  object-fit: cover;
+  display: block;
+}
+
+/* Keyframe definition for seamless infinite scrolling */
+@keyframes scrollInfinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Card Container */
+.floor-card {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 12px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+/* Horizontal Scroll Container */
+.floor-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  border-radius: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide Scrollbars */
+.floor-slider::-webkit-scrollbar {
+  display: none;
+}
+.floor-slider {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Slide item (Single Image View) */
+.floor-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+}
+
+.floor-slide img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Pagination Overlay Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.slider-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f59e0b; /* Accent dot color */
+  opacity: 0.6;
+}
+
+.slider-dots .dot.active {
+  opacity: 1;
+}
+
+/* Label under slider */
+.floor-card-title {
+  display: block;
+  margin-top: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  color: #1a202c;
+  text-transform: uppercase;
+}
+
+/* Center Section Header */
+.elevation-title {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #111111;
+  text-align: center;
+}
+
+/* Tab Container Header */
+.elevation-tabs-header {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  border-bottom: 2px solid #e5e5e5;
+  padding-bottom: 0;
+  margin-bottom: 2rem;
+}
+
+/* Individual Tab Button */
+.elevation-tab-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #444444;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease-in-out;
+}
+
+.elevation-tab-btn:hover {
+  color: #000000;
+}
+
+/* Active Orange Border Underline */
+.elevation-tab-btn.active {
+  color: #000000;
+  font-weight: 700;
+}
+
+.elevation-tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #f59e0b; /* Accent Orange */
+  border-radius: 2px 2px 0 0;
+}
+
+/* Card Styling for Side-by-Side Images */
+.elevation-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+}
+
+.elevation-img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+}
+
+.elevation-desc {
+  padding: 1rem;
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
 
 
 

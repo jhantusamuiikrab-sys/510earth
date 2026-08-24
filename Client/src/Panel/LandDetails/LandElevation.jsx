@@ -1,158 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../../src/assets/content/style.css";
 import "../../assets/Font/css_new/style.css";
-const LandElevation = ({
-  LOETempModel,
-  LpABTempModel,
-}) => {
-  // Same as:
-  // Model.LOETempModel != null && Model.LOETempModel.Any()
+
+const LandElevation = ({ LOETempModel, LpABTempModel }) => {
+  const [activeTab, setActiveTab] = useState(0);
 
   if (!LOETempModel || LOETempModel.length === 0) {
     return null;
   }
 
+  const currentElevation = LOETempModel[activeTab] || LOETempModel[0];
+
   return (
-    <section className="tabs" id="elivation">
+    <section className="tabs-section py-5" id="elevation">
       <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
+        {/* Title & Main Description */}
+        <div className="text-center mb-4">
+          <h2 className="elevation-title">Our Elevation</h2>
+          {LpABTempModel?.elevationMainDes && (
+            <p className="elevation-subtext">{LpABTempModel.elevationMainDes}</p>
+          )}
+        </div>
 
-            <h3 className="wow fadeInUp animated">
-              Our Elevation
-            </h3>
+        {/* Dynamic Tab Navigation */}
+        <div className="elevation-tabs-header mb-4">
+          {LOETempModel.map((elevation, index) => (
+            <button
+              key={`tab-${index}`}
+              className={`elevation-tab-btn ${activeTab === index ? "active" : ""}`}
+              onClick={() => setActiveTab(index)}
+            >
+              {elevation.LOEKatha}
+            </button>
+          ))}
+        </div>
 
-            {/* Elevation Main Description */}
-            {LpABTempModel?.elevationMainDes && (
-              <h4 className="wow fadeInUp animated">
-                {LpABTempModel.elevationMainDes}
-              </h4>
+        {/* Active Tab Panel - 2 Cards Layout */}
+        <div className="elevation-content">
+          <div className="row g-4 justify-content-center">
+            {/* Image 1 / Ground Floor */}
+            {currentElevation?.LOEGroundImgs?.[0] && (
+              <div className="col-md-6">
+                <div className="elevation-card">
+                  <img
+                    src={currentElevation.LOEGroundImgs[0]}
+                    alt={`${currentElevation.LOEKatha} Night/Ground View`}
+                    className="img-fluid elevation-img"
+                  />
+                  {currentElevation.LOEGroundDes && (
+                    <p className="elevation-desc">{currentElevation.LOEGroundDes}</p>
+                  )}
+                </div>
+              </div>
             )}
 
-            {/* Generate input radios dynamically */}
-            {LOETempModel.map((elevation, index) => (
-              <input
-                key={`radio-${index}`}
-                type="radio"
-                id={`tab-${index + 1}`}
-                name="tabs"
-                className="tabs__input"
-                defaultChecked={index === 0}
-              />
-            ))}
-
-            {/* Generate tab labels dynamically */}
-            <div className="tabs__labels">
-              {LOETempModel.map((elevation, index) => (
-                <label
-                  key={`label-${index}`}
-                  htmlFor={`tab-${index + 1}`}
-                  className="tabs__label"
-                >
-                  {elevation.LOEKatha}
-                </label>
-              ))}
-            </div>
-
-            {/* Generate tab content dynamically */}
-            <div className="tabs__content">
-
-              {LOETempModel.map((elevation, index) => (
-                <div
-                  className="tabs__panel"
-                  id={`tab-panel-${index + 1}`}
-                  key={`panel-${index}`}
-                >
-
-                  {/* Elevation Images - Horizontal Scroll */}
-<div className="elevation-image-scroll">
-
-  <div className="lightgallery elevation-gallery">
-
-    {/* Ground Floor Images */}
-    {elevation.LOEGroundImgs &&
-      elevation.LOEGroundImgs.length > 0 &&
-      elevation.LOEGroundImgs.map((img, imgIndex) => {
-        const imagePath = `${img}`;
-
-        return (
-          <div
-            className="elevation-slide"
-            data-src={imagePath}
-            key={`ground-${imgIndex}`}
-          >
-            <a
-              href={imagePath}
-              className="tabs__panel-image"
-            >
-              <img
-                src={imagePath}
-                alt="Ground Floor Elevation"
-              />
-            </a>
-          </div>
-        );
-      })}
-
-    {/* First Floor Images */}
-    {elevation.LOEFirstImgs &&
-      elevation.LOEFirstImgs.length > 0 &&
-      elevation.LOEFirstImgs.map((img, imgIndex) => {
-        const imagePath = `${img}`;
-
-        return (
-          <div
-            className="elevation-slide"
-            data-src={imagePath}
-            key={`first-${imgIndex}`}
-          >
-            <a
-              href={imagePath}
-              className="tabs__panel-image"
-            >
-              <img
-                src={imagePath}
-                alt="First Floor Elevation"
-              />
-            </a>
-          </div>
-        );
-      })}
-
-  </div>
-
-</div>
-
-                  {/* Descriptions */}
-                  <div className="row mt-3">
-
-                    {/* Ground Floor Description */}
-                    <div className="col-md-6">
-                      {elevation.LOEGroundDes && (
-                        <>
-                          <h5>Ground Floor Description</h5>
-                          <p>{elevation.LOEGroundDes}</p>
-                        </>
-                      )}
-                    </div>
-
-                    {/* First Floor Description */}
-                    <div className="col-md-6">
-                      {elevation.LOEFirstDes && (
-                        <>
-                          <h5>First Floor Description</h5>
-                          <p>{elevation.LOEFirstDes}</p>
-                        </>
-                      )}
-                    </div>
-
-                  </div>
-
+            {/* Image 2 / First Floor */}
+            {currentElevation?.LOEFirstImgs?.[0] && (
+              <div className="col-md-6">
+                <div className="elevation-card">
+                  <img
+                    src={currentElevation.LOEFirstImgs[0]}
+                    alt={`${currentElevation.LOEKatha} Day/First View`}
+                    className="img-fluid elevation-img"
+                  />
+                  {currentElevation.LOEFirstDes && (
+                    <p className="elevation-desc">{currentElevation.LOEFirstDes}</p>
+                  )}
                 </div>
-              ))}
-
-            </div>
-
+              </div>
+            )}
           </div>
         </div>
       </div>
