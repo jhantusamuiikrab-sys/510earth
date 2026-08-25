@@ -51,7 +51,7 @@ const PostProperty = () => {
       case "Apartment":
       default:
         return (
-          <StepCommercialProperty
+          <StepIndependentHouseVilla
             formData={formData}
             setFormData={setFormData}
             onNext={nextStep}
