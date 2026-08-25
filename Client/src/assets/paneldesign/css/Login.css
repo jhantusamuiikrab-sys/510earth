@@ -1,0 +1,173 @@
+/* Container */
+.login_page_container {
+  min-height: 100vh;
+  width: 100%;
+  background: url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop")
+    center center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Modal Box */
+.login_modal_card {
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  max-width: 440px;
+  border-radius: 12px;
+  padding: 30px 35px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+}
+
+/* Page Load Pop-In Keyframe Animation */
+.pop_in_anim {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Form Headers */
+.login_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.login_header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.lock_icon {
+  font-size: 0.95rem;
+  background-color: #84cc16;
+  padding: 4px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+/* Form Controls */
+.login_form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.form_group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form_group input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  background-color: #fef9c3;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.remember_me_group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remember_me_group label {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+/* Buttons */
+.btn_group_row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn_center_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.btn_blue {
+  background-color: #0084ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.btn_blue:hover {
+  background-color: #0066cc;
+}
+
+.btn_blue:active {
+  transform: scale(0.97);
+}
+
+/* Perfectly Centered OR Badge */
+.or_divider_wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 25px 0;
+  width: 100%;
+}
+
+.divider_line {
+  border: 0;
+  border-top: 1px solid #6b7280;
+  width: 100%;
+  margin: 0;
+}
+
+.or_badge {
+  position: absolute;
+  background-color: #84cc16;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.95);
+}
