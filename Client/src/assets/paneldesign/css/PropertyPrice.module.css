@@ -1,0 +1,95 @@
+/* Main Section Background */
+.priceArea {
+  background-color: #3caae8; /* Exact vibrant cyan-blue background */
+  padding: 60px 0 45px 0;
+  position: relative;
+  width: 100%;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+/* BHK Price Pill Styling */
+.pricePill {
+  background: linear-gradient(180deg, #1b87ca 0%, #0072bc 100%);
+  color: #ffffff;
+  padding: 12px 32px;
+  border-radius: 40px;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15),
+              inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.pricePill span {
+  font-weight: 800;
+}
+
+/* Download Button Container (Centered perfectly on the bottom edge) */
+.downloadWrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateY(50%);
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Download E-Brochure Button */
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #2b679b; /* Dark navy blue from image */
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 12px 36px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.downloadBtn:hover {
+  background-color: #20507a;
+  transform: translateY(-1px);
+}
+
+.downloadIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+  .pricePill {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .downloadBtn {
+    font-size: 14px;
+    padding: 10px 24px;
+  }
+}

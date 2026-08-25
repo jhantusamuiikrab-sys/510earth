@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import "../../../src/assets/content/style.css";
 import "../../assets/Font/css_new/style.css";
+import BrochureForm from "../ResidentialDetails/BrochureForm";
 
 const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // ==========================================
   // IF NO DATA
   // ==========================================
@@ -20,7 +21,7 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
-      prev === LandcvrimgBnr.length - 1 ? 0 : prev + 1
+      prev === LandcvrimgBnr.length - 1 ? 0 : prev + 1,
     );
   };
 
@@ -30,7 +31,7 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev === 0 ? LandcvrimgBnr.length - 1 : prev - 1
+      prev === 0 ? LandcvrimgBnr.length - 1 : prev - 1,
     );
   };
 
@@ -43,7 +44,7 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) =>
-        prev === LandcvrimgBnr.length - 1 ? 0 : prev + 1
+        prev === LandcvrimgBnr.length - 1 ? 0 : prev + 1,
       );
     }, 5000);
 
@@ -51,32 +52,26 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
   }, [LandcvrimgBnr.length]);
 
   // ==========================================
-  // DOWNLOAD BROCHURE
-  // ==========================================
-
-  const handleBrochureDownload = (item) => {
-    if (item?.CVBrochureUrl) {
-      window.open(item.CVBrochureUrl, "_blank");
-    } else {
-      alert("Brochure is not available.");
-    }
-  };
-
-  // ==========================================
   // CURRENT PROPERTY
   // ==========================================
 
   const currentProperty = LandcvrimgBnr[currentSlide];
 
+  const handleOpenModal = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <section className="slide_banner">
-
       {/* ==========================================
           SLIDER AREA
       ========================================== */}
 
       <div className="slider_area before-sec">
-
         {/* ==========================================
             SLIDES
         ========================================== */}
@@ -89,13 +84,11 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
               display: index === currentSlide ? "block" : "none",
             }}
           >
-
             {/* ==========================================
                 BANNER IMAGE
             ========================================== */}
 
             <div className="slide_img">
-
               <img
                 src={itm.CVLandCvrImgName}
                 alt={
@@ -107,7 +100,6 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
                 className="full-image animated"
                 data-animation-in="zoomInImage"
               />
-
             </div>
 
             {/* ==========================================
@@ -115,34 +107,22 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
             ========================================== */}
 
             <div className="ban-up">
-
               <div className="container">
-
                 <div className="row">
-
                   <div className="col-sm-12 sec-prop">
-
                     {/* ==========================================
                         LEFT PROPERTY DETAILS
                     ========================================== */}
 
                     <div className="propdetleft">
-
                       <ul className="sec-display">
-
                         {/* LOCATION */}
 
                         <li>
                           <div className="prolftin">
+                            <small>Location</small>
 
-                            <small>
-                              Location
-                            </small>
-
-                            <span>
-                              {itm.CVPropertyLocation || "-"}
-                            </span>
-
+                            <span>{itm.CVPropertyLocation || "-"}</span>
                           </div>
                         </li>
 
@@ -150,38 +130,24 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
 
                         <li>
                           <div className="prolftin">
+                            <small>PRICE</small>
 
-                            <small>
-                              PRICE
-                            </small>
-
-                            <span>
-                              {itm.CVPropertyPrice || "-"}
-                            </span>
-
+                            <span>{itm.CVPropertyPrice || "-"}</span>
                           </div>
                         </li>
 
                         {/* PROPERTY TYPE */}
 
                         <li className="sec-1pad">
-
                           <div className="prolftin">
-
                             <small>
                               {itm.CVPropertyType || "Property Type"}
                             </small>
 
-                            <span>
-                              {itm.CVPTypeDesc || "-"}
-                            </span>
-
+                            <span>{itm.CVPTypeDesc || "-"}</span>
                           </div>
-
                         </li>
-
                       </ul>
-
                     </div>
 
                     {/* ==========================================
@@ -189,42 +155,26 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
                     ========================================== */}
 
                     <div className="propdetright">
-
                       {/* BROCHURE */}
 
                       <button
                         type="button"
                         className="btn_area Brocclick-me"
-                        onClick={() =>
-                          handleBrochureDownload(itm)
-                        }
+                        onClick={handleOpenModal}
                       >
                         Download Brochure
                       </button>
 
                       {/* CALL NOW */}
 
-                      <a
-                        href="tel:+919073338396"
-                        className="btn_area"
-                      >
-
-                        <i className="fa-solid fa-phone fa-shake"></i>{" "}
-
-                        Call Now
-
+                      <a href="tel:+919073338396" className="btn_area">
+                        <i className="fa-solid fa-phone fa-shake"></i> Call Now
                       </a>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
-
           </div>
         ))}
 
@@ -257,7 +207,6 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
             <i className="fa-solid fa-chevron-right"></i>
           </button>
         )}
-
       </div>
 
       {/* ==========================================
@@ -277,7 +226,6 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
             zIndex: 5,
           }}
         >
-
           {LandcvrimgBnr.map((itm, index) => (
             <button
               key={itm._id || index}
@@ -291,22 +239,21 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
                 border: "none",
                 padding: 0,
                 cursor: "pointer",
-                background:
-                  currentSlide === index
-                    ? "#ff9d00"
-                    : "#ffffff",
-                opacity:
-                  currentSlide === index
-                    ? 1
-                    : 0.6,
+                background: currentSlide === index ? "#ff9d00" : "#ffffff",
+                opacity: currentSlide === index ? 1 : 0.6,
                 transition: "all 0.3s ease",
               }}
             />
           ))}
-
         </div>
       )}
-
+      {/* Modal Popup */}
+      {isModalOpen && (
+        <BrochureForm
+          // propertyName={property?.name}
+          onClose={handleCloseModal}
+        />
+      )}
     </section>
   );
 };
