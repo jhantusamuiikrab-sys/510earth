@@ -239,3 +239,654 @@
 .btn_next:hover {
   background-color: #1d4ed8;
 }
+
+/* Card Container */
+.otp_verification_card {
+  width: 100%;
+  max-width: 650px;
+  margin: 30px auto;
+  background-color: #ebf5fb; /* Light blue card background */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Blue Header Bar */
+.otp_header {
+  background-color: #2b6cb0;
+  padding: 12px 20px;
+  text-align: center;
+}
+
+.otp_header h3 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Inner Body Layout */
+.otp_body {
+  padding: 35px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.otp_body label {
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* Icon + Input Wrapper */
+.input_group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.input_icon {
+  background-color: #1a4d7c;
+  color: #ffffff;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input_group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+/* Text Links & Messages */
+.resend_btn {
+  background: none;
+  border: none;
+  color: #1a4d7c;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.success_text {
+  color: #e53e3e;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+/* Centered Bottom Button */
+.submit_btn_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.btn_next {
+  background-color: #1a4d7c;
+  color: #ffffff;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn_next:hover {
+  background-color: #13395c;
+}
+
+/* Step Card Container */
+.initial_details_card {
+  width: 100%;
+  max-width: 850px;
+  margin: 30px auto;
+  background-color: #ebf5fb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark Blue Header Bar */
+.initial_header {
+  background-color: #2b6cb0;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.initial_header h3 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* Card Body */
+.initial_body {
+  padding: 30px 40px;
+}
+
+/* Section Group Container */
+.section_group {
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+.section_title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 20px;
+}
+
+/* Flex Container for Option Items */
+.options_grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+/* Individual Option Box (Circle + Radio + Label) */
+.option_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Colored Icon Circle Placeholder */
+.icon_circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #cbd5e0; /* Default gray placeholder */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+
+.option_item:hover .icon_circle {
+  transform: scale(1.05);
+}
+
+/* Custom Colors for Icons (Optional) */
+.icon_circle.intent_sell, .icon_circle.type_residential, .icon_circle.sub_category {
+  background-color: #d53f8c; /* Pink background */
+}
+
+.icon_circle.intent_resell {
+  background-color: #6b46c1; /* Purple background */
+}
+
+.icon_circle.intent_rentlease, .icon_circle.type_commercial {
+  background-color: #4a5568; /* Slate background */
+}
+
+.icon_circle.intent_pg, .icon_circle.type_landplot {
+  background-color: #48bb78; /* Green background */
+}
+
+/* Radio Button Styling */
+.option_item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #1a4d7c;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.option_item span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+}
+
+/* Bottom Action Buttons */
+.action_buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn_prev {
+  background-color: #84cc16; /* Green Previous Button */
+  color: #ffffff;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn_prev:hover {
+  background-color: #65a30d;
+}
+
+.btn_next {
+  background-color: #1a4d7c; /* Blue Next Button */
+  color: #ffffff;
+  border: none;
+  padding: 10px 35px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn_next:hover {
+  background-color: #13395c;
+}
+
+.icon_circle svg {
+  color: #ffffff;
+  font-size: 2rem; /* Icon size */
+}
+
+/* Card Container */
+.flat_apartment_card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #eaf4fd;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+/* Row & Form Groups */
+.form_row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.form_group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.col_half {
+  max-width: 48.5%;
+}
+
+.form_group label {
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+/* Input Fields with Dark Left Icons */
+.input_with_icon {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #dcdfe6;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.icon_box {
+  background-color: #0b3c6d;
+  color: #ffffff;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.input_with_icon input,
+.input_with_icon select {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: #2d3748;
+}
+
+/* Possession Date Extra Input */
+.possession_wrapper {
+  margin-top: 10px;
+}
+
+.plain_input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #dcdfe6;
+  background-color: #ffffff;
+  outline: none;
+  font-size: 0.95rem;
+  color: #718096;
+}
+
+.error_text {
+  color: #e53e3e;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Center Negotiable Checkbox */
+.center_checkbox {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0 25px 0;
+}
+
+.center_checkbox label, .checkbox_row label {
+  font-weight: 700;
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* Parking Section */
+.parking_section {
+  margin-top: 20px;
+}
+
+.checkbox_row {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.parking_input_container {
+  width: 48.5%;
+  margin-top: 10px;
+}
+
+.parking_input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e0;
+  background-color: #ffffff;
+  outline: none;
+  font-size: 0.95rem;
+  color: #2d3748;
+}
+
+/* Matching Action Buttons */
+.action_buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.btn_prev_green {
+  background-color: #78a800;
+  color: #ffffff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn_next_blue {
+  background-color: #1a4d7c;
+  color: #ffffff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Fade in animation for dynamic BHK fields */
+.dynamic_bhk_fields {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom DatePicker Styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: inherit;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.react-datepicker__month-text {
+  padding: 10px 14px;
+  margin: 6px;
+  border-radius: 6px;
+}
+
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__month-text--selected {
+  background-color: #0066cc !important;
+  color: #ffffff !important;
+}
+
+/* Card Container */
+.house_villa_card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #eaf4fd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Header Banner */
+.house_header_banner {
+  background-color: #31658d;
+  color: #ffffff;
+  text-align: center;
+  padding: 12px 20px;
+}
+
+.house_header_banner h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.house_body {
+  padding: 30px;
+}
+
+/* Rows & Inputs */
+.form_row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.align_center_row {
+  align-items: flex-end;
+}
+
+.form_group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form_group label {
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.input_with_icon {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #dcdfe6;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.icon_box {
+  background-color: #0b3c6d;
+  color: #ffffff;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.input_with_icon input,
+.input_with_icon select {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: #2d3748;
+}
+
+/* Checkboxes Formatting */
+.checkbox_label {
+  font-weight: 700;
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox_inline_group {
+  justify-content: center;
+  padding-bottom: 12px;
+}
+
+.checkbox_grid_group {
+  flex-direction: row !important;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding-bottom: 12px;
+}
+
+.checkbox_row_grid {
+  display: flex;
+  gap: 80px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.parking_section {
+  margin-top: 15px;
+}
+
+.checkbox_row_parking {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+.parking_input_container {
+  width: 48.5%;
+  margin-top: 10px;
+}
+
+.plain_input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e0;
+  background-color: #ffffff;
+  outline: none;
+  font-size: 0.95rem;
+  color: #2d3748;
+}
+
+/* Possession Date Popup */
+.possession_wrapper {
+  margin-top: 8px;
+}
+
+.error_text {
+  color: #e53e3e;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Navigation Buttons */
+.action_buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn_prev_green {
+  background-color: #78a800;
+  color: #ffffff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn_next_blue {
+  background-color: #0b3c6d;
+  color: #ffffff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
