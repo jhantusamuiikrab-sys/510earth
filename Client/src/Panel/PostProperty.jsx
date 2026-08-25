@@ -6,6 +6,10 @@ import StepInitialDetails from "./PostProperty/StepInitialDetails";
 import StepFlatApartment from "./PostProperty/StepFlatApartment";
 import StepIndependentHouseVilla from "./PostProperty/StepIndependentHouseVilla";
 import StepCommercialProperty from "./PostProperty/StepCommercialProperty";
+import StepAmenities from "./PostProperty/StepAmenities";
+import StepNearBy from "./PostProperty/StepNearBy";
+import StepKeyFeatures from "./PostProperty/StepKeyFeatures";
+import StepOtherInformation from "./PostProperty/StepOtherInformation";
 import "../assets/paneldesign/css/PostProperty.css";
 
 const PostProperty = () => {
@@ -51,7 +55,7 @@ const PostProperty = () => {
       case "Apartment":
       default:
         return (
-          <StepIndependentHouseVilla
+          <StepFlatApartment
             formData={formData}
             setFormData={setFormData}
             onNext={nextStep}
@@ -133,9 +137,49 @@ const PostProperty = () => {
 
           {/* Step 4: Dynamic Specific Form (Flat / House / Villa) */}
           {currentStep === 4 && renderStepFour()}
+          
+          {/* Step 5: Amenities */}
+          {currentStep === 5 && (
+            <StepAmenities
+              formData={formData}
+              setFormData={setFormData}
+              onNext={nextStep}
+              onPrev={prevStep}
+            />
+          )}
+
+            {/* Step 6: Nearby Locations */}
+            {currentStep === 6 && (
+              <StepNearBy
+                formData={formData}
+                setFormData={setFormData}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            )}
+
+            {/* Step 7: Key Features */}
+            {currentStep === 7 && (
+              <StepKeyFeatures
+                formData={formData}
+                setFormData={setFormData}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            )}
+
+            {/* Step 8: Other Information */}
+            {currentStep === 8 && (
+              <StepOtherInformation
+                formData={formData}
+                setFormData={setFormData}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
