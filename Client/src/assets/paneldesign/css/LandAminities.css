@@ -1,0 +1,79 @@
+/* Section Background & Padding */
+.amenities_area {
+  background-color: #3b5a75;
+  padding: 60px 0;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Section Title */
+.amenities_title {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 35px;
+  letter-spacing: 0.5px;
+}
+
+/* Grid Spacing Utility fallback */
+.amenities_area .row {
+  margin-top: 0;
+}
+
+/* Base Card Style */
+.ame_box {
+  background-color: #d1d5db;
+  border-radius: 24px;
+  width: 100%;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.4), 
+              0px 4px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease-in-out;
+  cursor: pointer;
+  min-height: 135px;
+}
+
+/* Card Icons */
+.ame_icon_wrapper {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.ame_box img {
+  max-height: 44px;
+  max-width: 44px;
+  object-fit: contain;
+  filter: brightness(0.2); /* Converts icon paths to dark grey/black look */
+}
+
+/* Card Text */
+.ame_text {
+  color: #030303;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Hover & Yellow Highlighted Card (e.g. Gym) */
+.ame_box:hover,
+.ame_box.active {
+  background-color: #fde047;
+  transform: translateY(-2px);
+  box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.6), 
+              0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ame_box:hover img,
+.ame_box.active img {
+  filter: brightness(0);
+}

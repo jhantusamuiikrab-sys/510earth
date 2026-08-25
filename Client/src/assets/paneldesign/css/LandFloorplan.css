@@ -1,0 +1,114 @@
+/* Container & Tabs Header Structure */
+.floor_plans_area {
+  background-color: #ffffff;
+  color: #333333;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.tabs_nav_wrapper {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabs_nav_wrapper .nav-tabs {
+  margin-bottom: -1px;
+}
+
+.tabs_nav_wrapper .nav-link {
+  border: none !important;
+  color: #111827;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 36px;
+  background: transparent;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+/* Active Orange Bar Effect */
+.tabs_nav_wrapper .nav-link.active {
+  color: #000000;
+  background: transparent;
+}
+
+.tabs_nav_wrapper .nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #f59e0b; /* Orange highlight indicator */
+  border-radius: 2px;
+}
+
+/* Floor Content Formatting */
+.floor_title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+.floor_description {
+  font-size: 0.92rem;
+  color: #4b5563;
+  line-height: 1.5;
+  max-width: 90%;
+  margin: 0 auto 24px auto;
+}
+
+/* Rounded Cards */
+.floor_card {
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background-color: #f9fafb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floor_image {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* Pagination Dots */
+.slider_dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.slider_dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slider_dots .dot.active {
+  background-color: #f59e0b;
+  width: 14px;
+  height: 14px;
+}
+
+/* Bottom Label Overlay */
+.floor_card_label {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #374151;
+  letter-spacing: 0.5px;
+}

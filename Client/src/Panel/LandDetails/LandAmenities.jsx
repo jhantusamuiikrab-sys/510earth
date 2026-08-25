@@ -1,13 +1,10 @@
 import React from "react";
-import "../../../src/assets/content/style.css";
-import "../../assets/Font/css_new/style.css";
+import "../../assets/paneldesign/css/LandAminities.css";
+
 const LandAmenities = ({ amineties }) => {
   if (!amineties || amineties.length === 0) {
     return null;
   }
-
-  // Same as:
-  // Model.amineties.OrderBy(x => x.Name)
 
   const sortedAmenities = [...amineties].sort((a, b) =>
     (a.Name || "").localeCompare(b.Name || "")
@@ -16,51 +13,37 @@ const LandAmenities = ({ amineties }) => {
   return (
     <section className="amenities_area" id="amenities">
       <div className="container">
-
+        
+        {/* Section Heading */}
         <div className="row">
-          <div className="col-md-12">
-
-            <div className="aminitiens-holder">
-
-              <div className="aminitiens-holder-box">
-                <h3>Additional Amenities</h3>
-              </div>
-
-              <div className="aminitiens-holder-down"></div>
-
-            </div>
-
+          <div className="col-12">
+            <h2 className="amenities_title text-center">Additional Amenities</h2>
           </div>
         </div>
 
-        <div className="row">
-
+        {/* 6-Column Grid Layout */}
+        <div className="row g-3 justify-content-center">
           {sortedAmenities.map((item, index) => {
-
-            const imagePath =
-              `/Images/LandPlotImages/LpIconImage/${item.Image}`;
+            const imagePath = `/Images/LandPlotImages/LpIconImage/${item.Image}`;
 
             return (
               <div
-                className="col-6 col-md-2 d-flex"
+                className="col-6 col-sm-4 col-md-3 col-lg-2 d-flex"
                 key={item._id || index}
               >
-                <div className="ame_box wow zoomIn animated">
-
-                  <img
-                    src={imagePath}
-                    alt={item.Name || "Amenity"}
-                  />
-
-                  <p>
-                    {item.Name}
-                  </p>
-
+                {/* Add "active" class to highlight specific cards like Gym */}
+                <div className={`ame_box ${item.Name === "Gym" ? "active" : ""}`}>
+                  <div className="ame_icon_wrapper">
+                    <img
+                      src={imagePath}
+                      alt={item.Name || "Amenity"}
+                    />
+                  </div>
+                  <p className="ame_text">{item.Name}</p>
                 </div>
               </div>
             );
           })}
-
         </div>
 
       </div>
