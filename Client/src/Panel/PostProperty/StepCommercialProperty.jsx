@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { 
@@ -31,12 +31,19 @@ const LOADING_FACILITY_OPTIONS = [
 ];
 
 const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+
+    // Clear specific field error on user input
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleDateChange = (date) => {
@@ -44,9 +51,11 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
       ...prev,
       possessionDate: date,
     }));
+    if (errors.possessionDate) {
+      setErrors((prev) => ({ ...prev, possessionDate: '' }));
+    }
   };
 
-  // Handles selecting/unselecting checkboxes in the Suitable Business section
   const handleBusinessCheckbox = (businessName) => {
     setFormData((prev) => {
       const currentBusinesses = prev.suitableBusinesses || [];
@@ -58,7 +67,6 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
     });
   };
 
-  // Handles selecting/unselecting checkboxes in Loading / Unloading Facility section
   const handleLoadingFacilityCheckbox = (facility) => {
     setFormData((prev) => {
       const currentFacilities = prev.loadingFacilities || [];
@@ -74,16 +82,58 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
     formData.openParking || formData.coveredParking || formData.mechanicalParking
   );
 
-  // Condition checks for dynamic sections
   const isRetailSelected = 
     formData.commercialType === "Retail Space/Shop" || 
-    formData.commercialType === "Showroom";
+    formData.commercialType === "Shop / Showroom";
 
   const isWarehouseSelected = formData.commercialType === "Warehouse / Godown";
 
+  // Validate only requested fields before progressing
+  const handleNextSubmit = () => {
+    const newErrors = {};
+
+    if (!formData.commercialType) {
+      newErrors.commercialType = 'Please select Property Type.';
+    }
+    if (!formData.state) {
+      newErrors.state = 'Please select State.';
+    }
+    if (!formData.city) {
+      newErrors.city = 'Please select City.';
+    }
+    if (!formData.propertyName || !formData.propertyName.trim()) {
+      newErrors.propertyName = 'Please enter Property Name.';
+    }
+    if (!formData.location || !formData.location.trim()) {
+      newErrors.location = 'Please enter Property Location.';
+    }
+    if (!formData.projectStatus) {
+      newErrors.projectStatus = 'Please select Project Status.';
+    }
+    if (formData.projectStatus === 'Under Construction' && !formData.possessionDate) {
+      newErrors.possessionDate = 'Possession Date is required.';
+    }
+    if (!formData.price) {
+      newErrors.price = 'Please enter Price (in INR).';
+    }
+    if (!formData.carpetArea) {
+      newErrors.carpetArea = 'Please enter Carpet Area.';
+    }
+    if (!formData.furnishedType) {
+      newErrors.furnishedType = 'Please select Furnished Type.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+    onNext();
+  };
+
   return (
     <div className="house_villa_card">
-      {/* Header Banner */}
       <div className="house_header_banner">
         <h2>Commercial Property</h2>
       </div>
@@ -105,6 +155,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 <option value="Industrial Building">Industrial Building</option>
               </select>
             </div>
+            {errors.commercialType && <span className="error_text">{errors.commercialType}</span>}
           </div>
 
           <div className="form_group">
@@ -116,6 +167,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 <option value="WEST BENGAL">WEST BENGAL</option>
               </select>
             </div>
+            {errors.state && <span className="error_text">{errors.state}</span>}
           </div>
         </div>
 
@@ -130,6 +182,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 <option value="Kolkata">Kolkata</option>
               </select>
             </div>
+            {errors.city && <span className="error_text">{errors.city}</span>}
           </div>
 
           <div className="form_group">
@@ -144,6 +197,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 onChange={handleChange}
               />
             </div>
+            {errors.propertyName && <span className="error_text">{errors.propertyName}</span>}
           </div>
         </div>
 
@@ -161,6 +215,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 onChange={handleChange}
               />
             </div>
+            {errors.location && <span className="error_text">{errors.location}</span>}
           </div>
 
           {!isWarehouseSelected && (
@@ -271,6 +326,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 <option value="Ready to Move">Ready to Move</option>
               </select>
             </div>
+            {errors.projectStatus && <span className="error_text">{errors.projectStatus}</span>}
 
             {formData.projectStatus === 'Under Construction' && (
               <div className="possession_wrapper">
@@ -282,8 +338,8 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                   placeholderText="Possession Date"
                   className="plain_input"
                 />
-                {!formData.possessionDate && (
-                  <span className="error_text">Possession Date required</span>
+                {errors.possessionDate && (
+                  <span className="error_text">{errors.possessionDate}</span>
                 )}
               </div>
             )}
@@ -304,6 +360,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 onChange={handleChange}
               />
             </div>
+            {errors.price && <span className="error_text">{errors.price}</span>}
           </div>
 
           <div className="form_group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '10px' }}>
@@ -364,6 +421,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
                 onChange={handleChange}
               />
             </div>
+            {errors.carpetArea && <span className="error_text">{errors.carpetArea}</span>}
           </div>
 
           <div className="form_group">
@@ -450,12 +508,13 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
             <div className="input_with_icon">
               <span className="icon_box"><FaRecycle /></span>
               <select name="furnishedType" value={formData.furnishedType || ''} onChange={handleChange}>
-                <option value="">--Type Of Flooring--</option>
+                <option value="">--Select Furnished Type--</option>
                 <option value="Unfurnished">Unfurnished</option>
                 <option value="Semi-Furnished">Semi-Furnished</option>
                 <option value="Fully Furnished">Fully Furnished</option>
               </select>
             </div>
+            {errors.furnishedType && <span className="error_text">{errors.furnishedType}</span>}
           </div>
           <div className="form_group"></div>
         </div>
@@ -513,7 +572,7 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
           <button type="button" className="btn_prev_green" onClick={onPrev}>
             &larr; Previous
           </button>
-          <button type="button" className="btn_next_blue" onClick={onNext}>
+          <button type="button" className="btn_next_blue" onClick={handleNextSubmit}>
             Next &rarr;
           </button>
         </div>

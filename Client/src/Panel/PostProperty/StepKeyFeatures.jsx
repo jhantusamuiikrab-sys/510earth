@@ -1,8 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const StepKeyFeatures = ({ formData, setFormData, onNext, onPrev }) => {
   const [images, setImages] = useState(formData.images || []);
+  const [listingImageIndex, setListingImageIndex] = useState(
+    formData.listingImageIndex !== undefined ? formData.listingImageIndex : null
+  );
+  const [coverImageIndex, setCoverImageIndex] = useState(
+    formData.coverImageIndex !== undefined ? formData.coverImageIndex : null
+  );
+  const [previewUrls, setPreviewUrls] = useState([]);
   const [error, setError] = useState("");
+
+  // Generate object URLs for image previews whenever images change
+  useEffect(() => {
+    const urls = images.map((file) =>
+      typeof file === "string" ? file : URL.createObjectURL(file)
+    );
+    setPreviewUrls(urls);
+
+    // Clean up memory leaks when component unmounts or images change
+    return () => {
+      urls.forEach((url) => {
+        if (typeof url === "string" && url.startsWith("blob:")) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [images]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +49,28 @@ const StepKeyFeatures = ({ formData, setFormData, onNext, onPrev }) => {
 
   const handleRemoveImage = () => {
     setImages([]);
-    setFormData((prev) => ({ ...prev, images: [] }));
+    setListingImageIndex(null);
+    setCoverImageIndex(null);
+    setFormData((prev) => ({
+      ...prev,
+      images: [],
+      listingImageIndex: null,
+      coverImageIndex: null,
+    }));
+  };
+
+  // Toggle selection for Listing Image
+  const handleListingSelect = (index) => {
+    const newIndex = listingImageIndex === index ? null : index;
+    setListingImageIndex(newIndex);
+    setFormData((prev) => ({ ...prev, listingImageIndex: newIndex }));
+  };
+
+  // Toggle selection for Cover Image
+  const handleCoverSelect = (index) => {
+    const newIndex = coverImageIndex === index ? null : index;
+    setCoverImageIndex(newIndex);
+    setFormData((prev) => ({ ...prev, coverImageIndex: newIndex }));
   };
 
   const handleSubmit = (e) => {
@@ -34,6 +79,15 @@ const StepKeyFeatures = ({ formData, setFormData, onNext, onPrev }) => {
       setError("Please upload at least 4 images (Min-4, Max-16).");
       return;
     }
+    if (listingImageIndex === null) {
+      setError("Please select any one image as your Listing Image.");
+      return;
+    }
+    if (coverImageIndex === null) {
+      setError("Please select any one image as your Cover Image.");
+      return;
+    }
+
     setError("");
     onNext();
   };
@@ -210,6 +264,119 @@ const StepKeyFeatures = ({ formData, setFormData, onNext, onPrev }) => {
               </p>
             )}
           </div>
+
+          {/* Dynamic Image Selections */}
+          {previewUrls.length > 0 && (
+            <div style={{ marginTop: "30px" }}>
+              {/* Listing Image Section */}
+              <div style={{ marginBottom: "30px" }}>
+                <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "15px" }}>
+                  Select Any One As Listing Image
+                </h3>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                    gap: "15px",
+                  }}
+                >
+                  {previewUrls.map((url, index) => (
+                    <div
+                      key={`listing-${index}`}
+                      onClick={() => handleListingSelect(index)}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        backgroundColor: listingImageIndex === index ? "#d1e7dd" : "#eee",
+                        border: listingImageIndex === index ? "2px solid #0f5132" : "2px solid transparent",
+                        padding: "8px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <img
+                        src={url}
+                        alt={`Preview ${index + 1}`}
+                        style={{
+                          width: "100%",
+                          height: "120px",
+                          objectFit: "cover",
+                          borderRadius: "4px",
+                        }}
+                      />
+                      <input
+                        type="radio"
+                        name="listingImage"
+                        checked={listingImageIndex === index}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleListingSelect(index);
+                        }}
+                        onChange={() => {}}
+                        style={{ marginTop: "10px", cursor: "pointer" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cover Image Section */}
+              <div style={{ marginBottom: "30px" }}>
+                <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "15px" }}>
+                  Select Any One As Cover Image
+                </h3>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                    gap: "15px",
+                  }}
+                >
+                  {previewUrls.map((url, index) => (
+                    <div
+                      key={`cover-${index}`}
+                      onClick={() => handleCoverSelect(index)}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        backgroundColor: coverImageIndex === index ? "#d1e7dd" : "#eee",
+                        border: coverImageIndex === index ? "2px solid #0f5132" : "2px solid transparent",
+                        padding: "8px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <img
+                        src={url}
+                        alt={`Preview ${index + 1}`}
+                        style={{
+                          width: "100%",
+                          height: "120px",
+                          objectFit: "cover",
+                          borderRadius: "4px",
+                        }}
+                      />
+                      <input
+                        type="radio"
+                        name="coverImage"
+                        checked={coverImageIndex === index}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCoverSelect(index);
+                        }}
+                        onChange={() => {}}
+                        style={{ marginTop: "10px", cursor: "pointer" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div style={{ color: "red", textAlign: "center", marginBottom: "15px", fontWeight: "bold" }}>

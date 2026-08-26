@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   FaBuilding, 
   FaHome, 
@@ -10,7 +10,9 @@ import {
 import { MdOutlineSell } from 'react-icons/md';
 
 const StepInitialDetails = ({ formData, setFormData, onNext, onPrev }) => {
-  // Config arrays for easy rendering and icon mapping
+  const [error, setError] = useState('');
+
+  // Configuration arrays
   const intentOptions = [
     { label: 'Sell', icon: <FaBuilding />, bgClass: 'intent_sell' },
     { label: 'Resell', icon: <MdOutlineSell />, bgClass: 'intent_resell' },
@@ -31,6 +33,7 @@ const StepInitialDetails = ({ formData, setFormData, onNext, onPrev }) => {
 
   const handleIntentChange = (intent) => {
     setFormData((prev) => ({ ...prev, intent }));
+    if (error) setError('');
   };
 
   const handleTypeChange = (propertyType) => {
@@ -39,10 +42,33 @@ const StepInitialDetails = ({ formData, setFormData, onNext, onPrev }) => {
       propertyType,
       subCategory: propertyType === 'Residential' ? prev.subCategory : '',
     }));
+    if (error) setError('');
   };
 
   const handleSubCategoryChange = (subCategory) => {
     setFormData((prev) => ({ ...prev, subCategory }));
+    if (error) setError('');
+  };
+
+  // Validation before advancing to Step 4
+  const handleNextSubmit = () => {
+    if (!formData.intent) {
+      setError("Please select what you are looking to do (Intent).");
+      return;
+    }
+
+    if (!formData.propertyType) {
+      setError("Please select what kind of property you have.");
+      return;
+    }
+
+    if (formData.propertyType === 'Residential' && !formData.subCategory) {
+      setError("Please select a sub-category for your residential property.");
+      return;
+    }
+
+    setError('');
+    onNext();
   };
 
   return (
@@ -94,7 +120,7 @@ const StepInitialDetails = ({ formData, setFormData, onNext, onPrev }) => {
           </div>
         </div>
 
-        {/* Section 3: Sub Category (Only for Residential) */}
+        {/* Section 3: Sub Category (Conditional for Residential) */}
         {formData.propertyType === 'Residential' && (
           <div className="section_group sub_category_group">
             <p className="section_title">Select sub category</p>
@@ -117,12 +143,15 @@ const StepInitialDetails = ({ formData, setFormData, onNext, onPrev }) => {
           </div>
         )}
 
-        {/* Bottom Actions */}
-        <div className="action_buttons">
+        {/* Validation Error Text */}
+        {error && <div className="error_text text-center mt-3">{error}</div>}
+
+        {/* Action Navigation */}
+        <div className="action_buttons mt-4">
           <button type="button" className="btn_prev" onClick={onPrev}>
             &larr; Previous
           </button>
-          <button type="button" className="btn_next" onClick={onNext}>
+          <button type="button" className="btn_next" onClick={handleNextSubmit}>
             Next &rarr;
           </button>
         </div>

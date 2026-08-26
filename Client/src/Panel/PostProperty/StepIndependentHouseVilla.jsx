@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { 
@@ -8,12 +8,19 @@ import {
 } from 'react-icons/fa';
 
 const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) => {
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+
+    // Clear specific field error when user updates input
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleDateChange = (date) => {
@@ -21,16 +28,73 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
       ...prev,
       possessionDate: date,
     }));
+    if (errors.possessionDate) {
+      setErrors((prev) => ({ ...prev, possessionDate: '' }));
+    }
   };
 
-  // Check if any parking option is ticked
   const isParkingChecked = Boolean(
     formData.openParking || formData.coveredParking || formData.mechanicalParking
   );
 
+  // Validation handler checking all 13 required fields
+  const handleNextSubmit = () => {
+    const newErrors = {};
+
+    if (!formData.propertyName || !formData.propertyName.trim()) {
+      newErrors.propertyName = 'Please enter Property Name.';
+    }
+    if (!formData.state) {
+      newErrors.state = 'Please select State.';
+    }
+    if (!formData.city) {
+      newErrors.city = 'Please select City.';
+    }
+    if (!formData.location || !formData.location.trim()) {
+      newErrors.location = 'Please enter Property Location.';
+    }
+    if (!formData.projectStatus) {
+      newErrors.projectStatus = 'Please select Project Status.';
+    }
+    if (formData.projectStatus === 'Under Construction' && !formData.possessionDate) {
+      newErrors.possessionDate = 'Possession Date is required.';
+    }
+    if (!formData.price) {
+      newErrors.price = 'Please enter Price (in INR).';
+    }
+    if (!formData.carpetArea) {
+      newErrors.carpetArea = 'Please enter Carpet Area.';
+    }
+    if (!formData.areaUnit) {
+      newErrors.areaUnit = 'Please select Area Unit.';
+    }
+    if (!formData.totalPrice) {
+      newErrors.totalPrice = 'Please enter Total Price.';
+    }
+    if (!formData.bedrooms) {
+      newErrors.bedrooms = 'Please select No Of Bed Room.';
+    }
+    if (!formData.bathrooms) {
+      newErrors.bathrooms = 'Please select No Of Bath Room.';
+    }
+    if (!formData.furnishedType) {
+      newErrors.furnishedType = 'Please select Furnished Type.';
+    }
+    if (!formData.totalFloors) {
+      newErrors.totalFloors = 'Please select Total Number Of Floor.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+    onNext();
+  };
+
   return (
     <div className="house_villa_card">
-      {/* Top Banner Heading */}
       <div className="house_header_banner">
         <h2>Independent House / Villa</h2>
       </div>
@@ -51,6 +115,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 onChange={handleChange}
               />
             </div>
+            {errors.propertyName && <span className="error_text">{errors.propertyName}</span>}
           </div>
 
           <div className="form_group">
@@ -62,6 +127,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 <option value="WEST BENGAL">WEST BENGAL</option>
               </select>
             </div>
+            {errors.state && <span className="error_text">{errors.state}</span>}
           </div>
         </div>
 
@@ -76,6 +142,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 <option value="Kolkata">Kolkata</option>
               </select>
             </div>
+            {errors.city && <span className="error_text">{errors.city}</span>}
           </div>
 
           <div className="form_group">
@@ -90,6 +157,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 onChange={handleChange}
               />
             </div>
+            {errors.location && <span className="error_text">{errors.location}</span>}
           </div>
         </div>
 
@@ -105,8 +173,8 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 <option value="Ready to Move">Ready to Move</option>
               </select>
             </div>
+            {errors.projectStatus && <span className="error_text">{errors.projectStatus}</span>}
 
-            {/* Month/Year Calendar Popup for Under Construction */}
             {formData.projectStatus === 'Under Construction' && (
               <div className="possession_wrapper">
                 <DatePicker
@@ -117,8 +185,8 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                   placeholderText="Possession Date"
                   className="plain_input"
                 />
-                {!formData.possessionDate && (
-                  <span className="error_text">Possession Date required</span>
+                {errors.possessionDate && (
+                  <span className="error_text">{errors.possessionDate}</span>
                 )}
               </div>
             )}
@@ -153,6 +221,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 onChange={handleChange}
               />
             </div>
+            {errors.price && <span className="error_text">{errors.price}</span>}
           </div>
 
           <div className="form_group checkbox_inline_group">
@@ -195,6 +264,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 <option value="Katha">Katha</option>
               </select>
             </div>
+            {errors.areaUnit && <span className="error_text">{errors.areaUnit}</span>}
           </div>
         </div>
 
@@ -212,6 +282,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 onChange={handleChange}
               />
             </div>
+            {errors.totalPrice && <span className="error_text">{errors.totalPrice}</span>}
           </div>
 
           <div className="form_group">
@@ -243,6 +314,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 onChange={handleChange}
               />
             </div>
+            {errors.carpetArea && <span className="error_text">{errors.carpetArea}</span>}
           </div>
 
           <div className="form_group">
@@ -258,6 +330,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 <option value="5+">5+</option>
               </select>
             </div>
+            {errors.bedrooms && <span className="error_text">{errors.bedrooms}</span>}
           </div>
         </div>
 
@@ -267,12 +340,14 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
             <label>No Of Bath Room</label>
             <div className="input_with_icon">
               <span className="icon_box"><FaCheck /></span>
-              <select name="bathrooms" value={formData.bathrooms || '2'} onChange={handleChange}>
+              <select name="bathrooms" value={formData.bathrooms || ''} onChange={handleChange}>
+                <option value="">--No Of Bath Room--</option>
                 {[...Array(10).keys()].map((i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}</option>
                 ))}
               </select>
             </div>
+            {errors.bathrooms && <span className="error_text">{errors.bathrooms}</span>}
           </div>
 
           <div className="form_group">
@@ -295,12 +370,14 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
             <label>Furnished Type</label>
             <div className="input_with_icon">
               <span className="icon_box"><FaRecycle /></span>
-              <select name="furnishedType" value={formData.furnishedType || 'Furnished'} onChange={handleChange}>
+              <select name="furnishedType" value={formData.furnishedType || ''} onChange={handleChange}>
+                <option value="">--Select Furnished Type--</option>
                 <option value="Unfurnished">Unfurnished</option>
                 <option value="Semi-Furnished">Semi-Furnished</option>
                 <option value="Furnished">Furnished</option>
               </select>
             </div>
+            {errors.furnishedType && <span className="error_text">{errors.furnishedType}</span>}
           </div>
 
           <div className="form_group">
@@ -314,6 +391,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
                 ))}
               </select>
             </div>
+            {errors.totalFloors && <span className="error_text">{errors.totalFloors}</span>}
           </div>
         </div>
 
@@ -432,7 +510,7 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
           <button type="button" className="btn_prev_green" onClick={onPrev}>
             &larr; Previous
           </button>
-          <button type="button" className="btn_next_blue" onClick={onNext}>
+          <button type="button" className="btn_next_blue" onClick={handleNextSubmit}>
             Next &rarr;
           </button>
         </div>

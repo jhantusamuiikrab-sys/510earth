@@ -1,82 +1,117 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { 
   FaMapMarkerAlt, FaCity, FaBuilding, FaCheck, FaRupeeSign, 
   FaCompass, FaChartArea, FaAnchor, FaBed, FaBath, 
-  FaCouch, FaLayerGroup, FaHome, FaCar
+  FaCouch, FaLayerGroup, FaHome, FaCalendarAlt
 } from 'react-icons/fa';
 
 const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+    
+    // Clear individual field error as the user types/selects
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
   };
 
-  // Handle month/year selection for Possession Date
   const handleDateChange = (date) => {
     setFormData((prev) => ({
       ...prev,
       possessionDate: date,
     }));
+    if (errors.possessionDate) {
+      setErrors((prev) => ({ ...prev, possessionDate: '' }));
+    }
   };
 
-  // Check if any parking option is ticked
   const isParkingChecked = Boolean(
     formData.openParking || formData.coveredParking || formData.mechanicalParking
   );
 
+  // Validation handler checking all requested fields sequentially
+  const handleNextSubmit = () => {
+    const newErrors = {};
+
+    if (!formData.state) newErrors.state = "Please select State.";
+    if (!formData.city) newErrors.city = "Please select City.";
+    if (!formData.location || !formData.location.trim()) {
+      newErrors.location = "Please enter Property Location.";
+    }
+    if (!formData.projectStatus) newErrors.projectStatus = "Please select Project Status.";
+    if (formData.projectStatus === 'Under Construction' && !formData.possessionDate) {
+      newErrors.possessionDate = "Possession Date is required.";
+    }
+    if (!formData.price) newErrors.price = "Please enter Price (in INR).";
+    if (!formData.bhk) newErrors.bhk = "Please select BHK.";
+    if (!formData.carpetArea) newErrors.carpetArea = "Please enter Carpet Area.";
+    if (!formData.areaUnit) newErrors.areaUnit = "Please select Area Unit.";
+    if (!formData.bedrooms) newErrors.bedrooms = "Please select No Of Bed Room.";
+    if (!formData.bathrooms) newErrors.bathrooms = "Please select No Of Bath Room.";
+    if (!formData.furnishedType) newErrors.furnishedType = "Please select Furnished Type.";
+    if (!formData.totalFloors) newErrors.totalFloors = "Please select Total Number Of Floor.";
+    if (!formData.yourFloorNo || !formData.yourFloorNo.toString().trim()) {
+      newErrors.yourFloorNo = "Please enter Your Floor No.";
+    }
+    if (!formData.propertyAge) newErrors.propertyAge = "Please select Property Age.";
+    if (!formData.propertyName || !formData.propertyName.trim()) {
+      newErrors.propertyName = "Please enter Property Name.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+    onNext();
+  };
+
   return (
     <div className="flat_apartment_card">
-      {/* Top Heading Banner */}
       <div className="flat_header_banner">
         <h2>Flat / Apartment</h2>
       </div>
 
       <div className="flat_body">
 
-        {/* Row 1: State & City */}
+        {/* 1. State & 2. City */}
         <div className="form_row">
           <div className="form_group">
             <label>State</label>
             <div className="input_with_icon">
               <span className="icon_box"><FaCity /></span>
-              <select name="state" value={formData.state || 'WEST BENGAL'} onChange={handleChange}>
+              <select name="state" value={formData.state || ''} onChange={handleChange}>
+                <option value="">--Select State--</option>
                 <option value="WEST BENGAL">WEST BENGAL</option>
               </select>
             </div>
+            {errors.state && <span className="error_text">{errors.state}</span>}
           </div>
 
           <div className="form_group">
             <label>City</label>
             <div className="input_with_icon">
               <span className="icon_box"><FaBuilding /></span>
-              <select name="city" value={formData.city || 'Kolkata'} onChange={handleChange}>
+              <select name="city" value={formData.city || ''} onChange={handleChange}>
+                <option value="">--Select City--</option>
                 <option value="Kolkata">Kolkata</option>
               </select>
             </div>
+            {errors.city && <span className="error_text">{errors.city}</span>}
           </div>
         </div>
 
-        {/* Row 2: Property Name & Location */}
+        {/* 3. Location & 15. Property Name */}
         <div className="form_row">
-          <div className="form_group">
-            <label>Property Name</label>
-            <div className="input_with_icon">
-              <span className="icon_box"><FaBuilding /></span>
-              <input
-                type="text"
-                name="propertyName"
-                placeholder="Property Name"
-                value={formData.propertyName || ''}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
           <div className="form_group">
             <label>Enter property Location</label>
             <div className="input_with_icon">
@@ -89,20 +124,39 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
                 onChange={handleChange}
               />
             </div>
+            {errors.location && <span className="error_text">{errors.location}</span>}
+          </div>
+
+          <div className="form_group">
+            <label>Property Name</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaBuilding /></span>
+              <input
+                type="text"
+                name="propertyName"
+                placeholder="Property Name"
+                value={formData.propertyName || ''}
+                onChange={handleChange}
+              />
+            </div>
+            {errors.propertyName && <span className="error_text">{errors.propertyName}</span>}
           </div>
         </div>
 
-        {/* Row 3: Project Status & BHK */}
+        {/* 4. Project Status & 6. Select BHK */}
         <div className="form_row">
           <div className="form_group">
             <label>Project Status</label>
             <div className="input_with_icon">
               <span className="icon_box"><FaCheck /></span>
-              <select name="projectStatus" value={formData.projectStatus || 'Under Construction'} onChange={handleChange}>
+              <select name="projectStatus" value={formData.projectStatus || ''} onChange={handleChange}>
+                <option value="">--Select Status--</option>
                 <option value="Under Construction">Under Construction</option>
                 <option value="Ready to Move">Ready to Move</option>
               </select>
             </div>
+            {errors.projectStatus && <span className="error_text">{errors.projectStatus}</span>}
+
             {formData.projectStatus === 'Under Construction' && (
               <div className="possession_wrapper">
                 <DatePicker
@@ -113,9 +167,7 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
                   placeholderText="Possession Date"
                   className="plain_input"
                 />
-                {!formData.possessionDate && (
-                  <span className="error_text">Possioson Date required</span>
-                )}
+                {errors.possessionDate && <span className="error_text">{errors.possessionDate}</span>}
               </div>
             )}
           </div>
@@ -132,10 +184,11 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
                 <option value="4BHK">4BHK</option>
               </select>
             </div>
+            {errors.bhk && <span className="error_text">{errors.bhk}</span>}
           </div>
         </div>
 
-        {/* Row 4: Price & Project Facing */}
+        {/* 5. Price (in INR) & Facing */}
         <div className="form_row">
           <div className="form_group">
             <label>Price (in INR)</label>
@@ -149,6 +202,7 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
                 onChange={handleChange}
               />
             </div>
+            {errors.price && <span className="error_text">{errors.price}</span>}
           </div>
 
           <div className="form_group">
@@ -165,7 +219,6 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
           </div>
         </div>
 
-        {/* Negotiable Checkbox */}
         <div className="center_checkbox">
           <label>
             <input
@@ -178,142 +231,163 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
           </label>
         </div>
 
-        {/* DYNAMIC SECTION: BHK Specific Fields */}
-        {formData.bhk && (
-          <div className="dynamic_bhk_fields">
-            {/* Super Built Up Area & Select Area Unit */}
-            <div className="form_row">
-              <div className="form_group">
-                <label>Super Built Up Area</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaChartArea /></span>
-                  <input
-                    type="number"
-                    name="superBuiltUpArea"
-                    placeholder="Super Built Up Area"
-                    value={formData.superBuiltUpArea || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="form_group">
-                <label>Select Area Unit</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaAnchor /></span>
-                  <select name="areaUnit" value={formData.areaUnit || ''} onChange={handleChange}>
-                    <option value="">--Select Area Unit--</option>
-                    <option value="Sq.Ft.">Sq.Ft.</option>
-                    <option value="Sq.M.">Sq.M.</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Carpet Area & No Of Bed Room */}
-            <div className="form_row">
-              <div className="form_group">
-                <label>Carpet Area</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaLayerGroup /></span>
-                  <input
-                    type="number"
-                    name="carpetArea"
-                    placeholder="Carpet Area"
-                    value={formData.carpetArea || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="form_group">
-                <label>No Of Bed Room</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaBed /></span>
-                  <select name="bedrooms" value={formData.bedrooms || '2'} onChange={handleChange}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* No Of Bath Room & No Of Balcony */}
-            <div className="form_row">
-              <div className="form_group">
-                <label>No Of Bath Room</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaBath /></span>
-                  <select name="bathrooms" value={formData.bathrooms || '8'} onChange={handleChange}>
-                    {[...Array(10).keys()].map((i) => (
-                      <option key={i + 1} value={i + 1}>{i + 1}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="form_group">
-                <label>No Of Balcony</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaCompass /></span>
-                  <select name="balconies" value={formData.balconies || '12'} onChange={handleChange}>
-                    {[...Array(15).keys()].map((i) => (
-                      <option key={i} value={i}>{i}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Furnished Type & Total Number Of Floor */}
-            <div className="form_row">
-              <div className="form_group">
-                <label>Furnished Type</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaCouch /></span>
-                  <select name="furnishedType" value={formData.furnishedType || 'Unfurnished'} onChange={handleChange}>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Semi-Furnished">Semi-Furnished</option>
-                    <option value="Fully-Furnished">Fully-Furnished</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form_group">
-                <label>Total Number Of Floor</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaBuilding /></span>
-                  <select name="totalFloors" value={formData.totalFloors || '7'} onChange={handleChange}>
-                    {[...Array(50).keys()].map((i) => (
-                      <option key={i + 1} value={i + 1}>{i + 1}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Your Floor No */}
-            <div className="form_row">
-              <div className="form_group col_half">
-                <label>Your Floor No</label>
-                <div className="input_with_icon">
-                  <span className="icon_box"><FaHome /></span>
-                  <input
-                    type="text"
-                    name="yourFloorNo"
-                    placeholder="Your Floor No"
-                    value={formData.yourFloorNo || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
+        {/* Super Built Up Area & 8. Select Area Unit */}
+        <div className="form_row">
+          <div className="form_group">
+            <label>Super Built Up Area</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaChartArea /></span>
+              <input
+                type="number"
+                name="superBuiltUpArea"
+                placeholder="Super Built Up Area"
+                value={formData.superBuiltUpArea || ''}
+                onChange={handleChange}
+              />
             </div>
           </div>
-        )}
 
-        {/* ALWAYS VISIBLE: Parking Options */}
+          <div className="form_group">
+            <label>Select Area Unit</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaAnchor /></span>
+              <select name="areaUnit" value={formData.areaUnit || ''} onChange={handleChange}>
+                <option value="">--Select Area Unit--</option>
+                <option value="Sq.Ft.">Sq.Ft.</option>
+                <option value="Sq.M.">Sq.M.</option>
+              </select>
+            </div>
+            {errors.areaUnit && <span className="error_text">{errors.areaUnit}</span>}
+          </div>
+        </div>
+
+        {/* 7. Carpet Area & 9. No Of Bed Room */}
+        <div className="form_row">
+          <div className="form_group">
+            <label>Carpet Area</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaLayerGroup /></span>
+              <input
+                type="number"
+                name="carpetArea"
+                placeholder="Carpet Area"
+                value={formData.carpetArea || ''}
+                onChange={handleChange}
+              />
+            </div>
+            {errors.carpetArea && <span className="error_text">{errors.carpetArea}</span>}
+          </div>
+
+          <div className="form_group">
+            <label>No Of Bed Room</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaBed /></span>
+              <select name="bedrooms" value={formData.bedrooms || ''} onChange={handleChange}>
+                <option value="">--Select Bedrooms--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            {errors.bedrooms && <span className="error_text">{errors.bedrooms}</span>}
+          </div>
+        </div>
+
+        {/* 10. No Of Bath Room & Balconies */}
+        <div className="form_row">
+          <div className="form_group">
+            <label>No Of Bath Room</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaBath /></span>
+              <select name="bathrooms" value={formData.bathrooms || ''} onChange={handleChange}>
+                <option value="">--Select Bathrooms--</option>
+                {[...Array(10).keys()].map((i) => (
+                  <option key={i + 1} value={i + 1}>{i + 1}</option>
+                ))}
+              </select>
+            </div>
+            {errors.bathrooms && <span className="error_text">{errors.bathrooms}</span>}
+          </div>
+
+          <div className="form_group">
+            <label>No Of Balcony</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaCompass /></span>
+              <select name="balconies" value={formData.balconies || '0'} onChange={handleChange}>
+                {[...Array(15).keys()].map((i) => (
+                  <option key={i} value={i}>{i}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* 11. Furnished Type & 12. Total Number Of Floor */}
+        <div className="form_row">
+          <div className="form_group">
+            <label>Furnished Type</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaCouch /></span>
+              <select name="furnishedType" value={formData.furnishedType || ''} onChange={handleChange}>
+                <option value="">--Select Furnished Type--</option>
+                <option value="Unfurnished">Unfurnished</option>
+                <option value="Semi-Furnished">Semi-Furnished</option>
+                <option value="Fully-Furnished">Fully-Furnished</option>
+              </select>
+            </div>
+            {errors.furnishedType && <span className="error_text">{errors.furnishedType}</span>}
+          </div>
+
+          <div className="form_group">
+            <label>Total Number Of Floor</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaBuilding /></span>
+              <select name="totalFloors" value={formData.totalFloors || ''} onChange={handleChange}>
+                <option value="">--Select Total Floors--</option>
+                {[...Array(50).keys()].map((i) => (
+                  <option key={i + 1} value={i + 1}>{i + 1}</option>
+                ))}
+              </select>
+            </div>
+            {errors.totalFloors && <span className="error_text">{errors.totalFloors}</span>}
+          </div>
+        </div>
+
+        {/* 13. Your Floor No & 14. Select Property Age */}
+        <div className="form_row">
+          <div className="form_group">
+            <label>Your Floor No</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaHome /></span>
+              <input
+                type="text"
+                name="yourFloorNo"
+                placeholder="Your Floor No"
+                value={formData.yourFloorNo || ''}
+                onChange={handleChange}
+              />
+            </div>
+            {errors.yourFloorNo && <span className="error_text">{errors.yourFloorNo}</span>}
+          </div>
+
+          <div className="form_group">
+            <label>Select Property Age</label>
+            <div className="input_with_icon">
+              <span className="icon_box"><FaCalendarAlt /></span>
+              <select name="propertyAge" value={formData.propertyAge || ''} onChange={handleChange}>
+                <option value="">--Select Property Age--</option>
+                <option value="0-1 Years">0-1 Years</option>
+                <option value="1-5 Years">1-5 Years</option>
+                <option value="5-10 Years">5-10 Years</option>
+                <option value="10+ Years">10+ Years</option>
+              </select>
+            </div>
+            {errors.propertyAge && <span className="error_text">{errors.propertyAge}</span>}
+          </div>
+        </div>
+
+        {/* Parking Options */}
         <div className="parking_section">
           <div className="checkbox_row">
             <label>
@@ -347,7 +421,6 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
             </label>
           </div>
 
-          {/* DYNAMIC PARKING FIELD: Opens when any parking box is checked */}
           {isParkingChecked && (
             <div className="parking_input_container">
               <input
@@ -363,11 +436,11 @@ const StepFlatApartment = ({ formData, setFormData, onNext, onPrev }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="action_buttons">
+        <div className="action_buttons mt-4">
           <button type="button" className="btn_prev_green" onClick={onPrev}>
             &larr; Previous
           </button>
-          <button type="button" className="btn_next_blue" onClick={onNext}>
+          <button type="button" className="btn_next_blue" onClick={handleNextSubmit}>
             Next &rarr;
           </button>
         </div>

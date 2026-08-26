@@ -1,0 +1,69 @@
+.success_modal_overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.success_card {
+  background-color: #eaf3ff;
+  border-radius: 8px;
+  padding: 40px 30px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.circle_icon_wrapper {
+  margin-bottom: 20px;
+}
+
+.check_icon {
+  font-size: 70px;
+  color: #a0d826;
+}
+
+.success_banner {
+  background-color: #0056b3;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.success_banner h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sub_text {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.thank_you_text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 25px;
+}
+
+.btn_ok {
+  background-color: #0088ff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 50px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn_ok:hover {
+  background-color: #0066cc;
+}
