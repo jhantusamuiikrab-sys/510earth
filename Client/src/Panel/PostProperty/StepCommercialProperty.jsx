@@ -35,6 +35,14 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
+    // Clear parking count if unchecking a parking type
+    if (type === 'checkbox' && !checked) {
+      if (name === 'openParking') setFormData((prev) => ({ ...prev, noOfOpenParking: '' }));
+      if (name === 'coveredParking') setFormData((prev) => ({ ...prev, noOfCoveredParking: '' }));
+      if (name === 'mechanicalParking') setFormData((prev) => ({ ...prev, noOfMechanicalParking: '' }));
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -77,10 +85,6 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
       return { ...prev, loadingFacilities: updated };
     });
   };
-
-  const isParkingChecked = Boolean(
-    formData.openParking || formData.coveredParking || formData.mechanicalParking
-  );
 
   const isRetailSelected = 
     formData.commercialType === "Retail Space/Shop" || 
@@ -519,52 +523,88 @@ const StepCommercialProperty = ({ formData, setFormData, onNext, onPrev }) => {
           <div className="form_group"></div>
         </div>
 
-        {/* Parking Checkboxes */}
-        <div className="parking_section">
-          <div className="checkbox_row_parking">
-            <label className="checkbox_label">
-              <input
-                type="checkbox"
-                name="openParking"
-                checked={formData.openParking || false}
-                onChange={handleChange}
-              />
-              Open Parking
-            </label>
-
-            <label className="checkbox_label">
-              <input
-                type="checkbox"
-                name="coveredParking"
-                checked={formData.coveredParking || false}
-                onChange={handleChange}
-              />
-              Covered Parking
-            </label>
-
-            <label className="checkbox_label">
-              <input
-                type="checkbox"
-                name="mechanicalParking"
-                checked={formData.mechanicalParking || false}
-                onChange={handleChange}
-              />
-              Mechanical Parking
-            </label>
-          </div>
-
-          {isParkingChecked && (
-            <div className="parking_input_container">
-              <input
-                type="number"
-                name="noOfParking"
-                placeholder="No Of Parking"
-                value={formData.noOfParking || ''}
-                onChange={handleChange}
-                className="plain_input"
-              />
+        {/* Parking Section */}
+        <div className="parking_section" style={{ marginTop: '20px', marginBottom: '20px' }}>
+          <div 
+            style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(3, 1fr)', 
+              gap: '20px',
+              alignItems: 'start' 
+            }}
+          >
+            {/* Open Parking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label className="checkbox_label" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+                <input
+                  type="checkbox"
+                  name="openParking"
+                  checked={formData.openParking || false}
+                  onChange={handleChange}
+                />
+                Open Parking
+              </label>
+              {formData.openParking && (
+                <input
+                  type="number"
+                  name="noOfOpenParking"
+                  placeholder="No Of Parking"
+                  value={formData.noOfOpenParking || ''}
+                  onChange={handleChange}
+                  className="plain_input"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              )}
             </div>
-          )}
+
+            {/* Covered Parking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label className="checkbox_label" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+                <input
+                  type="checkbox"
+                  name="coveredParking"
+                  checked={formData.coveredParking || false}
+                  onChange={handleChange}
+                />
+                Covered Parking
+              </label>
+              {formData.coveredParking && (
+                <input
+                  type="number"
+                  name="noOfCoveredParking"
+                  placeholder="No Of Parking"
+                  value={formData.noOfCoveredParking || ''}
+                  onChange={handleChange}
+                  className="plain_input"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              )}
+            </div>
+
+            {/* Mechanical Parking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label className="checkbox_label" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+                <input
+                  type="checkbox"
+                  name="mechanicalParking"
+                  checked={formData.mechanicalParking || false}
+                  onChange={handleChange}
+                />
+                Mechanical Parking
+              </label>
+              {formData.mechanicalParking && (
+                <input
+                  type="number"
+                  name="noOfMechanicalParking"
+                  placeholder="No Of Parking"
+                  value={formData.noOfMechanicalParking || ''}
+                  onChange={handleChange}
+                  className="plain_input"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Action Buttons */}

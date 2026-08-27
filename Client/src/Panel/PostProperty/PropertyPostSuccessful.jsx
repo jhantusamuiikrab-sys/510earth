@@ -7,7 +7,7 @@ const PropertyPostSuccessful = () => {
   const navigate = useNavigate();
 
   const handleOk = () => {
-    navigate('/'); // Route back home or to desired page
+    navigate('/Login'); // Route back home or to desired page
   };
 
   return (

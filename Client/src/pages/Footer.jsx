@@ -261,7 +261,8 @@ const Footer = ({ currentCategory = "Real Estate", propertyName = "510earth" }) 
       </footer>
 
       {/* --- ADDED SECTION: Floating WhatsApp Sticky Widget --- */}
-      <div id="whatsAppDiv" className="whatsapp_area">
+      <div id="whatsAppDiv" className="whatsapp_area" >
+        
         <a 
           href={`https://api.whatsapp.com/send?phone=919832064905&text=${whatsappText}`} 
           target="_blank" 
