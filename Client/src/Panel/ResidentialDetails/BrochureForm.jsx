@@ -31,7 +31,6 @@ function BrochureForm({ propertyName = "JMC Hill View", onClose }) {
     console.log('Form Submitted:', formData);
     if (onClose) onClose();
   };
-
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>

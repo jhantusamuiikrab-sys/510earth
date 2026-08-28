@@ -213,6 +213,7 @@ const LandCoverBanner = ({ LandcvrimgBnr = [] }) => {
           DOT NAVIGATION
       ========================================== */}
 
+
       {LandcvrimgBnr.length > 1 && (
         <div
           className="land-banner-dots"
