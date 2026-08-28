@@ -1,5 +1,4 @@
-// App.jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Footer from "./pages/Footer";
 import About from "./pages/About";
@@ -15,13 +14,20 @@ import LandDetails from "./Panel/LandDetails";
 import { PropertyListingsPage } from "./Panel/ResidentialDetails/PropertyListingsPage";
 import Login from "./Panel/PostProperty/Login";
 import PostProperty from "./Panel/PostProperty";
+import DashboardMain from "./Panel/PostProperty/Dashboard/DashboardMain";
 
+// Helper component to manage conditional layouts inside BrowserRouter context
+function MainLayout() {
+  const location = useLocation();
 
-function App() {
+  // Define paths where the Navbar should be hidden
+  const hideNavbarPaths = ["/post-property-dashboard"];
+  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
+
   return (
-    <BrowserRouter>
+    <>
+      {shouldShowNavbar && <Navbar />}
 
-      <Navbar />
       <Routes>        
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -35,11 +41,19 @@ function App() {
         <Route path="/residential" element={<PropertyListingsPage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/post-property" element={<PostProperty />} />
-
+        <Route path="/post-property-dashboard" element={<DashboardMain />} />
       </Routes>
- 
-      {/* Footer stays at the bottom of all pages */}
+
+      {/* Optionally hide Footer as well on dashboard if needed */}
       <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <MainLayout />
     </BrowserRouter>
   );
 }
