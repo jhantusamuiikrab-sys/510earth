@@ -1,0 +1,113 @@
+.uploadPropertyContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.uploadPropertyTitle {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.uploadPropertyCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 28px 32px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  align-items: center;
+}
+
+.rowLabel {
+  font-size: 15px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.radioOptions {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  flex-wrap: wrap;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Custom Styled Radio Buttons */
+.customRadio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #94a3b8;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  margin: 0;
+}
+
+.customRadio::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-color: #0075ff;
+}
+
+.customRadio:checked {
+  border-color: #0075ff;
+}
+
+.customRadio:checked::before {
+  transform: scale(1);
+}
+
+.radioText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.btnContainer {
+  margin-top: 8px;
+}
+
+.nextBtn {
+  background-color: #0075ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.nextBtn:hover {
+  background-color: #0060df;
+}

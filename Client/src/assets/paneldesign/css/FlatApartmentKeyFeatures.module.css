@@ -1,0 +1,257 @@
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Stepper Header */
+.stepperContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 40px;
+  padding: 0 40px;
+}
+
+.stepWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.stepNumber {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background-color: #0b6bcb;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.stepNumber.active {
+  background-color: #8cc63f;
+}
+
+.stepLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b6bcb;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.stepLine {
+  position: absolute;
+  top: 14px;
+  left: 80px;
+  right: 80px;
+  height: 2px;
+  background-color: #8cc63f;
+  z-index: 1;
+}
+
+/* Card Container */
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 40px 48px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.titleHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mainTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b6bcb;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.5px;
+}
+
+.subTitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Caption Input */
+.captionInput {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #334155;
+  outline: none;
+}
+
+.captionInput::placeholder {
+  color: #94a3b8;
+}
+
+/* Rich Text Editor Mock Box */
+.editorWrapper {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.editorToolbar {
+  background: #f8fafc;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: #475569;
+}
+
+.toolbarBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  font-weight: 600;
+  color: #334155;
+  border-radius: 3px;
+}
+
+.toolbarBtn:hover {
+  background: #e2e8f0;
+}
+
+.editorSelect {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+.editorTextArea {
+  width: 100%;
+  min-height: 250px;
+  padding: 16px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+  color: #334155;
+}
+
+.editorFooter {
+  border-top: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  background: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Property Images Upload Section */
+.imageUploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.sectionLabel {
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.fileInputWrapper {
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fileInput {
+  font-size: 14px;
+  color: #475569;
+}
+
+.imageValidationRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.warningText {
+  color: #334155;
+  font-size: 13px;
+}
+
+.removeBtn {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.removeBtn:hover {
+  background-color: #bb2d3b;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Navigation Buttons */
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.prevBtn,
+.nextBtn {
+  background-color: #8cc63f;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.prevBtn:hover,
+.nextBtn:hover {
+  background-color: #7ab630;
+}
