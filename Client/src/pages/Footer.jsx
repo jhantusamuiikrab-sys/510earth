@@ -261,16 +261,34 @@ const Footer = ({ currentCategory = "Real Estate", propertyName = "510earth" }) 
       </footer>
 
       {/* --- ADDED SECTION: Floating WhatsApp Sticky Widget --- */}
-      <div id="whatsAppDiv" className="whatsapp_area" >
-        
-        <a 
-          href={`https://api.whatsapp.com/send?phone=919832064905&text=${whatsappText}`} 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          <img src="/images/whatsapp_btn.png" alt="WhatsApp Chat" />
-        </a>
-      </div>
+      {/* --- Floating WhatsApp Sticky Widget --- */}
+<div
+  id="whatsAppDiv"
+  style={{
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    zIndex: 99999,
+  }}
+>
+  <a
+    href={`https://api.whatsapp.com/send?phone=919832064905&text=${whatsappText}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ display: "inline-block" }}
+  >
+    <img
+      src="/images/whatsapp_btn.png"
+      alt="WhatsApp Chat"
+      style={{
+        width: "82px",
+        height: "auto",
+        display: "block",
+        filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.25))",
+      }}
+    />
+  </a>
+</div>
     </>
   );
 };
