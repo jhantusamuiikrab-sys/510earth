@@ -12,12 +12,23 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
 
-    // Clear specific field error when user updates input
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      };
+
+      // Reset specific count if its corresponding checkbox is unchecked
+      if (type === 'checkbox' && !checked) {
+        if (name === 'openParking') updated.noOfOpenParking = '';
+        if (name === 'coveredParking') updated.noOfCoveredParking = '';
+        if (name === 'mechanicalParking') updated.noOfMechanicalParking = '';
+      }
+
+      return updated;
+    });
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
@@ -33,11 +44,6 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
     }
   };
 
-  const isParkingChecked = Boolean(
-    formData.openParking || formData.coveredParking || formData.mechanicalParking
-  );
-
-  // Validation handler checking all 13 required fields
   const handleNextSubmit = () => {
     const newErrors = {};
 
@@ -456,53 +462,109 @@ const StepIndependentHouseVilla = ({ formData, setFormData, onNext, onPrev }) =>
           </label>
         </div>
 
-        {/* Parking Checkboxes Section */}
-        <div className="parking_section">
-          <div className="checkbox_row_parking">
-            <label className="checkbox_label">
-              <input
-                type="checkbox"
-                name="openParking"
-                checked={formData.openParking || false}
-                onChange={handleChange}
-              />
-              Open Parking
-            </label>
+        {/* Separate Parking Options Section */}
+        <div className="parking_section" style={{ marginTop: '20px', marginBottom: '20px' }}>
+          <div 
+            style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(3, 1fr)', 
+              gap: '20px',
+              alignItems: 'start' 
+            }}
+          >
+            {/* 1. Open Parking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '500' }}>
+                <input
+                  type="checkbox"
+                  name="openParking"
+                  checked={formData.openParking || false}
+                  onChange={handleChange}
+                />
+                Open Parking
+              </label>
 
-            <label className="checkbox_label">
-              <input
-                type="checkbox"
-                name="coveredParking"
-                checked={formData.coveredParking || false}
-                onChange={handleChange}
-              />
-              Covered Parking
-            </label>
-
-            <label className="checkbox_label">
-              <input
-                type="checkbox"
-                name="mechanicalParking"
-                checked={formData.mechanicalParking || false}
-                onChange={handleChange}
-              />
-              Mechanical Parking
-            </label>
-          </div>
-
-          {/* Dynamic Parking Count Input */}
-          {isParkingChecked && (
-            <div className="parking_input_container">
-              <input
-                type="number"
-                name="noOfParking"
-                placeholder="No Of Parking"
-                value={formData.noOfParking || ''}
-                onChange={handleChange}
-                className="plain_input"
-              />
+              {formData.openParking && (
+                <input
+                  type="number"
+                  name="noOfOpenParking"
+                  placeholder="No Of Parking"
+                  value={formData.noOfOpenParking || ''}
+                  onChange={handleChange}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #d1d5db',
+                    outline: 'none',
+                    backgroundColor: '#f9fafb'
+                  }}
+                />
+              )}
             </div>
-          )}
+
+            {/* 2. Covered Parking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '500' }}>
+                <input
+                  type="checkbox"
+                  name="coveredParking"
+                  checked={formData.coveredParking || false}
+                  onChange={handleChange}
+                />
+                Covered Parking
+              </label>
+
+              {formData.coveredParking && (
+                <input
+                  type="number"
+                  name="noOfCoveredParking"
+                  placeholder="No Of Parking"
+                  value={formData.noOfCoveredParking || ''}
+                  onChange={handleChange}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #d1d5db',
+                    outline: 'none',
+                    backgroundColor: '#f9fafb'
+                  }}
+                />
+              )}
+            </div>
+
+            {/* 3. Mechanical Parking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '500' }}>
+                <input
+                  type="checkbox"
+                  name="mechanicalParking"
+                  checked={formData.mechanicalParking || false}
+                  onChange={handleChange}
+                />
+                Mechanical Parking
+              </label>
+
+              {formData.mechanicalParking && (
+                <input
+                  type="number"
+                  name="noOfMechanicalParking"
+                  placeholder="No Of Parking"
+                  value={formData.noOfMechanicalParking || ''}
+                  onChange={handleChange}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #d1d5db',
+                    outline: 'none',
+                    backgroundColor: '#f9fafb'
+                  }}
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Navigation Buttons */}
