@@ -185,7 +185,7 @@ function DashboardMain() {
           onSubmitForm={handleFinalSubmit}
           onPrevStep={() => setCurrentStep(5)}
         />
-      )}
+        )}
     </div>
   );
 }
