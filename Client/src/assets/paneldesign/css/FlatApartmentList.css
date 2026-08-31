@@ -134,9 +134,60 @@
   padding: 32px 0;
 }
 
+/* Table Styles */
 .property-thumbnail {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 48px;
   object-fit: cover;
   border-radius: 4px;
+}
+
+/* Status Text Colors */
+.status-badge.under-review {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.status-badge.active {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-badge.deactivated {
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Action Button Group */
+.action-btn-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #007bff;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.deactivate-btn {
+  background-color: #dc3545;
+}
+
+.deactivate-btn:hover {
+  background-color: #bd2130;
 }

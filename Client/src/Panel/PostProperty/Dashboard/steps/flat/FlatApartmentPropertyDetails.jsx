@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import styles from '../../../assets/paneldesign/css/FlatApartmentPropertyDetails.module.css';
+import { useNavigate } from 'react-router-dom';
+import styles from "../../../../../assets/paneldesign/css/FlatApartmentOtherInfo.module.css";
 
 const AMENITIES_LIST = [
   'Lift', '24/7 Water Supply', 'Car Parking/Reserved Parking',
@@ -33,7 +34,9 @@ const DEFAULT_CHECKED = [
   'Maintenance Staff', 'CCTV Camera', 'Earthquake Resistance'
 ];
 
-const FlatApartmentPropertyDetails = ({ onNextStep, onPrevStep }) => {
+const FlatApartmentPropertyDetails = () => {
+  const navigate = useNavigate();
+
   const [amenities, setAmenities] = useState(() => {
     const initial = {};
     AMENITIES_LIST.forEach((item) => {
@@ -77,12 +80,19 @@ const FlatApartmentPropertyDetails = ({ onNextStep, onPrevStep }) => {
     }));
   };
 
+  const handlePrev = () => {
+    // Route back to Step 2
+    navigate('/dashboard/upload/key-features');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const selectedAmenities = Object.keys(amenities).filter((key) => amenities[key]);
-    if (onNextStep) {
-      onNextStep({ amenities: selectedAmenities, nearby });
-    }
+    
+    // Route forward to Step 4 (Other Information)
+    navigate('/dashboard/upload/other-information', {
+      state: { amenities: selectedAmenities, nearby }
+    });
   };
 
   return (
@@ -333,7 +343,7 @@ const FlatApartmentPropertyDetails = ({ onNextStep, onPrevStep }) => {
 
           {/* Navigation Buttons */}
           <div className={styles.buttonGroup}>
-            <button type="button" onClick={onPrevStep} className={styles.prevBtn}>
+            <button type="button" onClick={handlePrev} className={styles.prevBtn}>
               Previous
             </button>
             <button type="submit" className={styles.nextBtn}>

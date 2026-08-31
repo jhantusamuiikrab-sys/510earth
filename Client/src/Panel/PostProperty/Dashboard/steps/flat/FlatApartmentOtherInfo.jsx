@@ -1,25 +1,58 @@
-import React, { useState } from 'react';
-import styles from '../../../assets/paneldesign/css/FlatApartmentOtherInfo.module.css';
+import React, { useState } from "react";
+import { useOutletContext, useNavigate, useLocation } from "react-router-dom";
+import styles from "../../../../../assets/paneldesign/css/FlatApartmentOtherInfo.module.css";
 
-const FlatApartmentOtherInfo = ({ onSubmitForm, onPrevStep }) => {
-  const [otherInfoText, setOtherInfoText] = useState('');
-  const [ownershipType, setOwnershipType] = useState('Co-operative Society');
+const FlatApartmentOtherInfo = ({ onSubmitForm }) => {
+  const navigate = useNavigate();
+  // Access global multi-step context
+  const {
+    formData: globalFormData,
+    updateFormData,
+    resetFormData,
+  } = useOutletContext();
+
+  const [otherInfoText, setOtherInfoText] = useState(
+    globalFormData?.otherInfo?.otherInfoText || "",
+  );
+  const [ownershipType, setOwnershipType] = useState(
+    globalFormData?.otherInfo?.ownershipType || "Co-operative Society",
+  );
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const handlePrev = () => {
+    // Save current step data before navigating back
+    updateFormData("otherInfo", { otherInfoText, ownershipType });
+    navigate("/dashboard/upload/flat-apartment/property-details");
+  };
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
     setShowConfirmModal(true);
   };
 
-  const handleConfirmSubmit = () => {
+  const handleConfirmSubmit = async () => {
     setShowConfirmModal(false);
-    const payload = {
-      otherInfoText,
-      ownershipType,
+
+    // Save final step into context structure
+    const updatedOtherInfo = { otherInfoText, ownershipType };
+    updateFormData("otherInfo", updatedOtherInfo);
+
+    // Construct full aggregated payload across all steps
+    const finalPayload = {
+      ...globalFormData,
+      otherInfo: updatedOtherInfo,
     };
+
+    // Trigger external callback if provided
     if (onSubmitForm) {
-      onSubmitForm(payload);
+      await onSubmitForm(finalPayload);
     }
+
+    // Clear multi-step store state
+    resetFormData();
+
+    // Redirect to listings dashboard
+    navigate("/dashboard");
   };
 
   return (
@@ -78,7 +111,11 @@ const FlatApartmentOtherInfo = ({ onSubmitForm, onPrevStep }) => {
           </select>
 
           <div className={styles.buttonGroup}>
-            <button type="button" onClick={onPrevStep} className={styles.prevBtn}>
+            <button
+              type="button"
+              onClick={handlePrev}
+              className={styles.prevBtn}
+            >
               Previous
             </button>
             <button type="submit" className={styles.submitBtn}>

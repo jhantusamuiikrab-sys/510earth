@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
-import styles from '../../../assets/paneldesign/css/FlatApartmentKeyFeatures.module.css';
-const FlatApartmentKeyFeatures = ({ onNextStep, onPrevStep }) => {
-  const [caption, setCaption] = useState('');
-  const [overview, setOverview] = useState('');
-  const [images, setImages] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+import React, { useState } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import styles from "../../../../../assets/paneldesign/css/FlatApartmentKeyFeatures.module.css";
+
+const FlatApartmentKeyFeatures = () => {
+  const navigate = useNavigate();
+  // Access global multi-step context
+  const { formData: globalFormData, updateFormData } = useOutletContext();
+
+  // Initialize state with existing global form data if available
+  const [caption, setCaption] = useState(
+    globalFormData?.keyFeatures?.caption || "",
+  );
+  const [overview, setOverview] = useState(
+    globalFormData?.keyFeatures?.overview || "",
+  );
+  const [images, setImages] = useState(
+    globalFormData?.keyFeatures?.images || [],
+  );
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (selectedFiles.length + images.length > 16) {
-      setErrorMessage('Maximum 16 images allowed.');
+      setErrorMessage("Maximum 16 images allowed.");
       return;
     }
     setImages((prev) => [...prev, ...selectedFiles]);
-    setErrorMessage('');
+    setErrorMessage("");
   };
 
   const handleRemoveImages = () => {
@@ -22,19 +35,34 @@ const FlatApartmentKeyFeatures = ({ onNextStep, onPrevStep }) => {
 
   const wordCount = overview.trim() ? overview.trim().split(/\s+/).length : 0;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (images.length < 4) {
-      setErrorMessage('Please upload min 4 files for image.');
-      return;
-    }
-
-    const payload = {
+  const syncStateToContext = () => {
+    updateFormData("keyFeatures", {
       caption,
       overview,
       images,
-    };
-    if (onNextStep) onNextStep(payload);
+    });
+  };
+
+  const handlePrevStep = () => {
+    // Save state before going back
+    syncStateToContext();
+    // Navigate back to Step 1 under nested route
+    navigate("/dashboard/upload/flat-apartment/basic-details");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (images.length < 4) {
+      setErrorMessage("Please upload min 4 files for image.");
+      return;
+    }
+
+    // Save state before advancing
+    syncStateToContext();
+
+    // Direct routing to Step 3 under nested route
+    navigate("/dashboard/upload/flat-apartment/property-details");
   };
 
   return (
@@ -84,14 +112,26 @@ const FlatApartmentKeyFeatures = ({ onNextStep, onPrevStep }) => {
           {/* Rich Text Editor Component */}
           <div className={styles.editorWrapper}>
             <div className={styles.editorToolbar}>
-              <button type="button" className={styles.toolbarBtn}>↺</button>
-              <button type="button" className={styles.toolbarBtn}>↻</button>
-              <span style={{ color: '#cbd5e1' }}>|</span>
-              <button type="button" className={styles.toolbarBtn}><b>B</b></button>
-              <button type="button" className={styles.toolbarBtn}><i>I</i></button>
-              <button type="button" className={styles.toolbarBtn}><u>U</u></button>
-              <button type="button" className={styles.toolbarBtn}><s>S</s></button>
-              <span style={{ color: '#cbd5e1' }}>|</span>
+              <button type="button" className={styles.toolbarBtn}>
+                ↺
+              </button>
+              <button type="button" className={styles.toolbarBtn}>
+                ↻
+              </button>
+              <span style={{ color: "#cbd5e1" }}>|</span>
+              <button type="button" className={styles.toolbarBtn}>
+                <b>B</b>
+              </button>
+              <button type="button" className={styles.toolbarBtn}>
+                <i>I</i>
+              </button>
+              <button type="button" className={styles.toolbarBtn}>
+                <u>U</u>
+              </button>
+              <button type="button" className={styles.toolbarBtn}>
+                <s>S</s>
+              </button>
+              <span style={{ color: "#cbd5e1" }}>|</span>
               <select className={styles.editorSelect}>
                 <option>Book Antiqua</option>
                 <option>Arial</option>
@@ -148,13 +188,21 @@ const FlatApartmentKeyFeatures = ({ onNextStep, onPrevStep }) => {
               )}
             </div>
 
-            <span className={styles.errorText}>Upload images : Min-4, Max-16</span>
-            {errorMessage && <span className={styles.errorText}>{errorMessage}</span>}
+            <span className={styles.errorText}>
+              Upload images : Min-4, Max-16
+            </span>
+            {errorMessage && (
+              <span className={styles.errorText}>{errorMessage}</span>
+            )}
           </div>
 
           {/* Action Buttons */}
           <div className={styles.buttonGroup}>
-            <button type="button" onClick={onPrevStep} className={styles.prevBtn}>
+            <button
+              type="button"
+              onClick={handlePrevStep}
+              className={styles.prevBtn}
+            >
               Previous
             </button>
             <button type="submit" className={styles.nextBtn}>

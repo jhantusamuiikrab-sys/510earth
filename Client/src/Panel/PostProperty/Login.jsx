@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import "../../assets/paneldesign/css/Login.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [view, setView] = useState("login");
 
   const [formData, setFormData] = useState({
-    emailOrNumber: "",
-    password: "",
+    emailOrNumber: "8968473542",
+    password: "password",
     rememberMe: false,
     contactNumber: "",
     forgotMobileNumber: "",
@@ -14,14 +16,6 @@ const Login = () => {
 
   const [forgotMsg, setForgotMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
   // Specific change handler for mobile number input validation
   const handleMobileNumberChange = (e) => {
@@ -41,6 +35,12 @@ const Login = () => {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
+    if (
+      formData.emailOrNumber === "8968473542" &&
+      formData.password === "password"
+    ) {
+      navigate("/dashboard");
+    }
   };
 
   const handleOtpSubmit = (e) => {
@@ -56,12 +56,16 @@ const Login = () => {
 
     if (!validPattern.test(phone)) {
       setForgotMsg("");
-      setErrorMsg("Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.");
+      setErrorMsg(
+        "Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.",
+      );
       return;
     }
 
     setErrorMsg("");
-    setForgotMsg("User Id & Password has been send to your registered mobile number.");
+    setForgotMsg(
+      "User Id & Password has been send to your registered mobile number.",
+    );
   };
 
   const handleBackToLogin = () => {
@@ -89,7 +93,9 @@ const Login = () => {
                 id="emailOrNumber"
                 name="emailOrNumber"
                 value={formData.emailOrNumber}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setFormData({ ...formData, emailOrNumber: e.target.value })
+                }
                 placeholder="admin@510earth.in"
                 required
               />
@@ -102,7 +108,9 @@ const Login = () => {
                 id="password"
                 name="password"
                 value={formData.password}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 required
               />
             </div>
@@ -113,7 +121,9 @@ const Login = () => {
                 id="rememberMe"
                 name="rememberMe"
                 checked={formData.rememberMe}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setFormData({ ...formData, rememberMe: e.target.checked })
+                }
               />
               <label htmlFor="rememberMe">Remember me</label>
             </div>
@@ -150,7 +160,9 @@ const Login = () => {
                 id="contactNumber"
                 name="contactNumber"
                 value={formData.contactNumber}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setFormData({ ...formData, contactNumber: e.target.value })
+                }
                 placeholder="Contact Number"
                 required
               />
@@ -165,7 +177,10 @@ const Login = () => {
         </div>
       ) : (
         /* ================= FORGOT PASSWORD FORM ================= */
-        <div className="login_modal_card pop_in_anim" style={{ textAlign: "center", padding: "30px" }}>
+        <div
+          className="login_modal_card pop_in_anim"
+          style={{ textAlign: "center", padding: "30px" }}
+        >
           <form onSubmit={handleForgotPasswordSubmit} className="login_form">
             <div className="form_group" style={{ marginBottom: "15px" }}>
               <input
@@ -182,20 +197,40 @@ const Login = () => {
 
             {/* Validation Error Message */}
             {errorMsg && (
-              <p style={{ color: "red", fontSize: "12px", margin: "5px 0 10px 0", textAlign: "left" }}>
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  margin: "5px 0 10px 0",
+                  textAlign: "left",
+                }}
+              >
                 {errorMsg}
               </p>
             )}
 
             {/* Success Message */}
             {forgotMsg && (
-              <p style={{ color: "#ff0000", fontSize: "13px", margin: "10px 0 15px 0", textAlign: "left" }}>
+              <p
+                style={{
+                  color: "#ff0000",
+                  fontSize: "13px",
+                  margin: "10px 0 15px 0",
+                  textAlign: "left",
+                }}
+              >
                 {forgotMsg}
               </p>
             )}
 
-            <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-              <button type="submit" className="btn_blue" style={{ minWidth: "120px" }}>
+            <div
+              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+            >
+              <button
+                type="submit"
+                className="btn_blue"
+                style={{ minWidth: "120px" }}
+              >
                 Submit
               </button>
               <button

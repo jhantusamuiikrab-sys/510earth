@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import styles from '../../../assets/paneldesign/css/FlatApartmentBasicDetails.module.css';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import styles from '../../../../../assets/paneldesign/css/FlatApartmentBasicDetails.module.css';
+
 // Helper function to convert numeric price to Indian English words
 const convertPriceToWords = (price) => {
   const num = parseInt(price, 10);
@@ -16,35 +18,40 @@ const convertPriceToWords = (price) => {
   return `${num}`;
 };
 
-const FlatApartmentBasicDetails = ({ onNextStep }) => {
+const FlatApartmentBasicDetails = () => {
+  const navigate = useNavigate();
+  // Access global multi-step context
+  const { formData: globalFormData, updateFormData } = useOutletContext();
+
+  // Initialize local state with context value if returning from a previous step
   const [formData, setFormData] = useState({
-    state: '',
-    city: '',
-    propertyName: '',
-    location: '',
-    projectStatus: '',
-    possessionDate: '',
-    projectFacing: '',
-    price: '',
-    isNegotiable: false,
-    bhk: '',
+    state: globalFormData?.basicDetails?.state || '',
+    city: globalFormData?.basicDetails?.city || '',
+    propertyName: globalFormData?.basicDetails?.propertyName || '',
+    location: globalFormData?.basicDetails?.location || '',
+    projectStatus: globalFormData?.basicDetails?.projectStatus || '',
+    possessionDate: globalFormData?.basicDetails?.possessionDate || '',
+    projectFacing: globalFormData?.basicDetails?.projectFacing || '',
+    price: globalFormData?.basicDetails?.price || '',
+    isNegotiable: globalFormData?.basicDetails?.isNegotiable || false,
+    bhk: globalFormData?.basicDetails?.bhk || '',
     // Additional fields triggered by BHK selection
-    superBuiltUpArea: '',
-    areaUnit: '',
-    carpetArea: '',
-    noOfBedrooms: '',
-    noOfBathrooms: '',
-    noOfBalconies: '',
-    furnishedType: '',
-    totalFloors: '',
-    yourFloorNo: '',
+    superBuiltUpArea: globalFormData?.basicDetails?.superBuiltUpArea || '',
+    areaUnit: globalFormData?.basicDetails?.areaUnit || '',
+    carpetArea: globalFormData?.basicDetails?.carpetArea || '',
+    noOfBedrooms: globalFormData?.basicDetails?.noOfBedrooms || '',
+    noOfBathrooms: globalFormData?.basicDetails?.noOfBathrooms || '',
+    noOfBalconies: globalFormData?.basicDetails?.noOfBalconies || '',
+    furnishedType: globalFormData?.basicDetails?.furnishedType || '',
+    totalFloors: globalFormData?.basicDetails?.totalFloors || '',
+    yourFloorNo: globalFormData?.basicDetails?.yourFloorNo || '',
     // Parking selections & counts
-    openParking: false,
-    openParkingCount: '',
-    coveredParking: false,
-    coveredParkingCount: '',
-    mechanicalParking: false,
-    mechanicalParkingCount: '',
+    openParking: globalFormData?.basicDetails?.openParking || false,
+    openParkingCount: globalFormData?.basicDetails?.openParkingCount || '',
+    coveredParking: globalFormData?.basicDetails?.coveredParking || false,
+    coveredParkingCount: globalFormData?.basicDetails?.coveredParkingCount || '',
+    mechanicalParking: globalFormData?.basicDetails?.mechanicalParking || false,
+    mechanicalParkingCount: globalFormData?.basicDetails?.mechanicalParkingCount || '',
   });
 
   const handleChange = (e) => {
@@ -57,7 +64,12 @@ const FlatApartmentBasicDetails = ({ onNextStep }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onNextStep) onNextStep(formData);
+
+    // Persist current step's form data in the shared layout state
+    updateFormData('basicDetails', formData);
+
+    // Direct routing to Step 2 (Key Features) under nested path
+    navigate('/dashboard/upload/flat-apartment/key-features');
   };
 
   return (

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../../../assets/paneldesign/css/UploadNewProperty.module.css';
 
-const UploadNewProperty = ({ onNext }) => {
-  // Initialize with empty strings so options are hidden initially
+const UploadNewProperty = () => {
+  const navigate = useNavigate();
+
+  // Initialize state
   const [intent, setIntent] = useState('');
   const [propertyType, setPropertyType] = useState('');
   const [subCategory, setSubCategory] = useState('');
@@ -27,13 +30,20 @@ const UploadNewProperty = ({ onNext }) => {
       alert('Please select an option to proceed.');
       return;
     }
-    
-    const payload = {
-      intent,
-      propertyType,
-      subCategory,
-    };
-    if (onNext) onNext(payload);
+
+    // Direct routing based on subCategory selection
+    if (subCategory === 'flat') {
+      navigate('/dashboard/upload/sell/residential/flat-apartment/basic-details');
+    } else if (subCategory === 'villa') {
+      navigate('/dashboard/upload/house-villa-details');
+    } else if (propertyType === 'commercial') {
+      navigate('/dashboard/upload/commercial-details');
+    } else if (propertyType === 'land') {
+      navigate('/dashboard/upload/land-details');
+    } else {
+      // Fallback/default route if specific subcategory isn't selected
+      navigate('/dashboard/upload/basic-details');
+    }
   };
 
   // Display rules for step-by-step reveal:
@@ -183,7 +193,7 @@ const UploadNewProperty = ({ onNext }) => {
 
         {/* Action Button */}
         <div className={styles.btnContainer}>
-          <button className={styles.nextBtn} onClick={handleNextClick}>
+          <button type="button" className={styles.nextBtn} onClick={handleNextClick}>
             Next
           </button>
         </div>

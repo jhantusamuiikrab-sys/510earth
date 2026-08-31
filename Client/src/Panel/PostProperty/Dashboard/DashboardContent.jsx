@@ -1,7 +1,36 @@
 import React, { useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import "../../../assets/paneldesign/css/PanelDashboardContent.css";
 
-const DashboardContent = ({ selectedOption, onOptionChange, onNext }) => {
+const DashboardContent = () => {
+  const navigate = useNavigate();
+  // Retrieve shared context safely (if available)
+  const outletContext = useOutletContext();
+
+  // Local state fallbacks if context isn't passed
+  const [selectedOption, setSelectedOption] = useState("view");
+
+  // Read current option from outlet context or local state
+  const currentOption = outletContext?.formData?.mainIntent || selectedOption;
+
+  const handleOptionChange = (value) => {
+    if (outletContext?.updateFormData) {
+      outletContext.updateFormData("mainIntent", value);
+    } else {
+      setSelectedOption(value);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentOption === "view") {
+      navigate("/dashboard/view-property");
+    } else if (currentOption === "upload") {
+      navigate("/dashboard/upload");
+    } else if (currentOption === "leads") {
+      navigate("/dashboard/leads");
+    }
+  };
+
   return (
     <main className="dashboard-container">
       <h1 className="dashboard-title">Dashboard</h1>
@@ -15,8 +44,8 @@ const DashboardContent = ({ selectedOption, onOptionChange, onNext }) => {
               type="radio"
               name="dashboardOption"
               value="view"
-              checked={selectedOption === "view"}
-              onChange={() => onOptionChange("view")}
+              checked={currentOption === "view"}
+              onChange={() => handleOptionChange("view")}
               className="custom-radio"
             />
             <span className="radio-text">View Your Property</span>
@@ -27,8 +56,8 @@ const DashboardContent = ({ selectedOption, onOptionChange, onNext }) => {
               type="radio"
               name="dashboardOption"
               value="upload"
-              checked={selectedOption === "upload"}
-              onChange={() => onOptionChange("upload")}
+              checked={currentOption === "upload"}
+              onChange={() => handleOptionChange("upload")}
               className="custom-radio"
             />
             <span className="radio-text">Upload New Property</span>
@@ -39,16 +68,16 @@ const DashboardContent = ({ selectedOption, onOptionChange, onNext }) => {
               type="radio"
               name="dashboardOption"
               value="leads"
-              checked={selectedOption === "leads"}
-              onChange={() => onOptionChange("leads")}
+              checked={currentOption === "leads"}
+              onChange={() => handleOptionChange("leads")}
               className="custom-radio"
             />
             <span className="radio-text">View Leads</span>
           </label>
         </div>
 
-        {/* Triggers navigation to Step 2 */}
-        <button className="next-btn" onClick={onNext}>
+        {/* Triggers route navigation */}
+        <button className="next-btn" onClick={handleNext}>
           Next
         </button>
       </div>
