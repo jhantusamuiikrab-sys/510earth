@@ -22,9 +22,10 @@ const FlatApartmentOtherInfo = ({ onSubmitForm }) => {
   const handlePrev = () => {
     // Save current step data before navigating back
     updateFormData("otherInfo", { otherInfoText, ownershipType });
-    navigate("/dashboard/upload/flat-apartment/property-details");
+    navigate("/dashboard/upload/sell/residential/flat-apartment/property-details");
   };
-
+// http://localhost:5173/dashboard/upload/sell/residential/flat-apartment/key-features
+//http://localhost:5173/dashboard/upload/flat-apartment/property-details
   const handleSubmitClick = (e) => {
     e.preventDefault();
     setShowConfirmModal(true);

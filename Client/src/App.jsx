@@ -39,6 +39,14 @@ import FlatApartmentBasicDetails from "./Panel/PostProperty/Dashboard/steps/flat
 import FlatApartmentKeyFeatures from "./Panel/PostProperty/Dashboard/steps/flat/FlatApartmentKeyFeatures";
 import FlatApartmentPropertyDetails from "./Panel/PostProperty/Dashboard/steps/flat/FlatApartmentPropertyDetails";
 import FlatApartmentOtherInfo from "./Panel/PostProperty/Dashboard/steps/flat/FlatApartmentOtherInfo";
+import IndpHVBasicDetails from "./Panel/PostProperty/Dashboard/steps/house/IndpHVBasicDetails";
+import IndpHVKeyFeatures from "./Panel/PostProperty/Dashboard/steps/house/IndpHVKeyFeatures";
+import IndpHVOtherInformation from "./Panel/PostProperty/Dashboard/steps/house/IndpHVOtherInformation";
+import IndpHVPropertyDetails from "./Panel/PostProperty/Dashboard/steps/house/IndpHVPropertyDetails";
+import CommercialBasicDetails from "./Panel/PostProperty/Dashboard/steps/commercial/CommercialBasicDetails";
+import CommercialKeyFeatures from "./Panel/PostProperty/Dashboard/steps/commercial/CommercialKeyFeatures";
+import CommercialPropertyDetails from "./Panel/PostProperty/Dashboard/steps/commercial/CommercialPropertyDetails";
+import CommercialOtherInformation from "./Panel/PostProperty/Dashboard/steps/commercial/CommercialOtherInformation";
 
 function MainContent() {
   const location = useLocation();
@@ -91,12 +99,40 @@ function MainContent() {
               <Route path="property-details" element={<FlatApartmentPropertyDetails />} />
               <Route path="other-information" element={<FlatApartmentOtherInfo />} />
             </Route>
+            <Route path="sell/residential/independent-house/villa">
+              <Route index element={<Navigate to="basic-details" replace />} />
+              <Route path="basic-details" element={<IndpHVBasicDetails/>} />
+              <Route path="key-features" element={<IndpHVKeyFeatures />} />
+              <Route path="property-details" element={<IndpHVPropertyDetails  />} />
+              <Route path="other-information" element={<IndpHVOtherInformation />} />
+            </Route>
+            <Route path="sell/commercial">
+              <Route index element={<Navigate to="basic-details" replace />} />
+              <Route path="basic-details" element={<CommercialBasicDetails />} />
+              <Route path="key-features" element={<CommercialKeyFeatures/>} />
+              <Route path="property-details" element={<CommercialPropertyDetails />} />
+              <Route path="other-information" element={<CommercialOtherInformation />} />
+            </Route>
             <Route path="resell/residential/flat-apartment">
               <Route index element={<Navigate to="basic-details" replace />} />
               <Route path="basic-details" element={<FlatApartmentBasicDetails />} />
               <Route path="key-features" element={<FlatApartmentKeyFeatures />} />
               <Route path="property-details" element={<FlatApartmentPropertyDetails />} />
               <Route path="other-information" element={<FlatApartmentOtherInfo />} />
+            </Route>
+            <Route path="resell/residential/independent-house/villa">
+              <Route index element={<Navigate to="basic-details" replace />} />
+              <Route path="basic-details" element={<IndpHVBasicDetails/>} />
+              <Route path="key-features" element={<IndpHVKeyFeatures />} />
+              <Route path="property-details" element={<IndpHVPropertyDetails  />} />
+              <Route path="other-information" element={<IndpHVOtherInformation />} />
+            </Route>
+            <Route path="resell/commercial">
+              <Route index element={<Navigate to="basic-details" replace />} />
+              <Route path="basic-details" element={<CommercialBasicDetails />} />
+              <Route path="key-features" element={<CommercialKeyFeatures/>} />
+              <Route path="property-details" element={<CommercialPropertyDetails />} />
+              <Route path="other-information" element={<CommercialOtherInformation />} />
             </Route>
           </Route>
         </Route>

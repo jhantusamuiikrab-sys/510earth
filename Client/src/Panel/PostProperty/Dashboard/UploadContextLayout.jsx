@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 const UploadContextLayout = () => {
-  // Shared state for all upload steps
+  // Shared state for all property upload steps
   const [formData, setFormData] = useState({
-    // Step 0: Category / Intent selection
-    lookingTo: 'Sell',            // 'Sell', 'Resell', etc.
-    propertyType: 'Residential', // 'Residential', 'Commercial', 'Land/Plot'
-    subCategory: 'Flat/Apartment',// 'Flat/Apartment', 'Independent House/Villa', etc.
+    // Category & Intent selection
+    lookingTo: '',       // 'sell', 'resell', 'rent', 'pg'
+    propertyType: '',    // 'residential', 'commercial', 'land'
+    subCategory: '',     // 'flat', 'villa'
 
-    // Step-specific details
+    // Step-specific form dynamic state containers
     basicDetails: {},
     keyFeatures: {},
     propertyDetails: {},
@@ -26,12 +26,12 @@ const UploadContextLayout = () => {
     }));
   };
 
-  // Helper function to clear form state after successful submission
+  // Helper function to reset form state after completion
   const resetFormData = () => {
     setFormData({
-      lookingTo: 'Sell',
-      propertyType: 'Residential',
-      subCategory: 'Flat/Apartment',
+      lookingTo: '',
+      propertyType: '',
+      subCategory: '',
       basicDetails: {},
       keyFeatures: {},
       propertyDetails: {},

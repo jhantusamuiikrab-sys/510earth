@@ -69,7 +69,7 @@ const FlatApartmentBasicDetails = () => {
     updateFormData('basicDetails', formData);
 
     // Direct routing to Step 2 (Key Features) under nested path
-    navigate('/dashboard/upload/flat-apartment/key-features');
+    navigate('/dashboard/upload/sell/residential/flat-apartment/key-features');
   };
 
   return (

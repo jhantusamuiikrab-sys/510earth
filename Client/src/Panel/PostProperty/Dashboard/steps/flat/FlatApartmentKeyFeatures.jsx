@@ -47,7 +47,7 @@ const FlatApartmentKeyFeatures = () => {
     // Save state before going back
     syncStateToContext();
     // Navigate back to Step 1 under nested route
-    navigate("/dashboard/upload/flat-apartment/basic-details");
+    navigate("/dashboard/upload/sell/residential/flat-apartment/basic-details");
   };
 
   const handleSubmit = (e) => {
@@ -62,7 +62,7 @@ const FlatApartmentKeyFeatures = () => {
     syncStateToContext();
 
     // Direct routing to Step 3 under nested route
-    navigate("/dashboard/upload/flat-apartment/property-details");
+    navigate("/dashboard/upload/sell/residential/flat-apartment/property-details");
   };
 
   return (

@@ -82,7 +82,7 @@ const FlatApartmentPropertyDetails = () => {
 
   const handlePrev = () => {
     // Route back to Step 2
-    navigate('/dashboard/upload/key-features');
+    navigate('/dashboard/upload/sell/residential/flat-apartment/key-features');
   };
 
   const handleSubmit = (e) => {
@@ -90,7 +90,7 @@ const FlatApartmentPropertyDetails = () => {
     const selectedAmenities = Object.keys(amenities).filter((key) => amenities[key]);
     
     // Route forward to Step 4 (Other Information)
-    navigate('/dashboard/upload/other-information', {
+    navigate('/dashboard/upload/sell/residential/flat-apartment/other-information', {
       state: { amenities: selectedAmenities, nearby }
     });
   };
