@@ -1,0 +1,1679 @@
+/* =========================================================
+   AMENITY MANAGEMENT
+   Premium / Clean / Responsive Admin UI
+========================================================= */
+
+.amenity-page {
+  min-height: 100vh;
+  padding: 26px;
+  background: #f5f7fa;
+  color: #172033;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.amenity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.amenity-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.amenity-title-icon {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #1b2e4e;
+  color: #fff;
+
+  font-size: 22px;
+
+  box-shadow:
+    0 8px 20px rgba(27, 46, 78, 0.18);
+}
+
+.amenity-header h1 {
+  margin: 0;
+  font-size: 27px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+  color: #172033;
+}
+
+.amenity-header p {
+  margin: 5px 0 0;
+  color: #7d8797;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.amenity-add-btn {
+  height: 44px;
+  padding: 0 17px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: 0;
+  border-radius: 11px;
+
+  background: #1b2e4e;
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  box-shadow:
+    0 8px 18px rgba(27, 46, 78, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.amenity-add-btn svg {
+  font-size: 17px;
+}
+
+.amenity-add-btn:hover {
+  background: #14243d;
+  color: #fff;
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 12px 25px rgba(27, 46, 78, 0.22);
+}
+
+.amenity-add-btn:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.amenity-alert {
+  min-height: 46px;
+
+  padding: 10px 13px;
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  border-radius: 11px;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.amenity-alert button {
+  margin-left: auto;
+
+  width: 28px;
+  height: 28px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.amenity-alert-danger {
+  color: #b42318;
+  background: #fff5f4;
+  border: 1px solid #fecdca;
+}
+
+.amenity-alert-danger button {
+  color: #b42318;
+}
+
+.amenity-alert-success {
+  color: #067647;
+  background: #f0fdf4;
+  border: 1px solid #abefc6;
+}
+
+.amenity-alert-success button {
+  color: #067647;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.amenity-stat-card {
+  position: relative;
+
+  min-height: 100px;
+
+  padding: 17px;
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  background: #fff;
+
+  border: 1px solid #e8edf3;
+  border-radius: 15px;
+
+  box-shadow:
+    0 3px 12px rgba(15, 23, 42, 0.035);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.amenity-stat-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 25px rgba(15, 23, 42, 0.07);
+}
+
+.amenity-stat-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #eef2f7;
+  color: #1b2e4e;
+
+  font-size: 21px;
+}
+
+.amenity-stat-icon.active {
+  background: #ecfdf3;
+  color: #039855;
+}
+
+.amenity-stat-icon.inactive {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.amenity-stat-card small {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #8a94a5;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.amenity-stat-card strong {
+  display: block;
+
+  color: #172033;
+
+  font-size: 25px;
+  line-height: 1;
+
+  font-weight: 750;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.amenity-toolbar {
+  min-height: 70px;
+
+  padding: 12px;
+
+  margin-bottom: 22px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  background: #fff;
+
+  border: 1px solid #e7ecf2;
+  border-radius: 14px;
+
+  box-shadow:
+    0 3px 12px rgba(15, 23, 42, 0.025);
+}
+
+.amenity-search {
+  height: 42px;
+  flex: 1;
+
+  min-width: 220px;
+
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e6ebf1;
+  border-radius: 10px;
+
+  transition: 0.2s ease;
+}
+
+.amenity-search:focus-within {
+  background: #fff;
+  border-color: #1b2e4e;
+
+  box-shadow:
+    0 0 0 3px rgba(27, 46, 78, 0.07);
+}
+
+.amenity-search > svg {
+  flex: 0 0 auto;
+
+  color: #98a2b3;
+  font-size: 17px;
+}
+
+.amenity-search input {
+  width: 100%;
+
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: #344054;
+
+  font-size: 13px;
+}
+
+.amenity-search input::placeholder {
+  color: #98a2b3;
+}
+
+.amenity-search button {
+  width: 25px;
+  height: 25px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #98a2b3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.amenity-search button:hover {
+  background: #eef1f5;
+  color: #344054;
+}
+
+.amenity-filter select {
+  height: 42px;
+  min-width: 145px;
+
+  padding: 0 34px 0 12px;
+
+  border: 1px solid #e1e7ee;
+  border-radius: 10px;
+
+  background-color: #fff;
+
+  color: #344054;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.amenity-filter select:hover {
+  border-color: #c8d0db;
+}
+
+.amenity-filter select:focus {
+  border-color: #1b2e4e;
+
+  box-shadow:
+    0 0 0 3px rgba(27, 46, 78, 0.07);
+}
+
+.amenity-refresh-btn {
+  height: 42px;
+
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border: 1px solid #dfe5ec;
+  border-radius: 10px;
+
+  background: #fff;
+
+  color: #475467;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.amenity-refresh-btn svg {
+  font-size: 15px;
+}
+
+.amenity-refresh-btn:hover {
+  background: #f8fafc;
+  border-color: #cfd7e1;
+  color: #1b2e4e;
+}
+
+.amenity-refresh-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.amenity-spin {
+  animation: amenitySpin 0.8s linear infinite;
+}
+
+@keyframes amenitySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.amenity-card {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid #e6ebf1;
+  border-radius: 16px;
+
+  box-shadow:
+    0 4px 15px rgba(15, 23, 42, 0.045);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.amenity-card:hover {
+  transform: translateY(-4px);
+
+  border-color: #dbe2ea;
+
+  box-shadow:
+    0 16px 35px rgba(15, 23, 42, 0.09);
+}
+
+/* =========================================================
+   CARD IMAGE
+========================================================= */
+
+
+.amenity-card-image {
+  position: relative;
+
+  width: 100%;
+  height: 150px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f5f7fa;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+.amenity-card-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  /*
+    IMPORTANT:
+    Shows the complete image.
+    No cropping.
+  */
+  object-fit: contain;
+
+  /*
+    Keeps image centered.
+  */
+  object-position: center;
+
+  transition: transform 0.25s ease;
+}
+
+/* Don't zoom because the complete image should remain visible */
+.amenity-card:hover
+.amenity-card-image img {
+  transform: scale(1.01);
+}
+
+/* =========================================================
+   NO IMAGE
+========================================================= */
+
+.amenity-no-image {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f5f7fa;
+
+  color: #a7b0bc;
+
+  font-size: 36px;
+}
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+.amenity-status {
+  position: absolute;
+
+  z-index: 3;
+
+  top: 9px;
+  right: 9px;
+
+  min-height: 26px;
+
+  padding: 0 8px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.amenity-status span {
+  width: 6px;
+  height: 6px;
+
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+}
+
+.amenity-status.active {
+  color: #067647;
+  background: rgba(240, 253, 244, 0.95);
+}
+
+.amenity-status.active span {
+  background: #12b76a;
+}
+
+.amenity-status.inactive {
+  color: #b54708;
+  background: rgba(255, 247, 237, 0.95);
+}
+
+.amenity-status.inactive span {
+  background: #f79009;
+}
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.amenity-card-body {
+  flex: 1;
+
+  padding: 15px;
+}
+
+.amenity-card-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-width: 0;
+  min-height: 49px;
+}
+
+.amenity-place-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #f0f3f7;
+  color: #1b2e4e;
+
+  font-size: 17px;
+}
+
+.amenity-card-title > div:last-child {
+  min-width: 0;
+}
+
+.amenity-card-title h3 {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #172033;
+
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amenity-card-title p {
+  margin: 4px 0 0;
+
+  overflow: hidden;
+
+  color: #8a94a4;
+
+  font-size: 11px;
+  line-height: 1.3;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   CARD ACTIONS
+========================================================= */
+
+.amenity-actions {
+  min-height: 43px;
+
+  margin-top: 14px;
+  padding-top: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  border-top: 1px solid #eef1f4;
+}
+
+.amenity-toggle {
+  min-height: 28px;
+
+  padding: 0 8px 0 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  border: 0;
+  background: transparent;
+
+  color: #98a2b3;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.amenity-toggle.active {
+  color: #067647;
+}
+
+.amenity-toggle:hover {
+  color: #1b2e4e;
+}
+
+.amenity-toggle.active:hover {
+  color: #039855;
+}
+
+.toggle-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  border-radius: 50%;
+
+  background: #b6bec9;
+}
+
+.amenity-toggle.active .toggle-dot {
+  background: #12b76a;
+
+  box-shadow:
+    0 0 0 3px rgba(18, 183, 106, 0.1);
+}
+
+.amenity-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.amenity-action-buttons button {
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e5eaf0;
+  border-radius: 9px;
+
+  background: #fff;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.amenity-action-buttons button.edit {
+  color: #1b2e4e;
+}
+
+.amenity-action-buttons button.edit:hover {
+  background: #f0f4f8;
+  border-color: #d5dee8;
+}
+
+.amenity-action-buttons button.delete {
+  color: #d92d20;
+}
+
+.amenity-action-buttons button.delete:hover {
+  background: #fff3f2;
+  border-color: #fecdca;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.amenity-empty {
+  min-height: 390px;
+
+  padding: 40px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background: #fff;
+
+  border: 1px dashed #d5dde7;
+  border-radius: 17px;
+}
+
+.amenity-empty-icon {
+  width: 70px;
+  height: 70px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 21px;
+
+  background: #eef2f7;
+  color: #1b2e4e;
+
+  font-size: 29px;
+}
+
+.amenity-empty h3 {
+  margin: 0 0 6px;
+
+  color: #172033;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.amenity-empty p {
+  margin: 0 0 18px;
+
+  color: #8a94a4;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.amenity-loading {
+  min-height: 390px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  gap: 12px;
+
+  color: #7d8797;
+}
+
+.amenity-loading .spinner-border {
+  width: 30px;
+  height: 30px;
+
+  color: #1b2e4e;
+}
+
+.amenity-loading p {
+  margin: 0;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.amenity-pagination {
+  margin-top: 25px;
+
+  padding: 13px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  color: #7d8797;
+
+  font-size: 12px;
+}
+
+.amenity-pagination strong {
+  color: #344054;
+}
+
+.amenity-pagination div {
+  display: flex;
+  gap: 6px;
+}
+
+.amenity-pagination button {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dfe5ec;
+  border-radius: 9px;
+
+  background: #fff;
+
+  color: #475467;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.amenity-pagination button:hover:not(:disabled) {
+  background: #f7f9fb;
+  border-color: #cbd4df;
+  color: #1b2e4e;
+}
+
+.amenity-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+.amenity-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(15, 23, 42, 0.64);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  overflow-y: auto;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.amenity-modal {
+  width: 100%;
+  max-width: 570px;
+
+  max-height: calc(100vh - 40px);
+
+  overflow: hidden auto;
+
+  background: #fff;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.24);
+
+  animation: amenityModalIn 0.2s ease;
+}
+
+@keyframes amenityModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.amenity-modal-header {
+  padding: 17px 19px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+.amenity-modal-header > div {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.amenity-modal-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #edf2f8;
+  color: #1b2e4e;
+
+  font-size: 17px;
+}
+
+.amenity-modal-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 750;
+}
+
+.amenity-modal-header p {
+  margin: 3px 0 0;
+
+  color: #8a94a4;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.amenity-modal-header > button {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #f5f7f9;
+
+  color: #667085;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.amenity-modal-header > button:hover {
+  background: #edf0f4;
+  color: #344054;
+}
+
+.amenity-modal-header > button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.amenity-form {
+  padding: 19px;
+}
+
+.amenity-form-group {
+  margin-bottom: 17px;
+}
+
+.amenity-form-group > label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #344054;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.amenity-form-group > label span {
+  margin-left: 3px;
+  color: #d92d20;
+}
+
+.amenity-form-group > input,
+.amenity-category-select {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 12px;
+
+  border: 1px solid #dce2e9;
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #344054;
+
+  font-size: 13px;
+
+  transition: 0.18s ease;
+}
+
+.amenity-form-group > input:hover,
+.amenity-category-select:hover {
+  border-color: #c4ccd7;
+}
+
+.amenity-form-group > input:focus,
+.amenity-category-select:focus {
+  border-color: #1b2e4e;
+
+  box-shadow:
+    0 0 0 3px rgba(27, 46, 78, 0.07);
+}
+
+.amenity-form-group > input::placeholder {
+  color: #98a2b3;
+}
+
+.amenity-form-group small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #98a2b3;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.amenity-category-select {
+  cursor: pointer;
+}
+
+/* =========================================================
+   IMAGE UPLOAD
+========================================================= */
+
+.amenity-upload {
+  position: relative;
+
+  width: 100%;
+  height: 175px;
+
+  display: block;
+
+  overflow: hidden;
+
+  border: 1.5px dashed #cbd4df;
+  border-radius: 12px;
+
+  background: #fafbfc;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.amenity-upload:hover {
+  border-color: #1b2e4e;
+  background: #f7f9fb;
+}
+
+.amenity-upload input {
+  display: none;
+}
+
+.amenity-upload img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  background: #f8fafc;
+}
+
+.amenity-upload-empty {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #8490a0;
+}
+
+.amenity-upload-empty svg {
+  margin-bottom: 3px;
+
+  color: #1b2e4e;
+
+  font-size: 27px;
+}
+
+.amenity-upload-empty strong {
+  color: #344054;
+
+  font-size: 13px;
+}
+
+.amenity-upload-empty span {
+  color: #98a2b3;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   ACTIVE BOX
+========================================================= */
+
+.amenity-active-box {
+  min-height: 64px;
+
+  padding: 12px 13px;
+
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border: 1px solid #e6ebf0;
+  border-radius: 11px;
+
+  background: #fafbfc;
+}
+
+.amenity-active-box > div:first-child {
+  min-width: 0;
+}
+
+.amenity-active-box strong {
+  display: block;
+
+  color: #344054;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.amenity-active-box > div:first-child > span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #98a2b3;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.amenity-switch {
+  position: relative;
+
+  width: 44px;
+  height: 24px;
+
+  flex: 0 0 44px;
+
+  margin: 0;
+}
+
+.amenity-switch input {
+  position: absolute;
+
+  opacity: 0;
+
+  width: 0;
+  height: 0;
+}
+
+.amenity-switch > span {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 30px;
+
+  background: #cbd2da;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.amenity-switch > span::after {
+  content: "";
+
+  position: absolute;
+
+  width: 18px;
+  height: 18px;
+
+  top: 3px;
+  left: 3px;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.16);
+
+  transition: 0.2s ease;
+}
+
+.amenity-switch input:checked + span {
+  background: #1b2e4e;
+}
+
+.amenity-switch input:checked + span::after {
+  transform: translateX(20px);
+}
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.amenity-modal-footer {
+  padding-top: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  border-top: 1px solid #edf0f4;
+}
+
+.amenity-cancel-btn,
+.amenity-save-btn {
+  height: 41px;
+
+  padding: 0 15px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.amenity-cancel-btn {
+  border: 1px solid #dfe5ec;
+  background: #fff;
+
+  color: #475467;
+}
+
+.amenity-cancel-btn:hover {
+  background: #f8fafc;
+}
+
+.amenity-save-btn {
+  border: 0;
+  background: #1b2e4e;
+
+  color: #fff;
+
+  box-shadow:
+    0 5px 13px rgba(27, 46, 78, 0.15);
+}
+
+.amenity-save-btn:hover {
+  background: #14243d;
+}
+
+.amenity-save-btn:disabled,
+.amenity-cancel-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .amenity-page {
+    padding: 22px;
+  }
+
+  .amenity-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .amenity-search {
+    flex-basis: 100%;
+  }
+
+  .amenity-filter {
+    flex: 1;
+  }
+
+  .amenity-filter select {
+    width: 100%;
+  }
+
+  .amenity-refresh-btn {
+    min-width: 110px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .amenity-page {
+    padding: 16px 12px 25px;
+  }
+
+  /* HEADER */
+
+  .amenity-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+  }
+
+  .amenity-title-row {
+    align-items: flex-start;
+  }
+
+  .amenity-title-icon {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+
+    border-radius: 13px;
+
+    font-size: 20px;
+  }
+
+  .amenity-header h1 {
+    font-size: 23px;
+  }
+
+  .amenity-header p {
+    max-width: 95%;
+
+    font-size: 12px;
+  }
+
+  .amenity-add-btn {
+    width: 100%;
+  }
+
+  /* STATS */
+
+  .amenity-stat-card {
+    min-height: 86px;
+
+    padding: 14px;
+  }
+
+  .amenity-stat-icon {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+
+    border-radius: 12px;
+  }
+
+  .amenity-stat-card strong {
+    font-size: 22px;
+  }
+
+  /* TOOLBAR */
+
+  .amenity-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 10px;
+
+    gap: 8px;
+  }
+
+  .amenity-search {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .amenity-filter {
+    width: 100%;
+  }
+
+  .amenity-filter select,
+  .amenity-refresh-btn {
+    width: 100%;
+  }
+
+  .amenity-refresh-btn {
+    justify-content: center;
+  }
+
+  /* CARD */
+
+  .amenity-card-image {
+    height: 155px;
+  }
+
+  /* PAGINATION */
+
+  .amenity-pagination {
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 10px;
+  }
+
+  /* MODAL */
+
+  .amenity-modal-backdrop {
+    padding: 10px;
+
+    align-items: flex-end;
+  }
+
+  .amenity-modal {
+    max-height: 94vh;
+
+    border-radius: 17px 17px 0 0;
+  }
+
+  .amenity-form {
+    padding: 16px;
+  }
+
+  .amenity-modal-header {
+    padding: 15px 16px;
+  }
+
+  .amenity-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .amenity-cancel-btn,
+  .amenity-save-btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .amenity-page {
+    padding: 13px 10px 22px;
+  }
+
+  .amenity-title-row {
+    gap: 10px;
+  }
+
+  .amenity-title-icon {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+  }
+
+  .amenity-header h1 {
+    font-size: 21px;
+  }
+
+  .amenity-header p {
+    font-size: 11px;
+  }
+
+  .amenity-card-image {
+    height: 150px;
+  }
+
+  .amenity-card-body {
+    padding: 13px;
+  }
+
+  .amenity-place-icon {
+    width: 37px;
+    height: 37px;
+    flex-basis: 37px;
+  }
+
+  .amenity-card-title h3 {
+    font-size: 14px;
+  }
+
+  .amenity-form-group {
+    margin-bottom: 15px;
+  }
+
+  .amenity-upload {
+    height: 155px;
+  }
+
+  .amenity-modal-header h2 {
+    font-size: 16px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.amenity-add-btn:focus-visible,
+.amenity-refresh-btn:focus-visible,
+.amenity-action-buttons button:focus-visible,
+.amenity-pagination button:focus-visible,
+.amenity-modal-header > button:focus-visible,
+.amenity-cancel-btn:focus-visible,
+.amenity-save-btn:focus-visible {
+  outline: 3px solid rgba(27, 46, 78, 0.18);
+  outline-offset: 2px;
+}
