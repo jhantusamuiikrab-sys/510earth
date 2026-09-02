@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose"; // Changed from require()
+
 const { Schema } = mongoose;
 
 const BookedLeadInfoSchema = new Schema(
   {
-    bkLdId: { type: Number, required: true, unique: true }, // Maps to BkLdId IDENTITY
+    bkLdId: { type: Number, required: true, unique: true },
     leadId: { type: Number, default: null },
     leadDate: { type: String, default: null },
 
@@ -90,11 +91,12 @@ const BookedLeadInfoSchema = new Schema(
 
     // Audit Fields
     createdBy: { type: String, default: null },
-    updatedBy: { type: String, default: null }
+    updatedBy: { type: String, default: null },
   },
   {
-    timestamps: { createdAt: 'createdOn', updatedAt: 'updatedOn' }
+    timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" },
   }
 );
 
-module.exports = mongoose.model('BookedLeadInfo', BookedLeadInfoSchema);
+// Changed from module.exports = ...
+export default mongoose.model("BookedLeadInfo", BookedLeadInfoSchema);

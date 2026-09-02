@@ -16,6 +16,7 @@ import zonerouter from "./routes/zoneRoutes.js";
 import cookieParser from "cookie-parser";
 
 import path from "path";
+import bookedLeedrouter from "./routes/bookedLeadRoutes.js";
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.use("/api/amenities", amenityrouter);
 app.use("/api/suitablebusiness", suitableBusinessRouter);
 app.use("/api/csc", StateCityrouter);
 app.use("/api/zones", zonerouter);
+app.use("/api/booked-leads", bookedLeedrouter);
 
 app.use(express.urlencoded({ extended: true }));
 

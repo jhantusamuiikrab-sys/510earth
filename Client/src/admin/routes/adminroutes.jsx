@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Login from "../Login";
 import AdminLayout from "../components/AdminLayout";
@@ -20,6 +16,7 @@ import NearbyManagement from "../nearby/NearbyManagement";
 import AmenityManagement from "../amenity/AmenityManagement";
 import SuitableBusiness from "../SuitableBusiness";
 import ZoneManagement from "../ZoneManagement";
+import BookedLeadForm from "../BookedLeadForm";
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -35,11 +32,8 @@ const AdminRoutes = () => {
   return (
     <Routes>
       {/* ADMIN LOGIN */}
-      <Route
-        path="login"
-        element={<Login />}
-      />
-
+      <Route path="login" element={<Login />} />
+      <Route path="/bookedleadform" element={<BookedLeadForm />} />
       {/* ADMIN LAYOUT */}
       <Route
         path="/"
@@ -49,83 +43,33 @@ const AdminRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          index
-          element={
-            <Navigate
-              to="/admin/dashboard"
-              replace
-            />
-          }
-        />
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
 
-        <Route
-          path="dashboard"
-          element={<Dashboard />}
-        />
+        <Route path="dashboard" element={<Dashboard />} />
 
-        <Route
-          path="users"
-          element={<AdminUsers />}
-        />
+        <Route path="users" element={<AdminUsers />} />
 
-        <Route
-          path="users/create"
-          element={<CreateUser />}
-        />
+        <Route path="users/create" element={<CreateUser />} />
 
-        <Route
-          path="change-password"
-          element={<ChangePassword />}
-        />
+        <Route path="change-password" element={<ChangePassword />} />
 
-        <Route
-          path="users/:id"
-          element={<ViewUser />}
-        />
+        <Route path="users/:id" element={<ViewUser />} />
 
-        <Route
-          path="users/:id/edit"
-          element={<EditUser />}
-        />
+        <Route path="users/:id/edit" element={<EditUser />} />
 
-        <Route
-          path="Flat-Apartment"
-          element={<PropertyEntry />}
-        />
+        <Route path="Flat-Apartment" element={<PropertyEntry />} />
 
-        <Route
-          path="nearby"
-          element={<NearbyManagement />}
-        />
+        <Route path="nearby" element={<NearbyManagement />} />
 
-        <Route
-          path="amenities"
-          element={<AmenityManagement />}
-        />
+        <Route path="amenities" element={<AmenityManagement />} />
 
-        <Route
-          path="zones"
-          element={<ZoneManagement />}
-        />
+        <Route path="zones" element={<ZoneManagement />} />
 
-        <Route
-          path="suitablebusiness"
-          element={<SuitableBusiness />}
-        />
-
+        <Route path="suitablebusiness" element={<SuitableBusiness />} />
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}
-      <Route
-        path="*"
-        element={
-          <Navigate
-            to="/admin/login"
-            replace
-          />
-        }
-      />
+      <Route path="*" element={<Navigate to="/admin/login" replace />} />
     </Routes>
   );
 };
