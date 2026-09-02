@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const RequirementMismatchInfoSchema = new Schema(
@@ -111,4 +111,4 @@ const RequirementMismatchInfoSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('RequirementMismatchInfo', RequirementMismatchInfoSchema);
+export default mongoose.model('RequirementMismatchInfo', RequirementMismatchInfoSchema);

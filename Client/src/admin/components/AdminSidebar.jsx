@@ -109,6 +109,18 @@ const AdminSidebar = ({
       icon: <FiBarChart2 />,
       path: "/admin/reports",
     },
+
+     {
+      title: "Requirement Mismatch Form",
+      icon: <FiBarChart2 />,
+      path: "/admin/req-mismatch",
+    },
+
+     {
+      title: "Requirement Mismatch Form Dashboard",
+      icon: <FiBarChart2 />,
+      path: "/admin/req-mismatchApp",
+    },
   ];
 
   return (

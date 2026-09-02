@@ -20,6 +20,10 @@ import NearbyManagement from "../nearby/NearbyManagement";
 import AmenityManagement from "../amenity/AmenityManagement";
 import SuitableBusiness from "../SuitableBusiness";
 import ZoneManagement from "../ZoneManagement";
+import ReqMismatchForm from "../ReqMismatchForm";
+import ReqMismatchApp from "../ReqMismatchApp";
+import ReqMismatchDetailsPage from "../ReqMismatchDetailsPage";
+
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -113,6 +117,17 @@ const AdminRoutes = () => {
           path="suitablebusiness"
           element={<SuitableBusiness />}
         />
+
+        <Route
+          path="req-mismatch"
+          element={<ReqMismatchForm />}
+        />
+
+        <Route
+          path="req-mismatchApp"
+          element={<ReqMismatchApp />}
+        />
+        <Route path="req-mismatchApp/:id" element={<ReqMismatchDetailsPage />} />
 
       </Route>
 
