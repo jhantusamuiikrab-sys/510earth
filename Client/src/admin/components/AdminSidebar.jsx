@@ -127,6 +127,12 @@ const AdminSidebar = ({
       icon: <FiBarChart2 />,
       path: "/admin/bookedleadform",
     },
+
+    {
+      title: "Booked Lead Form",
+      icon: <FiBarChart2 />,
+      path: "/admin/bookedleadformview",
+    },
   ];
 
   return (

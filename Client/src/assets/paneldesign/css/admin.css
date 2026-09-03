@@ -306,7 +306,7 @@ a {
   display: flex;
 }
 
-.admin-sidebar {
+/* .admin-sidebar {
   width: 260px;
   background: var(--navy-dark);
   color: white;
@@ -318,6 +318,65 @@ a {
   display: flex;
   flex-direction: column;
   padding: 22px 16px;
+} */
+
+
+.admin-sidebar {
+  width: 260px;
+  background: var(--navy-dark);
+  color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 22px 16px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar-bottom {
+  margin-top: 20px;
+  flex-shrink: 0;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .sidebar-brand {
