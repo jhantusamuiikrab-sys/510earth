@@ -16,14 +16,12 @@ import NearbyManagement from "../nearby/NearbyManagement";
 import AmenityManagement from "../amenity/AmenityManagement";
 import SuitableBusiness from "../SuitableBusiness";
 import ZoneManagement from "../ZoneManagement";
-<<<<<<< HEAD
 import BookedLeadForm from "../BookedLeadForm";
-=======
 import ReqMismatchForm from "../ReqMismatchForm";
 import ReqMismatchApp from "../ReqMismatchApp";
 import ReqMismatchDetailsPage from "../ReqMismatchDetailsPage";
 
->>>>>>> 246bbe07ad43813f22646212f5242069c2a99729
+
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -40,7 +38,7 @@ const AdminRoutes = () => {
     <Routes>
       {/* ADMIN LOGIN */}
       <Route path="login" element={<Login />} />
-      <Route path="/bookedleadform" element={<BookedLeadForm />} />
+      
       {/* ADMIN LAYOUT */}
       <Route
         path="/"
@@ -72,9 +70,7 @@ const AdminRoutes = () => {
 
         <Route path="zones" element={<ZoneManagement />} />
 
-<<<<<<< HEAD
         <Route path="suitablebusiness" element={<SuitableBusiness />} />
-=======
         <Route
           path="req-mismatch"
           element={<ReqMismatchForm />}
@@ -85,8 +81,8 @@ const AdminRoutes = () => {
           element={<ReqMismatchApp />}
         />
         <Route path="req-mismatchApp/:id" element={<ReqMismatchDetailsPage />} />
+        <Route path="bookedleadform" element={<BookedLeadForm />} />
 
->>>>>>> 246bbe07ad43813f22646212f5242069c2a99729
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}

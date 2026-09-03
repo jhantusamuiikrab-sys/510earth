@@ -121,6 +121,12 @@ const AdminSidebar = ({
       icon: <FiBarChart2 />,
       path: "/admin/req-mismatchApp",
     },
+
+     {
+      title: "Booked Lead Form",
+      icon: <FiBarChart2 />,
+      path: "/admin/bookedleadform",
+    },
   ];
 
   return (
