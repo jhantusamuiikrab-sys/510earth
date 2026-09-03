@@ -1,4 +1,5 @@
 import RequirementMismatchInfo from "../models/RequirementMismatchInfo.js";
+import mongoose from "mongoose";
 
 /**
  * @desc    Create a new Requirement Mismatch Record
@@ -137,6 +138,74 @@ export const getAllRequirementMismatch = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch records.",
+      error: error.message,
+    });
+  }
+};
+
+export const updateRequirementMismatch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = { ...req.body };
+
+    const isObjectId = mongoose.Types.ObjectId.isValid(id);
+    const numericId = Number(id);
+    const isNumeric = !isNaN(numericId);
+
+    // Construct precise search queries without returning invalid queries
+    const orConditions = [];
+
+    if (isObjectId) {
+      orConditions.push({ _id: id });
+    }
+
+    if (isNumeric) {
+      orConditions.push({ rmId: numericId });
+      orConditions.push({ leadId: numericId });
+    }
+
+    // Fallback: search as a string against potential custom key names
+    orConditions.push({ customId: id });
+    orConditions.push({ reqId: id });
+
+    const query = { $or: orConditions };
+
+    // Format array fields safely
+    if (Array.isArray(updateData.preferredLocations)) {
+      updateData.preferredLocation = updateData.preferredLocations.filter(Boolean).join(", ");
+    }
+    if (Array.isArray(updateData.pvDoneOwnself)) {
+      updateData.pvDoneOwnself = updateData.pvDoneOwnself.filter(Boolean).join(", ");
+    }
+
+    // Handle empty date inputs to avoid CastErrors
+    updateData.custDOB = updateData.custDOB || null;
+    updateData.custAnniversaryDate = updateData.custAnniversaryDate || null;
+    updateData.ucPossessionDate = updateData.ucPossessionDate || null;
+
+    const updatedRecord = await RequirementMismatchInfo.findOneAndUpdate(
+      query,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedRecord) {
+      return res.status(404).json({
+        success: false,
+        message: `Requirement Mismatch record not found for query parameter: ${id}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Record updated successfully.",
+      data: updatedRecord,
+    });
+  } catch (error) {
+    console.error("Error updating Requirement Mismatch:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error: Unable to update record.",
       error: error.message,
     });
   }

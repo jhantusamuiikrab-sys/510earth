@@ -23,6 +23,7 @@ import ReqMismatchDetailsPage from "../ReqMismatchDetailsPage";
 
 
 
+
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
 
@@ -81,6 +82,7 @@ const AdminRoutes = () => {
           element={<ReqMismatchApp />}
         />
         <Route path="req-mismatchApp/:id" element={<ReqMismatchDetailsPage />} />
+
         <Route path="bookedleadform" element={<BookedLeadForm />} />
 
       </Route>

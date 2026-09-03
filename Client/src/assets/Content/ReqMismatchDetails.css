@@ -117,3 +117,20 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Ensure range container aligns inputs horizontally */
+.range-inputs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+/* Ensure inputs in range have visible height and width */
+.range-inputs input {
+  width: 100% !important;
+  min-width: 80px !important;
+  height: 38px !important;
+  padding: 6px 10px !important;
+  box-sizing: border-box !important;
+}
