@@ -20,6 +20,7 @@ import BookedLeadForm from "../BookedLeadForm";
 import ReqMismatchForm from "../ReqMismatchForm";
 import ReqMismatchApp from "../ReqMismatchApp";
 import ReqMismatchDetailsPage from "../ReqMismatchDetailsPage";
+import BookedLeadFormView from "../BookedLeadFormView";
 
 
 
@@ -84,6 +85,7 @@ const AdminRoutes = () => {
         <Route path="req-mismatchApp/:id" element={<ReqMismatchDetailsPage />} />
 
         <Route path="bookedleadform" element={<BookedLeadForm />} />
+        <Route path="bookedleadformview" element={<BookedLeadFormView />} />
 
       </Route>
 
