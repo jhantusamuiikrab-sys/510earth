@@ -836,7 +836,6 @@ export const getAllProperties = async (
       success: true,
 
       data: properties,
-
       pagination: {
         total,
 
