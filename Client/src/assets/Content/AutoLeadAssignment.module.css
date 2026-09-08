@@ -70,24 +70,33 @@
 
 .selectInput:focus {
   border-color: #c9a86a;
-  box-shadow: 0 0 0 3px rgba(201, 168, 106, 0.15);
+  box-shadow: 0 0 0 3px rgba(201, 168, 106, 0.25);
 }
 
+/* Golden Submit Button with Golden Ring on Click */
 .submitBtn {
   background-color: #c9a86a;
   color: #ffffff;
-  border: none;
+  border: 1px solid #c9a86a;
   border-radius: 6px;
   padding: 10px 32px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   height: 38px;
+  outline: none;
 }
 
 .submitBtn:hover {
   background-color: #b59355;
+  border-color: #b59355;
+}
+
+.submitBtn:focus,
+.submitBtn:active {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201, 168, 106, 0.35);
 }
 
 /* Table Card */
@@ -99,6 +108,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
+/* Property Agents Table Section Header - Maintained Original Sleek Dark Look */
 .cardHeader {
   background-color: #0f172a;
   padding: 14px 20px;
@@ -106,10 +116,11 @@
 }
 
 .cardHeader h3 {
-  color: #ffffff;
+  color: #c9a86a;
   font-size: 14px;
   font-weight: 600;
   margin: 0;
+  letter-spacing: 0.5px;
 }
 
 .tableWrapper {
@@ -123,15 +134,16 @@
   font-size: 13px;
 }
 
+/* Table Columns (PROPERTY TYPE, PROPERTY NAME, AGENT NAME, etc.) -> Golden Background with Black Text */
 .table th {
-  background-color: #f8fafc;
+  background-color: #c9a86a; /* Golden Background */
   text-align: left;
-  color: #64748b;
+  color: #000000;             /* Solid Black Text */
   font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   padding: 14px 16px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #b59355;
   white-space: nowrap;
 }
 
@@ -156,6 +168,7 @@
   color: #0f172a;
 }
 
+/* Type Badges */
 .typeBadge {
   background-color: #f1f5f9;
   color: #475569;
@@ -163,6 +176,21 @@
   border-radius: 12px;
   font-size: 11px;
   font-weight: 600;
+}
+
+.badgeResidential {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.badgeCommercial {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.badgeLand {
+  background-color: #dcfce7;
+  color: #15803d;
 }
 
 .dateText {
@@ -176,21 +204,29 @@
   color: #94a3b8;
 }
 
-/* Action Buttons */
-.deleteBtn {
-  background-color: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 600;
+/* Golden Delete Icon Button with Golden Focus Ring */
+.deleteIconBtn {
+  background: transparent;
+  color: #c9a86a;
+  border: 1px solid transparent;
+  padding: 6px;
   border-radius: 6px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
+  outline: none;
 }
 
-.deleteBtn:hover {
-  background-color: #dc2626;
-  color: #ffffff;
-  border-color: #dc2626;
+.deleteIconBtn:hover {
+  background-color: #fef8ec;
+  color: #b59355;
+  border-color: #fde68a;
+}
+
+.deleteIconBtn:focus,
+.deleteIconBtn:active {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201, 168, 106, 0.35);
 }

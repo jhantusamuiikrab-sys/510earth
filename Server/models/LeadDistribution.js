@@ -3,26 +3,27 @@ import mongoose from "mongoose";
 const LeadDistributionSchema = new mongoose.Schema(
   {
     PropertyType: {
-      type: "String",
+      type: String,
+      trim: true,
     },
     PropertyName: {
-      type: "String",
+      type: String,
+      trim: true,
     },
     AgentName: {
-      type: "String",
+      type: String,
+      trim: true,
     },
     PropertyConnectedDate: {
-      type: Date.now(),
+      type: Date,
+      default: Date.now, // Pass function reference without execution brackets ()
     },
     LastAssignDate: {
-      type: Date.now(),
+      type: Date,
+      default: Date.now,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-export default mongoose.model("leaddistributioninfo",LeadDistributionSchema)
-// export const LeadDistributionInfo = mongoose.model(
-//   "leaddistributioninfo",
-//   LeadDistributionSchema,
-// );
+export default mongoose.model("LeadDistribution", LeadDistributionSchema);
