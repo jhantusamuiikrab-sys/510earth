@@ -62,3 +62,87 @@ export const createLeadSource = async (req, res) => {
     });
   }
 };
+
+export const getLeadSources = async (req, res) => {
+  try {
+    const leadSources = await LeadSource.find({ isDelete: false });
+    return res.status(200).json({
+      success: true,
+      data: leadSources,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
+export const deleteLeadSource = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const leadSource = await LeadSource.findById(id);
+
+    if (!leadSource) {
+      return res.status(404).json({
+        success: false,
+        message: 'Lead source not found',
+      });
+    }
+
+    leadSource.isActive = false; // Optionally deactivate the lead source
+    leadSource.isDelete = true;
+    await leadSource.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Lead source deleted successfully',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
+export const updateLeadSource = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, isActive } = req.body;
+
+    const leadSource = await LeadSource.findById(id);
+
+    if (!leadSource) {
+      return res.status(404).json({
+        success: false,
+        message: 'Lead source not found',
+      });
+    }
+
+    // Update the lead source fields
+    if (name !== undefined) {
+      leadSource.name = name.trim();
+    }
+    if (isActive !== undefined) {
+      leadSource.isActive = isActive;
+    }
+
+    await leadSource.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Lead source updated successfully',
+      data: leadSource,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};

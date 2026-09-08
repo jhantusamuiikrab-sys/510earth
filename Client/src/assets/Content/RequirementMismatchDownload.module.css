@@ -1,0 +1,79 @@
+.downloadPageContainer {
+  padding: 20px;
+  background-color: var(--bg-main, #f4f6f9);
+  min-height: 100vh;
+}
+
+.navigationWrapper {
+  margin-bottom: 15px;
+}
+
+.cardPanel {
+  background-color: var(--bg-card, #ffffff);
+  border-radius: var(--radius-card, 4px);
+  overflow: hidden;
+}
+
+.panelHeader {
+  background-color: var(--accent-gold, #c5a059);
+  color: #ffffff;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.printableSection {
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.formTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mismatchDetailTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border: 1px solid #000000;
+}
+
+.mismatchDetailTable td {
+  border: 1px solid #000000;
+  padding: 10px 12px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.mismatchDetailTable .tableLabel {
+  font-weight: bold;
+  width: 20%;
+  background-color: #ffffff;
+}
+
+.mismatchDetailTable td:nth-child(even) {
+  width: 30%;
+}
+
+.actionWrapper {
+  text-align: center;
+  padding: 20px;
+}
+
+.downloadBtn {
+  background-color: var(--accent-success, #28a745);
+  color: #ffffff;
+  padding: 10px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius-btn, 4px);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.downloadBtn:hover {
+  opacity: 0.9;
+}

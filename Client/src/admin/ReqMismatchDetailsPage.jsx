@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import '../assets/Content/ReqMismatchDetails.css';
+import  '../assets/Content/ReqMismatchDetails.css';
 import api from "./utils/api";
 
 const ReqMismatchDetailsPage = () => {
