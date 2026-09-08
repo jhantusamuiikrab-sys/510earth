@@ -3458,7 +3458,8 @@ const PropertyEntry = () => {
 
                 </div>
 
-              )}
+              )
+              }
 
             </Section>
 

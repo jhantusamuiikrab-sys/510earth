@@ -133,6 +133,18 @@ const AdminSidebar = ({
       icon: <FiBarChart2 />,
       path: "/admin/bookedleadformview",
     },
+
+     {
+      title: "Create Lead Source",
+      icon: <FiBarChart2 />,
+      path: "/admin/CreateLeadSource",
+    },
+
+     {
+      title: "All Lead Source",
+      icon: <FiBarChart2 />,
+      path: "/admin/LeadSourcePage",
+    },
   ];
 
   return (

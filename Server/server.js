@@ -13,6 +13,7 @@ import amenityrouter from   "./routes/amenityRoutes.js";
 import StateCityrouter from "./routes/stateCityRoutes.js";
 import zonerouter from "./routes/zoneRoutes.js";
 import reqMisMatchRouter from "./routes/ReqMisMatchRoutes.js";
+import leadSourceRouter from "./routes/LeadSourceRoutes.js";
 
 import cookieParser from "cookie-parser";
 
@@ -50,6 +51,7 @@ app.use("/api/csc", StateCityrouter);
 app.use("/api/zones", zonerouter);
 app.use("/api/booked-leads", bookedLeedrouter);
 app.use("/api/requirement-mismatch",reqMisMatchRouter);
+app.use("/api/lead-sources", leadSourceRouter); // Import and use the LeadSourceRoutes
 
 app.use(express.urlencoded({ extended: true }));
 

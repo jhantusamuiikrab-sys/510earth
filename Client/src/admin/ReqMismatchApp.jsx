@@ -19,6 +19,11 @@ const ReqMismatchApp = () => {
     rmmStatus: ''
   });
 
+  const handleDownloadClick = (row) => {
+  const leadId = row._id || row.id || '1388';
+  navigate(`/admin/req-mismatchDownload/${leadId}`, { state: { leadData: row } });
+};
+
   // 1. Fetch API Data Function
   const fetchMismatchData = async (searchParams = {}) => {
     try {
@@ -237,7 +242,12 @@ const ReqMismatchApp = () => {
                               >
                                 View
                               </button>
-                              <button className="btn btn-sm btn-secondary">Download</button>
+                              <button 
+  className="btn btn-sm btn-secondary"
+  onClick={() => handleDownloadClick(row)}
+>
+  Download
+</button>
                             </div>
                           </td>
                         </tr>
