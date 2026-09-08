@@ -22,6 +22,7 @@ import BookedLeadFormView from "../BookedLeadFormView";
 import AutoLeadAssignment from "../AutoLeadAssignment";
 import CreateLeadSource from "../CreateLeadSource";
 import LeadSourcePage from "../LeadSourcePage";
+import EditLeadForm from "../EditLeadForm";
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -57,7 +58,8 @@ const AdminRoutes = () => {
         <Route path="req-mismatchApp/:id" element={<ReqMismatchDetailsPage />}/>
         <Route path="req-mismatchDownload/:id" element={<RequirementMismatchDownload />}/>
         <Route path="bookedleadform" element={<BookedLeadForm />} />
-        <Route path="bookedleadformview" element={<BookedLeadFormView />} />
+        <Route path="bookedleadformview" element={<BookedLeadFormView />}/>
+        <Route path="editleadform/:id" element={<EditLeadForm />} />
         <Route path="autoleadassignment" element={<AutoLeadAssignment />} />
         <Route path="CreateLeadSource" element={<CreateLeadSource />} />
         <Route path="LeadSourcePage" element={<LeadSourcePage />} />

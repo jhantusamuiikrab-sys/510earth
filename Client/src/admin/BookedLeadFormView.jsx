@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styles from "../assets/Content/BookedLeadFormView.module.css";
 import { API_URL } from "./utils/api";
-
+import { useNavigate } from "react-router-dom";
 const API_BASE = `${API_URL}/booked-leads`;
 
 // Pagination range generator
@@ -28,7 +28,7 @@ const getPaginationRange = (currentPage, totalPages, siblingCount = 1) => {
     let rightItemCount = 3 + 2 * siblingCount;
     let rightRange = Array.from(
       { length: rightItemCount },
-      (_, i) => totalPages - rightItemCount + i + 1
+      (_, i) => totalPages - rightItemCount + i + 1,
     );
     return [1, "...", ...rightRange];
   }
@@ -36,7 +36,7 @@ const getPaginationRange = (currentPage, totalPages, siblingCount = 1) => {
   if (shouldShowLeftDots && shouldShowRightDots) {
     let middleRange = Array.from(
       { length: rightSiblingIndex - leftSiblingIndex + 1 },
-      (_, i) => leftSiblingIndex + i
+      (_, i) => leftSiblingIndex + i,
     );
     return [1, "...", ...middleRange, "...", totalPages];
   }
@@ -49,7 +49,7 @@ const BookedLeadFormView = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   // Fetch leads with explicit targetPage support to prevent async state race condition
   const fetchLeads = useCallback(
     async (targetPage = currentPage) => {
@@ -64,7 +64,9 @@ const BookedLeadFormView = () => {
         if (leadDate) queryParams.append("leadDate", leadDate);
         if (bookingDate) queryParams.append("bookingDate", bookingDate);
 
-        const response = await fetch(`${API_BASE}/get?${queryParams.toString()}`);
+        const response = await fetch(
+          `${API_BASE}/get?${queryParams.toString()}`,
+        );
         const result = await response.json();
 
         if (response.ok && result.success) {
@@ -82,7 +84,7 @@ const BookedLeadFormView = () => {
         setLoading(false);
       }
     },
-    [currentPage, leadDate, bookingDate]
+    [currentPage, leadDate, bookingDate],
   );
 
   // Initial load and page change handler
@@ -116,8 +118,8 @@ const BookedLeadFormView = () => {
       if (response.ok) {
         setLeads((prev) =>
           prev.map((item) =>
-            item._id === id ? { ...item, isBookingApproved: nextStatus } : item
-          )
+            item._id === id ? { ...item, isBookingApproved: nextStatus } : item,
+          ),
         );
       } else {
         const result = await response.json();
@@ -126,6 +128,10 @@ const BookedLeadFormView = () => {
     } catch (error) {
       console.error("Approval API error:", error);
     }
+  };
+
+  const handleViewClick = (id) => {
+    navigate(`/admin/editleadform/${id}`);
   };
 
   // Delete lead
@@ -146,6 +152,43 @@ const BookedLeadFormView = () => {
       }
     } catch (error) {
       console.error("Delete error:", error);
+    }
+  };
+  const handleDownload = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE}/download/${id}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to download file: ${response.statusText}`);
+      }
+
+      // Extract filename from Content-Disposition header if available
+      const contentDisposition = response.headers.get("Content-Disposition");
+      let filename = `Booking_Form_${id}.pdf`;
+
+      if (contentDisposition && contentDisposition.includes("filename=")) {
+        filename = contentDisposition
+          .split("filename=")[1]
+          .replace(/["']/g, ""); // Remove quotes
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up temporary DOM elements and Object URL
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download error:", error);
     }
   };
 
@@ -178,7 +221,7 @@ const BookedLeadFormView = () => {
             className={styles.dateInput}
           />
         </div>
-    
+
         <div className={styles.filterActions}>
           <button className={styles.searchBtn} onClick={handleSearch}>
             Search
@@ -228,8 +271,8 @@ const BookedLeadFormView = () => {
                       {row.leadDate
                         ? row.leadDate
                         : row.createdOn?.$date
-                        ? new Date(row.createdOn.$date).toLocaleDateString()
-                        : "N/A"}
+                          ? new Date(row.createdOn.$date).toLocaleDateString()
+                          : "N/A"}
                     </td>
                     <td>{row.bookingDate || "N/A"}</td>
                     <td className={styles.boldText}>
@@ -245,8 +288,8 @@ const BookedLeadFormView = () => {
                           row.isBookingApproved === true
                             ? styles.statusApproved
                             : row.isBookingApproved === false
-                            ? styles.statusDisapproved
-                            : styles.statusPending
+                              ? styles.statusDisapproved
+                              : styles.statusPending
                         }`}
                         onClick={() =>
                           handleApprovalToggle(row._id, row.isBookingApproved)
@@ -256,13 +299,17 @@ const BookedLeadFormView = () => {
                         {row.isBookingApproved === true
                           ? "Approved"
                           : row.isBookingApproved === false
-                          ? "Disapproved"
-                          : "Pending"}
+                            ? "Disapproved"
+                            : "Pending"}
                       </button>
                     </td>
                     <td>
                       <div className={styles.actionGroup}>
-                        <button className={styles.iconBtn} title="View Details">
+                        <button
+                          className={styles.iconBtn}
+                          title="View Details"
+                          onClick={() => handleViewClick(row._id)}
+                        >
                           <svg
                             width="15"
                             height="15"
@@ -278,6 +325,7 @@ const BookedLeadFormView = () => {
                         <button
                           className={styles.iconBtn}
                           title="Download Report"
+                          onClick={() => handleDownload(row._id)}
                         >
                           <svg
                             width="15"
@@ -351,7 +399,7 @@ const BookedLeadFormView = () => {
                       {page}
                     </button>
                   );
-                }
+                },
               )}
             </div>
 

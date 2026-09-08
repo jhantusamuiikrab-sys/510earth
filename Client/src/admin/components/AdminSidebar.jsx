@@ -17,13 +17,8 @@ import {
   FiMap,
 } from "react-icons/fi";
 
-const AdminSidebar = ({
-  mobileOpen,
-  setMobileOpen,
-  onLogout,
-}) => {
-  const [propertiesOpen, setPropertiesOpen] =
-    useState(false);
+const AdminSidebar = ({ mobileOpen, setMobileOpen, onLogout }) => {
+  const [propertiesOpen, setPropertiesOpen] = useState(false);
 
   const menuItems = [
     {
@@ -85,7 +80,6 @@ const AdminSidebar = ({
       path: "/admin/zones",
     },
 
-
     {
       title: "Suitable business",
       icon: <FiBriefcase />,
@@ -110,40 +104,45 @@ const AdminSidebar = ({
       path: "/admin/reports",
     },
 
-     {
+    {
       title: "Requirement Mismatch Form",
       icon: <FiBarChart2 />,
       path: "/admin/req-mismatch",
     },
 
-     {
+    {
       title: "Requirement Mismatch Form Dashboard",
       icon: <FiBarChart2 />,
       path: "/admin/req-mismatchApp",
     },
 
-     {
+    {
       title: "Booked Lead Form",
       icon: <FiBarChart2 />,
       path: "/admin/bookedleadform",
     },
 
     {
-      title: "Booked Lead Form",
+      title: "View Lead",
       icon: <FiBarChart2 />,
       path: "/admin/bookedleadformview",
     },
 
-     {
+    {
       title: "Create Lead Source",
       icon: <FiBarChart2 />,
       path: "/admin/CreateLeadSource",
     },
 
-     {
+    {
       title: "All Lead Source",
       icon: <FiBarChart2 />,
       path: "/admin/LeadSourcePage",
+    },
+    {
+      title: "Lead Distribution Setup",
+      icon: <FiBarChart2 />,
+      path: "/admin/autoleadassignment",
     },
   ];
 
@@ -151,27 +150,17 @@ const AdminSidebar = ({
     <>
       {/* MOBILE OVERLAY */}
       {mobileOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setMobileOpen(false)}
-        />
+        <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />
       )}
 
-      <aside
-        className={`admin-sidebar ${
-          mobileOpen ? "mobile-open" : ""
-        }`}
-      >
+      <aside className={`admin-sidebar ${mobileOpen ? "mobile-open" : ""}`}>
         {/* =====================================================
             BRAND
         ===================================================== */}
 
         <div className="sidebar-brand">
           <div className="brand-logo">
-            <img
-              src="/images/earth.webp"
-              alt="51oearth"
-            />
+            <img src="/images/earth.webp" alt="51oearth" />
           </div>
 
           <div className="brand-text">
@@ -191,9 +180,7 @@ const AdminSidebar = ({
             MAIN MENU
         ===================================================== */}
 
-        <div className="sidebar-section-title">
-          MAIN MENU
-        </div>
+        <div className="sidebar-section-title">MAIN MENU</div>
 
         <nav className="sidebar-nav">
           {menuItems.map((item) => {
@@ -207,17 +194,11 @@ const AdminSidebar = ({
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `sidebar-link ${
-                      isActive ? "active" : ""
-                    }`
+                    `sidebar-link ${isActive ? "active" : ""}`
                   }
-                  onClick={() =>
-                    setMobileOpen(false)
-                  }
+                  onClick={() => setMobileOpen(false)}
                 >
-                  <span className="sidebar-icon">
-                    {item.icon}
-                  </span>
+                  <span className="sidebar-icon">{item.icon}</span>
 
                   <span>{item.title}</span>
                 </NavLink>
@@ -229,38 +210,20 @@ const AdminSidebar = ({
             // =================================================
 
             return (
-              <div
-                key={item.title}
-                className="sidebar-menu-group"
-              >
+              <div key={item.title} className="sidebar-menu-group">
                 <button
                   type="button"
                   className={`sidebar-link sidebar-parent-link ${
-                    propertiesOpen
-                      ? "expanded"
-                      : ""
+                    propertiesOpen ? "expanded" : ""
                   }`}
-                  onClick={() =>
-                    setPropertiesOpen(
-                      (previous) =>
-                        !previous
-                    )
-                  }
+                  onClick={() => setPropertiesOpen((previous) => !previous)}
                 >
-                  <span className="sidebar-icon">
-                    {item.icon}
-                  </span>
+                  <span className="sidebar-icon">{item.icon}</span>
 
-                  <span className="sidebar-parent-title">
-                    {item.title}
-                  </span>
+                  <span className="sidebar-parent-title">{item.title}</span>
 
                   <span className="sidebar-chevron">
-                    {propertiesOpen ? (
-                      <FiChevronDown />
-                    ) : (
-                      <FiChevronRight />
-                    )}
+                    {propertiesOpen ? <FiChevronDown /> : <FiChevronRight />}
                   </span>
                 </button>
 
@@ -270,36 +233,20 @@ const AdminSidebar = ({
 
                 {propertiesOpen && (
                   <div className="sidebar-submenu">
-                    {item.subMenu.map(
-                      (subItem) => (
-                        <NavLink
-                          key={subItem.path}
-                          to={subItem.path}
-                          className={({
-                            isActive,
-                          }) =>
-                            `sidebar-submenu-link ${
-                              isActive
-                                ? "active"
-                                : ""
-                            }`
-                          }
-                          onClick={() =>
-                            setMobileOpen(
-                              false
-                            )
-                          }
-                        >
-                          <span className="submenu-dot" />
+                    {item.subMenu.map((subItem) => (
+                      <NavLink
+                        key={subItem.path}
+                        to={subItem.path}
+                        className={({ isActive }) =>
+                          `sidebar-submenu-link ${isActive ? "active" : ""}`
+                        }
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <span className="submenu-dot" />
 
-                          <span>
-                            {
-                              subItem.title
-                            }
-                          </span>
-                        </NavLink>
-                      )
-                    )}
+                        <span>{subItem.title}</span>
+                      </NavLink>
+                    ))}
                   </div>
                 )}
               </div>
@@ -311,21 +258,15 @@ const AdminSidebar = ({
             SYSTEM
         ===================================================== */}
 
-        <div className="sidebar-section-title mt-4">
-          SYSTEM
-        </div>
+        <div className="sidebar-section-title mt-4">SYSTEM</div>
 
         <nav className="sidebar-nav">
           <NavLink
             to="/admin/change-password"
             className={({ isActive }) =>
-              `sidebar-link ${
-                isActive ? "active" : ""
-              }`
+              `sidebar-link ${isActive ? "active" : ""}`
             }
-            onClick={() =>
-              setMobileOpen(false)
-            }
+            onClick={() => setMobileOpen(false)}
           >
             <span className="sidebar-icon">
               <FiSettings />
@@ -340,20 +281,14 @@ const AdminSidebar = ({
         ===================================================== */}
 
         <div className="sidebar-bottom">
-          <button
-            className="sidebar-logout"
-            onClick={onLogout}
-          >
+          <button className="sidebar-logout" onClick={onLogout}>
             <span>
               <FiLogOut />
             </span>
-
             Logout
           </button>
 
-          <div className="sidebar-version">
-            RealEstate Admin v1.0
-          </div>
+          <div className="sidebar-version">RealEstate Admin v1.0</div>
         </div>
       </aside>
     </>
