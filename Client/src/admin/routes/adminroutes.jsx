@@ -23,6 +23,7 @@ import AutoLeadAssignment from "../AutoLeadAssignment";
 import CreateLeadSource from "../CreateLeadSource";
 import LeadSourcePage from "../LeadSourcePage";
 import EditLeadForm from "../EditLeadForm";
+import PartnerList from "../PartnerList";
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -63,6 +64,7 @@ const AdminRoutes = () => {
         <Route path="autoleadassignment" element={<AutoLeadAssignment />} />
         <Route path="CreateLeadSource" element={<CreateLeadSource />} />
         <Route path="LeadSourcePage" element={<LeadSourcePage />} />
+        <Route path="PartnerList" element={<PartnerList />} />
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}

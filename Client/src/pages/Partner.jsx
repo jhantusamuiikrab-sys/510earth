@@ -8,8 +8,8 @@ function Partner() {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
-    stateId: "",
-    cityId: "",
+    stateName: "",
+    cityName: "",
     contactNo: "",
     email: "",
   });
@@ -22,10 +22,37 @@ function Partner() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Submitted Successfully:", formData);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch('http://localhost:3000/api/partners/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert('Registration successful!');
+      setFormData({
+        name: '',
+        address: '',
+        stateName: '',
+        cityName: '',
+        contactNo: '',
+        email: '',
+      });
+    } else {
+      alert(`Error: ${result.message}`);
+    }
+  } catch (error) {
+    console.error('Submission Error:', error);
+    alert('Failed to connect to the server.');
+  }
+};
 
   // Re-use our centralized system hook to scan the viewports on render
   useEffect(() => {
@@ -148,16 +175,16 @@ function Partner() {
                         State <span>*</span>
                       </label>
                       <select
-                        name="stateId"
+                        name="stateName"
                         id="StateId"
                         className="form-control form_partner"
-                        value={formData.stateId}
+                        value={formData.stateName}
                         onChange={handleInputChange}
                         required
                       >
                         <option value="">--Select State--</option>
-                        <option value="1">West Bengal</option>
-                        <option value="2">Maharashtra</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Maharashtra">Maharashtra</option>
                       </select>
                       <span id="StateIdError" />
                     </div>
@@ -167,11 +194,11 @@ function Partner() {
                         City <span>*</span>
                       </label>
                       <select
-                        name="cityId"
+                        name="cityName"
                         id="CityId"
                         className="form-control select2"
                         style={{ display: "block" }}
-                        value={formData.cityId}
+                        value={formData.cityName}
                         onChange={handleInputChange}
                         required
                       >

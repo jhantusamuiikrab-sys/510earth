@@ -144,6 +144,12 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen, onLogout }) => {
       icon: <FiBarChart2 />,
       path: "/admin/autoleadassignment",
     },
+
+    {
+      title: "Partner List",
+      icon: <FiBarChart2 />,
+      path: "/admin/PartnerList",
+    },
   ];
 
   return (
