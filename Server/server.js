@@ -20,6 +20,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import bookedLeedrouter from "./routes/bookedLeadRoutes.js";
 import LeadDistributionRouter from "./routes/LeadDistributionRoutes.js";
+import subscriberRoute from "./routes/subscriberRoute.js";
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use("/api/booked-leads", bookedLeedrouter);
 app.use("/api/requirement-mismatch",reqMisMatchRouter);
 app.use("/api/lead-sources", leadSourceRouter); 
 app.use("/api/lead-distributin", LeadDistributionRouter); 
+app.use("/api/create", subscriberRoute); 
 
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,17 +1,60 @@
 // Fixed: Capitalized Link import statement
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 // Added prop parameters to dynamically capture Property Category and Name if available
-const Footer = ({ currentCategory = "Real Estate", propertyName = "510earth" }) => {
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-  };
-
+const Footer = ({
+  currentCategory = "Real Estate",
+  propertyName = "510earth",
+}) => {
+  const [data, setData] = useState("");
   // Safe encoding for the pre-filled WhatsApp chat text
   const whatsappText = encodeURIComponent(
-    `Hi there, Interested In ${currentCategory} Property (Property Name: ${propertyName})!`
+    `Hi there, Interested In ${currentCategory} Property (Property Name: ${propertyName})!`,
   );
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/create/subscriber",
+        { email: data },
+      );
 
+      const statusCode = response.status;
+      switch (statusCode) {
+        case 201:
+          alert("Subscriber successfully created!");
+          setData("");
+          break;
+
+        case 200:
+          console.log("Subscriber registered/updated.");
+          break;
+
+        default:
+          console.log(`Received status code: ${statusCode}`);
+      }
+    } catch (error) {
+      // Axios throws an error for non-2xx responses (e.g., 400, 409, 500)
+      if (error.response) {
+        const errorStatus = error.response.status;
+
+        if (errorStatus === 400) {
+          alert("Please provide a valid email address.");
+          setData("");
+        } else if (errorStatus === 409) {
+          alert("This email is already subscribed!");
+          setData("");
+        } else {
+          alert(`Server error (${errorStatus}). Please try again later.`);
+          setData("");
+        }
+      } else {
+        // Network errors or server not reachable
+        console.error("Network error / Server unreachable:", error.message);
+      }
+    }
+  };
   return (
     <>
       {/* 1. NEWSLETTER: Background spans 100% full screen */}
@@ -32,6 +75,8 @@ const Footer = ({ currentCategory = "Real Estate", propertyName = "510earth" }) 
                     type="text"
                     placeholder="Email Address"
                     className="form-control"
+                    value={data}
+                    onChange={(e) => setData(e.target.value)}
                   />
                   <button type="submit" className="btn btn-primary news_btn">
                     Subscribe
@@ -262,33 +307,33 @@ const Footer = ({ currentCategory = "Real Estate", propertyName = "510earth" }) 
 
       {/* --- ADDED SECTION: Floating WhatsApp Sticky Widget --- */}
       {/* --- Floating WhatsApp Sticky Widget --- */}
-<div
-  id="whatsAppDiv"
-  style={{
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    zIndex: 99999,
-  }}
->
-  <a
-    href={`https://api.whatsapp.com/send?phone=919832064905&text=${whatsappText}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ display: "inline-block" }}
-  >
-    <img
-      src="/images/whatsapp_btn.png"
-      alt="WhatsApp Chat"
-      style={{
-        width: "82px",
-        height: "auto",
-        display: "block",
-        filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.25))",
-      }}
-    />
-  </a>
-</div>
+      <div
+        id="whatsAppDiv"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 99999,
+        }}
+      >
+        <a
+          href={`https://api.whatsapp.com/send?phone=919832064905&text=${whatsappText}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "inline-block" }}
+        >
+          <img
+            src="/images/whatsapp_btn.png"
+            alt="WhatsApp Chat"
+            style={{
+              width: "82px",
+              height: "auto",
+              display: "block",
+              filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.25))",
+            }}
+          />
+        </a>
+      </div>
     </>
   );
 };

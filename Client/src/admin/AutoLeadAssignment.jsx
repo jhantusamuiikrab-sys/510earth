@@ -41,15 +41,6 @@ const AutoLeadAssignment = () => {
     fetchDistributedLeads();
   }, []);
 
-  // Filter properties based on selected Property Type
-  const filteredProperties = propertiesList.filter((item) => {
-    if (!propertyType) return true;
-    return (
-      item.propertyType?.toLowerCase() === propertyType.toLowerCase() ||
-      item.PropertyType?.toLowerCase() === propertyType.toLowerCase()
-    );
-  });
-
   // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -164,7 +155,7 @@ const AutoLeadAssignment = () => {
             onChange={(e) => setPropertyName(e.target.value)}
           >
             <option value="">Select PName</option>
-            {filteredProperties.map((item) => {
+            {propertiesList.map((item) => {
               const pName = item.propertyName || item.PropertyName;
               return (
                 <option key={item._id || item.id} value={pName}>

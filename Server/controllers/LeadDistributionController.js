@@ -25,7 +25,7 @@ export const viewLeadDistribution = async (req, res) => {
 export const deleteLeadDistribution = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await LeadDistribution.findByIdAndDelete({ id });
+    const data = await LeadDistribution.findByIdAndDelete({ _id: id });
     return res.json({ message: "Lead Successfully deleted", data });
   } catch (error) {
     console.log(error);
