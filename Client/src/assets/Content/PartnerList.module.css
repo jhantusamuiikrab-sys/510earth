@@ -306,7 +306,7 @@
 .saveBtn {
   padding: 8px 16px;
   border: none;
-  background: #2563eb;
+  background: #475569;
   color: #ffffff;
   border-radius: 6px;
   font-weight: 500;
@@ -314,7 +314,7 @@
 }
 
 .saveBtn:hover {
-  background: #1d4ed8;
+  background: #334155;
 }
 
 /* Mobile Responsiveness Strategy */
@@ -369,4 +369,42 @@
   .formGroupFull {
     grid-column: span 1;
   }
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.downloadBtn {
+  background-color: #475569;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.downloadBtn:hover {
+  background-color: #334155;
+}
+
+.tableHeaderBar {
+  background-color: #475569;
+  padding: 12px 16px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.tableTitle {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
 }

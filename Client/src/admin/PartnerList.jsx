@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 import styles from '../assets/Content/PartnerList.module.css';
 
 const PartnerList = () => {
@@ -75,6 +76,38 @@ const PartnerList = () => {
   };
 
   // ============================================================
+  // EXPORT TO EXCEL
+  // ============================================================
+
+  const exportToExcel = () => {
+    if (!filteredPartners.length) return;
+
+    // Clean and structure data for export
+    const exportData = filteredPartners.map((partner, index) => ({
+      'SL NO': index + 1,
+      'Partner Name': partner.name || '',
+      'Email Address': partner.email || '',
+      'Contact No': partner.contactNo || '',
+      'Alternate No': partner.alternateNo || '',
+      'Address': partner.address || '',
+      'State': partner.stateName || '',
+      'City': partner.cityName || '',
+      'Business Type': partner.businessType || '',
+      'Size': partner.size || '',
+      'User ID': partner.userId || '',
+      'PAN Number': partner.panNumber || '',
+      'Aadhaar Number': partner.adharNumber || '',
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Partners');
+
+    // Download file
+    XLSX.writeFile(workbook, 'Partner_List.xlsx');
+  };
+
+  // ============================================================
   // FETCH STATES
   // ============================================================
 
@@ -86,18 +119,9 @@ const PartnerList = () => {
         const response = await fetch(`${CSC_API}/states`);
         const result = await response.json();
 
-        console.log('STATE API RESPONSE:', result);
-
         if (response.ok && result.success) {
-          console.log('STATE DATA:', result.data);
-
           setStates(Array.isArray(result.data) ? result.data : []);
         } else {
-          console.error(
-            'Failed to load states:',
-            result.message
-          );
-
           setStates([]);
         }
       } catch (error) {
@@ -112,17 +136,12 @@ const PartnerList = () => {
   }, [CSC_API]);
 
   // ============================================================
-  // HELPER - GET STATE NAME
+  // HELPER - GET STATE NAME & ID
   // ============================================================
 
   const getStateName = (state) => {
     if (!state) return '';
-
-    // If API returns string directly
-    if (typeof state === 'string') {
-      return state;
-    }
-
+    if (typeof state === 'string') return state;
     return (
       state.stateName ||
       state.StateName ||
@@ -135,17 +154,9 @@ const PartnerList = () => {
     );
   };
 
-  // ============================================================
-  // HELPER - GET STATE ID
-  // ============================================================
-
   const getStateId = (state, index) => {
     if (!state) return index;
-
-    if (typeof state === 'string') {
-      return state;
-    }
-
+    if (typeof state === 'string') return state;
     return (
       state._id ||
       state.id ||
@@ -157,17 +168,12 @@ const PartnerList = () => {
   };
 
   // ============================================================
-  // HELPER - GET CITY NAME
+  // HELPER - GET CITY NAME & ID
   // ============================================================
 
   const getCityName = (city) => {
     if (!city) return '';
-
-    // If API returns string directly
-    if (typeof city === 'string') {
-      return city;
-    }
-
+    if (typeof city === 'string') return city;
     return (
       city.cityName ||
       city.CityName ||
@@ -180,17 +186,9 @@ const PartnerList = () => {
     );
   };
 
-  // ============================================================
-  // HELPER - GET CITY ID
-  // ============================================================
-
   const getCityId = (city, index) => {
     if (!city) return index;
-
-    if (typeof city === 'string') {
-      return city;
-    }
-
+    if (typeof city === 'string') return city;
     return (
       city._id ||
       city.id ||
@@ -223,22 +221,13 @@ const PartnerList = () => {
 
         const result = await response.json();
 
-        console.log('CITY API RESPONSE:', result);
-
         if (response.ok && result.success) {
-          console.log('CITY DATA:', result.data);
-
           setCities(
             Array.isArray(result.data)
               ? result.data
               : []
           );
         } else {
-          console.error(
-            'Failed to load cities:',
-            result.message
-          );
-
           setCities([]);
         }
       } catch (error) {
@@ -331,7 +320,6 @@ const PartnerList = () => {
     const { name, value } = e.target;
 
     setFormData((prevData) => {
-      // When state changes, clear city
       if (name === 'stateName') {
         return {
           ...prevData,
@@ -371,7 +359,6 @@ const PartnerList = () => {
       if (response.ok && data.success) {
         alert('Partner updated successfully!');
 
-        // Update local partner list
         setPartners((prev) =>
           prev.map((p) =>
             p._id === editingPartnerId
@@ -392,7 +379,6 @@ const PartnerList = () => {
         'Error updating partner:',
         err
       );
-
       alert('Error connecting to server.');
     }
   };
@@ -418,65 +404,85 @@ const PartnerList = () => {
   return (
     <div className={styles.container}>
 
-      {/* ======================================================
-          HEADER
-      ====================================================== */}
-
+      {/* HEADER WITH DOWNLOAD BUTTON */}
       <div className={styles.header}>
         <h1 className={styles.title}>
-          Registered Partners
+          Partner Elements
         </h1>
 
-        <div className={styles.searchBox}>
-          <svg
-            className={styles.searchIcon}
-            width="16"
-            height="16"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-          </svg>
+        <div className={styles.headerRight}>
+          <div className={styles.searchBox}>
+            <svg
+              className={styles.searchIcon}
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
 
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search by name or email..."
-            value={searchTerm}
-            onChange={(e) =>
-              setSearchTerm(e.target.value)
-            }
-          />
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder="Search by name or email..."
+              value={searchTerm}
+              onChange={(e) =>
+                setSearchTerm(e.target.value)
+              }
+            />
+          </div>
+
+          <button
+            className={styles.downloadBtn}
+            onClick={exportToExcel}
+            title="Download Excel"
+          >
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </button>
         </div>
       </div>
 
-      {/* ======================================================
-          PARTNER TABLE
-      ====================================================== */}
-
+      {/* PARTNER TABLE */}
       <div className={styles.tableCard}>
+        <div className={styles.tableHeaderBar}>
+          <h2 className={styles.tableTitle}>Partner Table</h2>
+        </div>
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
-
             <thead>
               <tr>
-                <th>Partner Name</th>
-                <th>Email Address</th>
-                <th>Contact No.</th>
-                <th>Password</th>
-                <th style={{ textAlign: 'right' }}>
-                  Actions
+                <th>SL NO</th>
+                <th>NAME</th>
+                <th>EMAIL</th>
+                <th>CONTACT NUMBER</th>
+                <th>STATE</th>
+                <th>USER ID</th>
+                <th>PASSWORD</th>
+                <th style={{ textAlign: 'center' }}>
+                  ACTIONS
                 </th>
               </tr>
             </thead>
 
             <tbody>
-
-              {/* LOADING */}
               {loading ? (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="8"
                     style={{
                       textAlign: 'center',
                       padding: '24px',
@@ -485,12 +491,10 @@ const PartnerList = () => {
                     Loading partners...
                   </td>
                 </tr>
-
-              /* ERROR */
               ) : error ? (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="8"
                     style={{
                       textAlign: 'center',
                       padding: '24px',
@@ -500,52 +504,46 @@ const PartnerList = () => {
                     {error}
                   </td>
                 </tr>
-
-              /* DATA */
               ) : filteredPartners.length > 0 ? (
-
-                filteredPartners.map((partner) => (
+                filteredPartners.map((partner, index) => (
                   <tr key={partner._id}>
+                    <td data-label="SL NO">{index + 1}</td>
 
-                    <td data-label="Partner Name">
+                    <td data-label="NAME">
                       <strong>
                         {partner.name}
                       </strong>
                     </td>
 
-                    <td data-label="Email Address">
+                    <td data-label="EMAIL">
                       {partner.email}
                     </td>
 
-                    <td data-label="Contact No.">
+                    <td data-label="CONTACT NUMBER">
                       {partner.contactNo}
                     </td>
 
-                    <td data-label="Password">
+                    <td data-label="STATE">
+                      {partner.stateName}
+                    </td>
 
-                      <div
-                        className={
-                          styles.passwordCell
-                        }
-                      >
+                    <td data-label="USER ID">
+                      {partner.userId}
+                    </td>
 
+                    <td data-label="PASSWORD">
+                      <div className={styles.passwordCell}>
                         <span>
-                          {visiblePasswords[
-                            partner._id
-                          ]
+                          {visiblePasswords[partner._id]
                             ? partner.password
                             : '••••••••'}
                         </span>
 
                         <button
                           type="button"
-                          className={
-                            styles.eyeButton
-                          }
+                          className={styles.eyeButton}
                           onClick={() =>
-                            togglePasswordVisibility(
-                              partner._id
-                            )
+                            togglePasswordVisibility(partner._id)
                           }
                           title="Toggle Password"
                         >
@@ -556,29 +554,17 @@ const PartnerList = () => {
                             viewBox="0 0 16 16"
                           >
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-
                             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                           </svg>
                         </button>
-
                       </div>
-
                     </td>
 
-                    <td data-label="Actions">
-
-                      <div
-                        className={
-                          styles.actionGroup
-                        }
-                      >
-
-                        {/* DETAILS / EDIT */}
+                    <td data-label="ACTIONS">
+                      <div className={styles.actionGroup}>
                         <button
                           className={`${styles.iconBtn} ${styles.detailBtn}`}
-                          onClick={() =>
-                            handleDetail(partner)
-                          }
+                          onClick={() => handleDetail(partner)}
                           title="View Details / Edit"
                         >
                           <svg
@@ -591,14 +577,9 @@ const PartnerList = () => {
                           </svg>
                         </button>
 
-                        {/* DELETE */}
                         <button
                           className={`${styles.iconBtn} ${styles.deleteBtn}`}
-                          onClick={() =>
-                            handleDelete(
-                              partner._id
-                            )
-                          }
+                          onClick={() => handleDelete(partner._id)}
                           title="Delete Partner"
                         >
                           <svg
@@ -608,26 +589,20 @@ const PartnerList = () => {
                             viewBox="0 0 16 16"
                           >
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-
                             <path
                               fillRule="evenodd"
                               d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
                             />
                           </svg>
                         </button>
-
                       </div>
-
                     </td>
-
                   </tr>
                 ))
-
-              /* NO DATA */
               ) : (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="8"
                     style={{
                       textAlign: 'center',
                       padding: '24px',
@@ -637,490 +612,264 @@ const PartnerList = () => {
                   </td>
                 </tr>
               )}
-
             </tbody>
-
           </table>
         </div>
       </div>
 
-      {/* ======================================================
-          EDIT PARTNER MODAL
-      ====================================================== */}
-
+      {/* EDIT PARTNER MODAL */}
       {isModalOpen && (
-
         <div className={styles.modalOverlay}>
-
           <div className={styles.modalContent}>
-
-            {/* MODAL HEADER */}
+            
             <div className={styles.modalHeader}>
-
               <h2 className={styles.modalTitle}>
                 Partner Details & Edit
               </h2>
-
               <button
                 className={styles.closeBtn}
-                onClick={() =>
-                  setIsModalOpen(false)
-                }
+                onClick={() => setIsModalOpen(false)}
               >
                 &times;
               </button>
-
             </div>
 
-            {/* FORM */}
             <form
               onSubmit={handleUpdatePartner}
               className={styles.modalForm}
             >
-
               <div className={styles.formGrid}>
 
-                {/* ==================================================
-                    FULL NAME
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Full Name
                   </label>
-
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
-                    onChange={
-                      handleInputChange
-                    }
+                    onChange={handleInputChange}
                     className={styles.input}
                     required
                   />
-
                 </div>
 
-                {/* ==================================================
-                    EMAIL
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Email Address
                   </label>
-
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
-                    onChange={
-                      handleInputChange
-                    }
+                    onChange={handleInputChange}
                     className={styles.input}
                     required
                   />
-
                 </div>
 
-                {/* ==================================================
-                    CONTACT NUMBER
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Contact No.
                   </label>
-
                   <input
                     type="text"
                     name="contactNo"
-                    value={
-                      formData.contactNo
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.contactNo}
+                    onChange={handleInputChange}
                     className={styles.input}
                     required
                   />
-
                 </div>
 
-                {/* ==================================================
-                    ALTERNATE NUMBER
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Alternate No.
                   </label>
-
                   <input
                     type="text"
                     name="alternateNo"
-                    value={
-                      formData.alternateNo
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.alternateNo}
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
-                {/* ==================================================
-                    ADDRESS
-                ================================================== */}
-
-                <div
-                  className={
-                    styles.formGroupFull
-                  }
-                >
-
-                  <label
-                    className={styles.label}
-                  >
+                <div className={styles.formGroupFull}>
+                  <label className={styles.label}>
                     Address
                   </label>
-
                   <input
                     type="text"
                     name="address"
                     value={formData.address}
-                    onChange={
-                      handleInputChange
-                    }
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
-                {/* ==================================================
-                    STATE DROPDOWN
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     State
                   </label>
-
                   <select
                     name="stateName"
-                    value={
-                      formData.stateName
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.stateName}
+                    onChange={handleInputChange}
                     className={styles.input}
                     required
                   >
-
                     <option value="">
                       {loadingStates
                         ? 'Loading states...'
                         : 'Select State'}
                     </option>
-
-                    {states.map(
-                      (state, index) => {
-
-                        const stateName =
-                          getStateName(
-                            state
-                          );
-
-                        const stateId =
-                          getStateId(
-                            state,
-                            index
-                          );
-
-                        if (!stateName) {
-                          return null;
-                        }
-
-                        return (
-                          <option
-                            key={stateId}
-                            value={stateName}
-                          >
-                            {stateName}
-                          </option>
-                        );
-                      }
-                    )}
-
+                    {states.map((state, index) => {
+                      const stateName = getStateName(state);
+                      const stateId = getStateId(state, index);
+                      if (!stateName) return null;
+                      return (
+                        <option key={stateId} value={stateName}>
+                          {stateName}
+                        </option>
+                      );
+                    })}
                   </select>
-
                 </div>
 
-                {/* ==================================================
-                    CITY DROPDOWN
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     City
                   </label>
-
                   <select
                     name="cityName"
-                    value={
-                      formData.cityName
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.cityName}
+                    onChange={handleInputChange}
                     className={styles.input}
                     required
-                    disabled={
-                      !formData.stateName ||
-                      loadingCities
-                    }
+                    disabled={!formData.stateName || loadingCities}
                   >
-
                     <option value="">
-
                       {loadingCities
                         ? 'Loading cities...'
                         : !formData.stateName
                         ? 'Select State First'
                         : 'Select City'}
-
                     </option>
-
-                    {cities.map(
-                      (city, index) => {
-
-                        const cityName =
-                          getCityName(
-                            city
-                          );
-
-                        const cityId =
-                          getCityId(
-                            city,
-                            index
-                          );
-
-                        if (!cityName) {
-                          return null;
-                        }
-
-                        return (
-                          <option
-                            key={cityId}
-                            value={cityName}
-                          >
-                            {cityName}
-                          </option>
-                        );
-                      }
-                    )}
-
+                    {cities.map((city, index) => {
+                      const cityName = getCityName(city);
+                      const cityId = getCityId(city, index);
+                      if (!cityName) return null;
+                      return (
+                        <option key={cityId} value={cityName}>
+                          {cityName}
+                        </option>
+                      );
+                    })}
                   </select>
-
                 </div>
 
-                {/* ==================================================
-                    BUSINESS TYPE
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Business Type
                   </label>
-
                   <input
                     type="text"
                     name="businessType"
-                    value={
-                      formData.businessType
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.businessType}
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
-                {/* ==================================================
-                    SIZE
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Size
                   </label>
-
                   <input
                     type="text"
                     name="size"
                     value={formData.size}
-                    onChange={
-                      handleInputChange
-                    }
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
-                {/* ==================================================
-                    USER ID
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     User ID
                   </label>
-
                   <input
                     type="text"
                     name="userId"
                     value={formData.userId}
-                    onChange={
-                      handleInputChange
-                    }
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
-                {/* ==================================================
-                    PASSWORD
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Password
                   </label>
-
                   <input
                     type="text"
                     name="password"
-                    value={
-                      formData.password
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.password}
+                    onChange={handleInputChange}
                     className={styles.input}
                     required
                   />
-
                 </div>
 
-                {/* ==================================================
-                    PAN
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     PAN Number
                   </label>
-
                   <input
                     type="text"
                     name="panNumber"
-                    value={
-                      formData.panNumber
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.panNumber}
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
-                {/* ==================================================
-                    AADHAAR
-                ================================================== */}
-
                 <div className={styles.formGroup}>
-
-                  <label
-                    className={styles.label}
-                  >
+                  <label className={styles.label}>
                     Aadhaar Number
                   </label>
-
                   <input
                     type="text"
                     name="adharNumber"
-                    value={
-                      formData.adharNumber
-                    }
-                    onChange={
-                      handleInputChange
-                    }
+                    value={formData.adharNumber}
+                    onChange={handleInputChange}
                     className={styles.input}
                   />
-
                 </div>
 
               </div>
 
-              {/* ==================================================
-                  MODAL ACTIONS
-              ================================================== */}
-
-              <div className={styles.modalActions}>
-
+              <div className={styles.modalFooter}>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
-                  className={styles.saveBtn}
+                  className={styles.submitBtn}
                 >
                   Save Changes
                 </button>
-
               </div>
 
             </form>
 
           </div>
-
         </div>
-
       )}
 
     </div>
