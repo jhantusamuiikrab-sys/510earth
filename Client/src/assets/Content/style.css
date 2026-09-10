@@ -2707,8 +2707,8 @@ overflow:hidden; margin-top: 25px;}
 	margin-bottom: 10px;
 }
 .btn-subscribe {
-	background-color: #007bff;
-	color: #fff;
+	background-color: #007bff !important;
+	color: #fff !important;
 	line-height: 43px;
 	width: 160px;
 	border-radius: 0;

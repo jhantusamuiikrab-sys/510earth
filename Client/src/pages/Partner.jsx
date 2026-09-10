@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
-// import "../../src/assets/Font/css/style.css";
 import "../../src/assets/content/style.css";
-import "../../src/style/Partner.css"; // Ensure your animation CSS file is imported here!
-
+import "../../src/style/Partner.css";
 
 function Partner() {
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+
+  const SERVER_URL =
+  import.meta.env.VITE_SERVER_URL ||
+  "http://localhost:3000";
+
+const API_URL = import.meta.env.VITE_API_URL ||
+  "http://localhost:3000/api";
+
+  const CSC_API = `${API_URL}/csc`;
+
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -14,47 +26,113 @@ function Partner() {
     email: "",
   });
 
+  // 1. Fetch States on Component Mount
+  useEffect(() => {
+    const fetchStates = async () => {
+      setLoadingStates(true);
+      try {
+        const response = await fetch(`${CSC_API}/states`);
+        const result = await response.json();
+        if (response.ok && result.success) {
+          setStates(result.data);
+        } else {
+          console.error("Failed to load states:", result.message);
+        }
+      } catch (error) {
+        console.error("Error fetching states:", error);
+      } finally {
+        setLoadingStates(false);
+      }
+    };
+
+    fetchStates();
+  }, []);
+
+  // 2. Fetch Cities whenever selected State changes
+  useEffect(() => {
+    if (!formData.stateName) {
+      setCities([]);
+      return;
+    }
+
+    const fetchCities = async () => {
+      setLoadingCities(true);
+      try {
+        const response = await fetch(
+          `${CSC_API}/cities?state=${encodeURIComponent(
+            formData.stateName
+          )}`
+        );
+        const result = await response.json();
+        if (response.ok && result.success) {
+          setCities(result.data);
+        } else {
+          setCities([]);
+        }
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+        setCities([]);
+      } finally {
+        setLoadingCities(false);
+      }
+    };
+
+    fetchCities();
+  }, [formData.stateName]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    setFormData((prevData) => {
+      // Clear out selected city if the user updates the selected state
+      if (name === "stateName") {
+        return {
+          ...prevData,
+          [name]: value,
+          cityName: "",
+        };
+      }
+
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch('http://localhost:3000/api/partners/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      alert('Registration successful!');
-      setFormData({
-        name: '',
-        address: '',
-        stateName: '',
-        cityName: '',
-        contactNo: '',
-        email: '',
+    e.preventDefault();
+    try {
+      const response = await fetch(`${API_URL}/partners/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-    } else {
-      alert(`Error: ${result.message}`);
-    }
-  } catch (error) {
-    console.error('Submission Error:', error);
-    alert('Failed to connect to the server.');
-  }
-};
 
-  // Re-use our centralized system hook to scan the viewports on render
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Registration successful!");
+        setFormData({
+          name: "",
+          address: "",
+          stateName: "",
+          cityName: "",
+          contactNo: "",
+          email: "",
+        });
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Submission Error:", error);
+      alert("Failed to connect to the server.");
+    }
+  };
+
+  // IntersectionObserver for animation triggers
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -69,11 +147,11 @@ function Partner() {
       {
         threshold: 0.1,
         rootMargin: "0px 0px -4px 0px",
-      },
+      }
     );
 
     const elementsToAnimate = document.querySelectorAll(
-      ".animate-3d-form, .animate-right-left",
+      ".animate-3d-form, .animate-right-left"
     );
     elementsToAnimate.forEach((el) => observer.observe(el));
 
@@ -83,9 +161,7 @@ function Partner() {
   return (
     <>
       {/* SECTION 1: Welcome Header */}
-
       <section className="inner_page inner_pad">
-
         <div className="container">
           <div className="row">
             <div className="col-md-7">
@@ -117,16 +193,10 @@ function Partner() {
         style={{ overflow: "visible" }}
       >
         <div className="container">
-          {/* Added perspective wrapper class around the row */}
           <div className="row flex-row-reverse perspective-wrapper">
-            {/* Context Left Column: Form Card with 3D Pop-Up Effect */}
             <div className="col-md-5">
               <div className="partner-reg-form animate-3d-form">
-                <form
-                  id="partnerForm"
-                  onSubmit={handleSubmit}
-                  encType="multipart/form-data"
-                >
+                <form id="partnerForm" onSubmit={handleSubmit}>
                   <div className="row">
                     <div className="col-md-12 text-center">
                       <h4>
@@ -150,7 +220,6 @@ function Partner() {
                         onChange={handleInputChange}
                         required
                       />
-                      <span id="NameError" />
                     </div>
 
                     <div className="col-md-12">
@@ -167,9 +236,9 @@ function Partner() {
                         onChange={handleInputChange}
                         required
                       />
-                      <span id="AddressError" />
                     </div>
 
+                    {/* State Dropdown */}
                     <div className="col-md-12">
                       <label className="code_area">
                         State <span>*</span>
@@ -181,14 +250,20 @@ function Partner() {
                         value={formData.stateName}
                         onChange={handleInputChange}
                         required
+                        disabled={loadingStates}
                       >
-                        <option value="">--Select State--</option>
-                        <option value="West Bengal">West Bengal</option>
-                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="">
+                          {loadingStates ? "Loading states..." : "--Select State--"}
+                        </option>
+                        {states.map((st) => (
+                          <option key={st._id} value={st.StateName}>
+                            {st.StateName}
+                          </option>
+                        ))}
                       </select>
-                      <span id="StateIdError" />
                     </div>
 
+                    {/* City Dropdown */}
                     <div className="col-md-12">
                       <label className="code_area">
                         City <span>*</span>
@@ -196,17 +271,25 @@ function Partner() {
                       <select
                         name="cityName"
                         id="CityId"
-                        className="form-control select2"
-                        style={{ display: "block" }}
+                        className="form-control form_partner"
                         value={formData.cityName}
                         onChange={handleInputChange}
                         required
+                        disabled={!formData.stateName || loadingCities}
                       >
-                        <option value="">-Select City-</option>
-                        <option value="kolkata">Kolkata</option>
-                        <option value="mumbai">Mumbai</option>
+                        <option value="">
+                          {!formData.stateName
+                            ? "--Select State First--"
+                            : loadingCities
+                            ? "Loading cities..."
+                            : "--Select City--"}
+                        </option>
+                        {cities.map((city, index) => (
+                          <option key={index} value={city}>
+                            {city}
+                          </option>
+                        ))}
                       </select>
-                      <span id="CityIdError" />
                     </div>
 
                     <div className="col-md-12">
@@ -225,7 +308,6 @@ function Partner() {
                         onChange={handleInputChange}
                         required
                       />
-                      <span id="ContactError" style={{ color: "red" }} />
                     </div>
 
                     <div className="col-md-12">
@@ -243,7 +325,6 @@ function Partner() {
                         onChange={handleInputChange}
                         required
                       />
-                      <span id="EmailError" />
                     </div>
 
                     <div className="col-md-12 text-center">
@@ -259,7 +340,6 @@ function Partner() {
               </div>
             </div>
 
-            {/* Context Right Column: Text */}
             <div className="col-md-7">
               <h2>BENEFITS:</h2>
               <p>
@@ -289,7 +369,6 @@ function Partner() {
               <img src="/images/shadow.png" alt="Property Agents" />
             </div>
 
-            {/* Box 1: Sales - Right to Left Animation Added */}
             <div className="col-md-4 why-choose-box animate-right-left">
               <img
                 src="/images/sales.png"
@@ -305,7 +384,6 @@ function Partner() {
               </p>
             </div>
 
-            {/* Box 2: Support - Right to Left Animation Added */}
             <div className="col-md-4 why-choose-box animate-right-left">
               <img
                 src="/images/support.png"
@@ -321,7 +399,6 @@ function Partner() {
               </p>
             </div>
 
-            {/* Box 3: Team - Right to Left Animation Added */}
             <div className="col-md-4 why-choose-box animate-right-left">
               <img
                 src="/images/team.png"

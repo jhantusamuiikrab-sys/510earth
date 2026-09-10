@@ -8,9 +8,16 @@ const PartnerList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // State & City
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+
   // Modal & Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPartnerId, setEditingPartnerId] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,7 +34,20 @@ const PartnerList = () => {
     adharNumber: '',
   });
 
-  const API_BASE_URL = 'http://localhost:3000/api';
+  // API URLs
+  const SERVER_URL =
+    import.meta.env.VITE_SERVER_URL ||
+    'http://localhost:3000';
+
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    'http://localhost:3000/api';
+
+  const CSC_API = `${API_URL}/csc`;
+
+  // ============================================================
+  // FETCH PARTNERS
+  // ============================================================
 
   useEffect(() => {
     fetchPartners();
@@ -38,7 +58,7 @@ const PartnerList = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_BASE_URL}/partners`);
+      const response = await fetch(`${API_URL}/partners`);
       const data = await response.json();
 
       if (response.ok && data.success) {
@@ -54,6 +74,188 @@ const PartnerList = () => {
     }
   };
 
+  // ============================================================
+  // FETCH STATES
+  // ============================================================
+
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        setLoadingStates(true);
+
+        const response = await fetch(`${CSC_API}/states`);
+        const result = await response.json();
+
+        console.log('STATE API RESPONSE:', result);
+
+        if (response.ok && result.success) {
+          console.log('STATE DATA:', result.data);
+
+          setStates(Array.isArray(result.data) ? result.data : []);
+        } else {
+          console.error(
+            'Failed to load states:',
+            result.message
+          );
+
+          setStates([]);
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+        setStates([]);
+      } finally {
+        setLoadingStates(false);
+      }
+    };
+
+    fetchStates();
+  }, [CSC_API]);
+
+  // ============================================================
+  // HELPER - GET STATE NAME
+  // ============================================================
+
+  const getStateName = (state) => {
+    if (!state) return '';
+
+    // If API returns string directly
+    if (typeof state === 'string') {
+      return state;
+    }
+
+    return (
+      state.stateName ||
+      state.StateName ||
+      state.state_name ||
+      state.name ||
+      state.Name ||
+      state.state ||
+      state.State ||
+      ''
+    );
+  };
+
+  // ============================================================
+  // HELPER - GET STATE ID
+  // ============================================================
+
+  const getStateId = (state, index) => {
+    if (!state) return index;
+
+    if (typeof state === 'string') {
+      return state;
+    }
+
+    return (
+      state._id ||
+      state.id ||
+      state.stateId ||
+      state.StateId ||
+      getStateName(state) ||
+      index
+    );
+  };
+
+  // ============================================================
+  // HELPER - GET CITY NAME
+  // ============================================================
+
+  const getCityName = (city) => {
+    if (!city) return '';
+
+    // If API returns string directly
+    if (typeof city === 'string') {
+      return city;
+    }
+
+    return (
+      city.cityName ||
+      city.CityName ||
+      city.city_name ||
+      city.name ||
+      city.Name ||
+      city.city ||
+      city.City ||
+      ''
+    );
+  };
+
+  // ============================================================
+  // HELPER - GET CITY ID
+  // ============================================================
+
+  const getCityId = (city, index) => {
+    if (!city) return index;
+
+    if (typeof city === 'string') {
+      return city;
+    }
+
+    return (
+      city._id ||
+      city.id ||
+      city.cityId ||
+      city.CityId ||
+      getCityName(city) ||
+      index
+    );
+  };
+
+  // ============================================================
+  // FETCH CITIES WHEN STATE CHANGES
+  // ============================================================
+
+  useEffect(() => {
+    if (!formData.stateName) {
+      setCities([]);
+      return;
+    }
+
+    const fetchCities = async () => {
+      try {
+        setLoadingCities(true);
+
+        const response = await fetch(
+          `${CSC_API}/cities?state=${encodeURIComponent(
+            formData.stateName
+          )}`
+        );
+
+        const result = await response.json();
+
+        console.log('CITY API RESPONSE:', result);
+
+        if (response.ok && result.success) {
+          console.log('CITY DATA:', result.data);
+
+          setCities(
+            Array.isArray(result.data)
+              ? result.data
+              : []
+          );
+        } else {
+          console.error(
+            'Failed to load cities:',
+            result.message
+          );
+
+          setCities([]);
+        }
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+        setCities([]);
+      } finally {
+        setLoadingCities(false);
+      }
+    };
+
+    fetchCities();
+  }, [formData.stateName, CSC_API]);
+
+  // ============================================================
+  // PASSWORD VISIBILITY
+  // ============================================================
+
   const togglePasswordVisibility = (id) => {
     setVisiblePasswords((prev) => ({
       ...prev,
@@ -61,26 +263,47 @@ const PartnerList = () => {
     }));
   };
 
+  // ============================================================
+  // DELETE PARTNER
+  // ============================================================
+
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this partner?')) {
+    if (
+      window.confirm(
+        'Are you sure you want to delete this partner?'
+      )
+    ) {
       try {
-        const response = await fetch(`${API_BASE_URL}/partners/${id}`, {
-          method: 'DELETE',
-        });
+        const response = await fetch(
+          `${API_URL}/partners/${id}`,
+          {
+            method: 'DELETE',
+          }
+        );
+
         if (response.ok) {
-          setPartners((prev) => prev.filter((p) => p._id !== id));
+          setPartners((prev) =>
+            prev.filter((p) => p._id !== id)
+          );
         } else {
           alert('Failed to delete partner.');
         }
       } catch (error) {
-        console.error('Failed to delete partner:', error);
+        console.error(
+          'Failed to delete partner:',
+          error
+        );
       }
     }
   };
 
-  // Open Modal and populates partner details
+  // ============================================================
+  // OPEN EDIT MODAL
+  // ============================================================
+
   const handleDetail = (partner) => {
     setEditingPartnerId(partner._id);
+
     setFormData({
       name: partner.name || '',
       email: partner.email || '',
@@ -96,337 +319,810 @@ const PartnerList = () => {
       panNumber: partner.panNumber || '',
       adharNumber: partner.adharNumber || '',
     });
+
     setIsModalOpen(true);
   };
 
+  // ============================================================
+  // HANDLE FORM INPUT
+  // ============================================================
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prevData) => {
+      // When state changes, clear city
+      if (name === 'stateName') {
+        return {
+          ...prevData,
+          stateName: value,
+          cityName: '',
+        };
+      }
+
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
   };
+
+  // ============================================================
+  // UPDATE PARTNER
+  // ============================================================
 
   const handleUpdatePartner = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await fetch(`${API_BASE_URL}/partners/${editingPartnerId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${API_URL}/partners/${editingPartnerId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok && data.success) {
         alert('Partner updated successfully!');
-        // Refresh local list state
+
+        // Update local partner list
         setPartners((prev) =>
-          prev.map((p) => (p._id === editingPartnerId ? { ...p, ...formData } : p))
+          prev.map((p) =>
+            p._id === editingPartnerId
+              ? { ...p, ...formData }
+              : p
+          )
         );
+
         setIsModalOpen(false);
       } else {
-        alert(data.message || 'Failed to update partner');
+        alert(
+          data.message ||
+            'Failed to update partner'
+        );
       }
     } catch (err) {
-      console.error('Error updating partner:', err);
+      console.error(
+        'Error updating partner:',
+        err
+      );
+
       alert('Error connecting to server.');
     }
   };
 
+  // ============================================================
+  // SEARCH
+  // ============================================================
+
   const filteredPartners = partners.filter(
     (p) =>
-      p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.email?.toLowerCase().includes(searchTerm.toLowerCase())
+      p.name
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      p.email
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
+
+  // ============================================================
+  // JSX
+  // ============================================================
 
   return (
     <div className={styles.container}>
+
+      {/* ======================================================
+          HEADER
+      ====================================================== */}
+
       <div className={styles.header}>
-        <h1 className={styles.title}>Registered Partners</h1>
+        <h1 className={styles.title}>
+          Registered Partners
+        </h1>
+
         <div className={styles.searchBox}>
-          <svg className={styles.searchIcon} width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          <svg
+            className={styles.searchIcon}
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
           </svg>
+
           <input
             type="text"
             className={styles.searchInput}
             placeholder="Search by name or email..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) =>
+              setSearchTerm(e.target.value)
+            }
           />
         </div>
       </div>
 
+      {/* ======================================================
+          PARTNER TABLE
+      ====================================================== */}
+
       <div className={styles.tableCard}>
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
+
             <thead>
               <tr>
                 <th>Partner Name</th>
                 <th>Email Address</th>
                 <th>Contact No.</th>
                 <th>Password</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
+                <th style={{ textAlign: 'right' }}>
+                  Actions
+                </th>
               </tr>
             </thead>
+
             <tbody>
+
+              {/* LOADING */}
               {loading ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '24px' }}>
+                  <td
+                    colSpan="5"
+                    style={{
+                      textAlign: 'center',
+                      padding: '24px',
+                    }}
+                  >
                     Loading partners...
                   </td>
                 </tr>
+
+              /* ERROR */
               ) : error ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '24px', color: '#ef4444' }}>
+                  <td
+                    colSpan="5"
+                    style={{
+                      textAlign: 'center',
+                      padding: '24px',
+                      color: '#ef4444',
+                    }}
+                  >
                     {error}
                   </td>
                 </tr>
+
+              /* DATA */
               ) : filteredPartners.length > 0 ? (
+
                 filteredPartners.map((partner) => (
                   <tr key={partner._id}>
+
                     <td data-label="Partner Name">
-                      <strong>{partner.name}</strong>
+                      <strong>
+                        {partner.name}
+                      </strong>
                     </td>
-                    <td data-label="Email Address">{partner.email}</td>
-                    <td data-label="Contact No.">{partner.contactNo}</td>
+
+                    <td data-label="Email Address">
+                      {partner.email}
+                    </td>
+
+                    <td data-label="Contact No.">
+                      {partner.contactNo}
+                    </td>
+
                     <td data-label="Password">
-                      <div className={styles.passwordCell}>
+
+                      <div
+                        className={
+                          styles.passwordCell
+                        }
+                      >
+
                         <span>
-                          {visiblePasswords[partner._id]
+                          {visiblePasswords[
+                            partner._id
+                          ]
                             ? partner.password
                             : '••••••••'}
                         </span>
+
                         <button
                           type="button"
-                          className={styles.eyeButton}
-                          onClick={() => togglePasswordVisibility(partner._id)}
+                          className={
+                            styles.eyeButton
+                          }
+                          onClick={() =>
+                            togglePasswordVisibility(
+                              partner._id
+                            )
+                          }
                           title="Toggle Password"
                         >
-                          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                          <svg
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+
+                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                           </svg>
                         </button>
+
                       </div>
+
                     </td>
+
                     <td data-label="Actions">
-                      <div className={styles.actionGroup}>
+
+                      <div
+                        className={
+                          styles.actionGroup
+                        }
+                      >
+
+                        {/* DETAILS / EDIT */}
                         <button
                           className={`${styles.iconBtn} ${styles.detailBtn}`}
-                          onClick={() => handleDetail(partner)}
+                          onClick={() =>
+                            handleDetail(partner)
+                          }
                           title="View Details / Edit"
                         >
-                          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                          <svg
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
                           </svg>
                         </button>
+
+                        {/* DELETE */}
                         <button
                           className={`${styles.iconBtn} ${styles.deleteBtn}`}
-                          onClick={() => handleDelete(partner._id)}
+                          onClick={() =>
+                            handleDelete(
+                              partner._id
+                            )
+                          }
                           title="Delete Partner"
                         >
-                          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                          <svg
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+
+                            <path
+                              fillRule="evenodd"
+                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                            />
                           </svg>
                         </button>
+
                       </div>
+
                     </td>
+
                   </tr>
                 ))
+
+              /* NO DATA */
               ) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '24px' }}>
+                  <td
+                    colSpan="5"
+                    style={{
+                      textAlign: 'center',
+                      padding: '24px',
+                    }}
+                  >
                     No partners found.
                   </td>
                 </tr>
               )}
+
             </tbody>
+
           </table>
         </div>
       </div>
 
-      {/* Edit Partner Modal */}
+      {/* ======================================================
+          EDIT PARTNER MODAL
+      ====================================================== */}
+
       {isModalOpen && (
+
         <div className={styles.modalOverlay}>
+
           <div className={styles.modalContent}>
+
+            {/* MODAL HEADER */}
             <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>Partner Details & Edit</h2>
+
+              <h2 className={styles.modalTitle}>
+                Partner Details & Edit
+              </h2>
+
               <button
                 className={styles.closeBtn}
-                onClick={() => setIsModalOpen(false)}
+                onClick={() =>
+                  setIsModalOpen(false)
+                }
               >
                 &times;
               </button>
+
             </div>
 
-            <form onSubmit={handleUpdatePartner} className={styles.modalForm}>
+            {/* FORM */}
+            <form
+              onSubmit={handleUpdatePartner}
+              className={styles.modalForm}
+            >
+
               <div className={styles.formGrid}>
+
+                {/* ==================================================
+                    FULL NAME
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Full Name</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Full Name
+                  </label>
+
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
-                    onChange={handleInputChange}
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                     required
                   />
+
                 </div>
 
+                {/* ==================================================
+                    EMAIL
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Email Address</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Email Address
+                  </label>
+
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
-                    onChange={handleInputChange}
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                     required
                   />
+
                 </div>
 
+                {/* ==================================================
+                    CONTACT NUMBER
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Contact No.</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Contact No.
+                  </label>
+
                   <input
                     type="text"
                     name="contactNo"
-                    value={formData.contactNo}
-                    onChange={handleInputChange}
+                    value={
+                      formData.contactNo
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                     required
                   />
+
                 </div>
 
+                {/* ==================================================
+                    ALTERNATE NUMBER
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Alternate No.</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Alternate No.
+                  </label>
+
                   <input
                     type="text"
                     name="alternateNo"
-                    value={formData.alternateNo}
-                    onChange={handleInputChange}
+                    value={
+                      formData.alternateNo
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
 
-                <div className={styles.formGroupFull}>
-                  <label className={styles.label}>Address</label>
+                {/* ==================================================
+                    ADDRESS
+                ================================================== */}
+
+                <div
+                  className={
+                    styles.formGroupFull
+                  }
+                >
+
+                  <label
+                    className={styles.label}
+                  >
+                    Address
+                  </label>
+
                   <input
                     type="text"
                     name="address"
                     value={formData.address}
-                    onChange={handleInputChange}
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
 
+                {/* ==================================================
+                    STATE DROPDOWN
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>State</label>
-                  <input
-                    type="text"
+
+                  <label
+                    className={styles.label}
+                  >
+                    State
+                  </label>
+
+                  <select
                     name="stateName"
-                    value={formData.stateName}
-                    onChange={handleInputChange}
+                    value={
+                      formData.stateName
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                     required
-                  />
+                  >
+
+                    <option value="">
+                      {loadingStates
+                        ? 'Loading states...'
+                        : 'Select State'}
+                    </option>
+
+                    {states.map(
+                      (state, index) => {
+
+                        const stateName =
+                          getStateName(
+                            state
+                          );
+
+                        const stateId =
+                          getStateId(
+                            state,
+                            index
+                          );
+
+                        if (!stateName) {
+                          return null;
+                        }
+
+                        return (
+                          <option
+                            key={stateId}
+                            value={stateName}
+                          >
+                            {stateName}
+                          </option>
+                        );
+                      }
+                    )}
+
+                  </select>
+
                 </div>
 
+                {/* ==================================================
+                    CITY DROPDOWN
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>City</label>
-                  <input
-                    type="text"
+
+                  <label
+                    className={styles.label}
+                  >
+                    City
+                  </label>
+
+                  <select
                     name="cityName"
-                    value={formData.cityName}
-                    onChange={handleInputChange}
+                    value={
+                      formData.cityName
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                     required
-                  />
+                    disabled={
+                      !formData.stateName ||
+                      loadingCities
+                    }
+                  >
+
+                    <option value="">
+
+                      {loadingCities
+                        ? 'Loading cities...'
+                        : !formData.stateName
+                        ? 'Select State First'
+                        : 'Select City'}
+
+                    </option>
+
+                    {cities.map(
+                      (city, index) => {
+
+                        const cityName =
+                          getCityName(
+                            city
+                          );
+
+                        const cityId =
+                          getCityId(
+                            city,
+                            index
+                          );
+
+                        if (!cityName) {
+                          return null;
+                        }
+
+                        return (
+                          <option
+                            key={cityId}
+                            value={cityName}
+                          >
+                            {cityName}
+                          </option>
+                        );
+                      }
+                    )}
+
+                  </select>
+
                 </div>
 
+                {/* ==================================================
+                    BUSINESS TYPE
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Business Type</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Business Type
+                  </label>
+
                   <input
                     type="text"
                     name="businessType"
-                    value={formData.businessType}
-                    onChange={handleInputChange}
+                    value={
+                      formData.businessType
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
 
+                {/* ==================================================
+                    SIZE
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Size</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Size
+                  </label>
+
                   <input
                     type="text"
                     name="size"
                     value={formData.size}
-                    onChange={handleInputChange}
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
 
+                {/* ==================================================
+                    USER ID
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>User ID</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    User ID
+                  </label>
+
                   <input
                     type="text"
                     name="userId"
                     value={formData.userId}
-                    onChange={handleInputChange}
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
 
+                {/* ==================================================
+                    PASSWORD
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Password</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Password
+                  </label>
+
                   <input
                     type="text"
                     name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
+                    value={
+                      formData.password
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                     required
                   />
+
                 </div>
 
+                {/* ==================================================
+                    PAN
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>PAN Number</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    PAN Number
+                  </label>
+
                   <input
                     type="text"
                     name="panNumber"
-                    value={formData.panNumber}
-                    onChange={handleInputChange}
+                    value={
+                      formData.panNumber
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
 
+                {/* ==================================================
+                    AADHAAR
+                ================================================== */}
+
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Aadhaar Number</label>
+
+                  <label
+                    className={styles.label}
+                  >
+                    Aadhaar Number
+                  </label>
+
                   <input
                     type="text"
                     name="adharNumber"
-                    value={formData.adharNumber}
-                    onChange={handleInputChange}
+                    value={
+                      formData.adharNumber
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                     className={styles.input}
                   />
+
                 </div>
+
               </div>
 
+              {/* ==================================================
+                  MODAL ACTIONS
+              ================================================== */}
+
               <div className={styles.modalActions}>
+
                 <button
-                  type="button"
-                  className={styles.cancelBtn}
-                  onClick={() => setIsModalOpen(false)}
+                  type="submit"
+                  className={styles.saveBtn}
                 >
-                  Cancel
-                </button>
-                <button type="submit" className={styles.saveBtn}>
                   Save Changes
                 </button>
+
               </div>
+
             </form>
+
           </div>
+
         </div>
+
       )}
+
     </div>
   );
 };

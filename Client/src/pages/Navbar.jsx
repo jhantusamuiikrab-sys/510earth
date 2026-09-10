@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "../../src/style/Navbar.module.css";
 import { FiChevronRight, FiMenu, FiX } from "react-icons/fi";
 
@@ -10,6 +10,10 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navbarRef = useRef(null);
+  const location = useLocation();
+
+  // Check if current page is Home
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     // 1. Outside click handler
@@ -22,23 +26,20 @@ const Navbar = () => {
     };
     document.addEventListener("mousedown", handleOutsideClick);
 
-    // 2. Intersection Observer for Logo Flip
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsScrolled(!entry.isIntersecting);
-      },
-      { threshold: [1.0], rootMargin: "-1px 0px 0px 0px" },
-    );
+    // 2. Window Scroll Listener for Logo Flip & Sticky States
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
 
-    if (navbarRef.current) {
-      observer.observe(navbarRef.current);
-    }
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
-      if (navbarRef.current) {
-        observer.unobserve(navbarRef.current);
-      }
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -70,11 +71,15 @@ const Navbar = () => {
   return (
     <nav
       ref={navbarRef}
-      className={`navbar sticky-top navbar-expand-lg navbar-dark ${styles.mainHeader}`}
+      className={`navbar navbar-expand-lg navbar-dark ${styles.mainHeader} ${
+        isHomePage ? styles.stickyHeader : ""
+      }`}
     >
       <div className="container-fluid">
         <Link
-          className={`navbar-brand ${styles.logoContainer} ${isScrolled ? styles.flipped : ""}`}
+          className={`navbar-brand ${styles.logoContainer} ${
+            isScrolled ? styles.flipped : ""
+          }`}
           to="/"
           onClick={handleLinkClick}
         >
@@ -100,7 +105,9 @@ const Navbar = () => {
         </button>
 
         <div
-          className={`${styles.customNavbarCollapse} ${!isNavCollapsed ? styles.open : ""}`}
+          className={`${styles.customNavbarCollapse} ${
+            !isNavCollapsed ? styles.open : ""
+          }`}
         >
           <ul className="navbar-nav ms-auto">
             <li className={`nav-item ${styles.navItem}`}>
@@ -111,7 +118,9 @@ const Navbar = () => {
 
             {/* Properties Dropdown */}
             <li
-              className={`nav-item ${styles.navItem} ${styles.dropdown} ${activeDropdown === "properties" ? styles.show : ""}`}
+              className={`nav-item ${styles.navItem} ${styles.dropdown} ${
+                activeDropdown === "properties" ? styles.show : ""
+              }`}
               onMouseEnter={() =>
                 window.innerWidth > 991 && setActiveDropdown("properties")
               }
@@ -133,10 +142,14 @@ const Navbar = () => {
                 Properties
               </a>
               <ul
-                className={`dropdown-menu ${styles.dropdownMenu} ${activeDropdown === "properties" ? styles.show : ""}`}
+                className={`dropdown-menu ${styles.dropdownMenu} ${
+                  activeDropdown === "properties" ? styles.show : ""
+                }`}
               >
                 <li
-                  className={`${styles.dropend} ${activeSubDropdown === "residential" ? styles.show : ""}`}
+                  className={`${styles.dropend} ${
+                    activeSubDropdown === "residential" ? styles.show : ""
+                  }`}
                   onMouseEnter={() =>
                     window.innerWidth > 991 &&
                     setActiveSubDropdown("residential")
@@ -154,7 +167,9 @@ const Navbar = () => {
                     <FiChevronRight />
                   </a>
                   <ul
-                    className={`dropdown-menu ${styles.subMenu} ${activeSubDropdown === "residential" ? styles.show : ""}`}
+                    className={`dropdown-menu ${styles.subMenu} ${
+                      activeSubDropdown === "residential" ? styles.show : ""
+                    }`}
                   >
                     <li>
                       <Link
@@ -199,7 +214,9 @@ const Navbar = () => {
 
             {/* Services Dropdown */}
             <li
-              className={`nav-item ${styles.navItem} ${styles.dropdown} ${activeDropdown === "services" ? styles.show : ""}`}
+              className={`nav-item ${styles.navItem} ${styles.dropdown} ${
+                activeDropdown === "services" ? styles.show : ""
+              }`}
               onMouseEnter={() =>
                 window.innerWidth > 991 && setActiveDropdown("services")
               }
@@ -218,7 +235,9 @@ const Navbar = () => {
                 Services
               </a>
               <ul
-                className={`dropdown-menu ${styles.dropdownMenu} ${activeDropdown === "services" ? styles.show : ""}`}
+                className={`dropdown-menu ${styles.dropdownMenu} ${
+                  activeDropdown === "services" ? styles.show : ""
+                }`}
               >
                 <li>
                   <Link
@@ -267,7 +286,9 @@ const Navbar = () => {
 
             {/* Post Property Dropdown */}
             <li
-              className={`nav-item ${styles.navItem} ${styles.dropdown} ${activeDropdown === "postProperty" ? styles.show : ""}`}
+              className={`nav-item ${styles.navItem} ${styles.dropdown} ${
+                activeDropdown === "postProperty" ? styles.show : ""
+              }`}
               onMouseEnter={() =>
                 window.innerWidth > 991 && setActiveDropdown("postProperty")
               }
@@ -286,7 +307,9 @@ const Navbar = () => {
                 Post Property
               </a>
               <ul
-                className={`dropdown-menu ${styles.dropdownMenu} ${activeDropdown === "postProperty" ? styles.show : ""}`}
+                className={`dropdown-menu ${styles.dropdownMenu} ${
+                  activeDropdown === "postProperty" ? styles.show : ""
+                }`}
               >
                 <li>
                   <Link

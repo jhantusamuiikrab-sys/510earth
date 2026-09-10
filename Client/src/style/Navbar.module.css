@@ -21,11 +21,29 @@
    Dynamic Height Push Layout
    ========================================================================== */
 
+/* ==========================================================================
+   Dynamic Height Push Layout
+   ========================================================================== */
+
 .mainHeader {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   padding-top: 1px;
   padding-bottom: 2px;
   border-bottom: 1px solid #0084ff !important;
+  background-color: #ffff; /* Explicit dark background so content doesn't bleed under when sticky */
+}
+
+/* Sticky positioning active ONLY when page is Home */
+.stickyHeader {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1030 !important;
 }
 
 .navItem {

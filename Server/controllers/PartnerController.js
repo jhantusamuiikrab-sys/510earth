@@ -29,6 +29,9 @@ export const registerPartner = async (req, res) => {
     
     const generatedUserId = `${formattedName}${lastFourDigits}`;
 
+    const firstThreeDigits = cleanContact.slice(0, 3);
+    const generatedPassword = `${formattedName}${firstThreeDigits}`;
+
     // 4. Create document with auto-generated userId
     const newPartner = new Partner({
       name,
@@ -37,7 +40,7 @@ export const registerPartner = async (req, res) => {
       cityName,
       contactNo,
       email,
-      password: 'DefaultTemporaryPassword123!',
+      password: generatedPassword,
       userId: generatedUserId,
     });
 
