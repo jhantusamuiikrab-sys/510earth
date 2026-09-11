@@ -24,6 +24,7 @@ import CreateLeadSource from "../CreateLeadSource";
 import LeadSourcePage from "../LeadSourcePage";
 import EditLeadForm from "../EditLeadForm";
 import PartnerList from "../PartnerList";
+import Campaign from "../Campaign";
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -65,6 +66,7 @@ const AdminRoutes = () => {
         <Route path="CreateLeadSource" element={<CreateLeadSource />} />
         <Route path="LeadSourcePage" element={<LeadSourcePage />} />
         <Route path="PartnerList" element={<PartnerList />} />
+        <Route path="Campaign" element={<Campaign />} />
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}

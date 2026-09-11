@@ -149,7 +149,7 @@
 }
 
 .detailBtn {
-  color: #2563eb;
+  color: #334155;
 }
 
 .detailBtn:hover {
@@ -276,7 +276,7 @@
 }
 
 .input:focus {
-  border-color: #2563eb;
+  border-color: #334155;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 

@@ -22,6 +22,7 @@ import bookedLeedrouter from "./routes/bookedLeadRoutes.js";
 import LeadDistributionRouter from "./routes/LeadDistributionRoutes.js";
 import subscriberRoute from "./routes/subscriberRoute.js";
 import PartnerRouter from "./routes/partnerRoutes.js"; // Import the partner routes
+import CampaignRouter from "./routes/campaignRoutes.js"; // Import the campaign routes
 
 dotenv.config();
 
@@ -58,7 +59,7 @@ app.use("/api/lead-sources", leadSourceRouter);
 app.use("/api/lead-distributin", LeadDistributionRouter); 
 app.use("/api/create", subscriberRoute); 
 app.use("/api/partners", PartnerRouter); // Add this line to include partner routes
-
+app.use("/api/campaigns", CampaignRouter); // Add this line to include campaign routes
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
