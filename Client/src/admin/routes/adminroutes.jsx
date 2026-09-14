@@ -1,4 +1,3 @@
-
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "../Login";
 import AdminLayout from "../components/AdminLayout";
@@ -25,6 +24,8 @@ import LeadSourcePage from "../LeadSourcePage";
 import EditLeadForm from "../EditLeadForm";
 import PartnerList from "../PartnerList";
 import Campaign from "../Campaign";
+import ViewSubscriber from "../viewSubscriber";
+
 
 const ProtectedRoute = ({ children }) => {
   const adminUser = localStorage.getItem("adminUser");
@@ -42,7 +43,15 @@ const AdminRoutes = () => {
       <Route path="login" element={<Login />} />
 
       {/* ADMIN LAYOUT */}
-      <Route path="/" element={<ProtectedRoute> <AdminLayout /> </ProtectedRoute> }>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            {" "}
+            <AdminLayout />{" "}
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<AdminUsers />} />
@@ -57,16 +66,23 @@ const AdminRoutes = () => {
         <Route path="suitablebusiness" element={<SuitableBusiness />} />
         <Route path="req-mismatch" element={<ReqMismatchForm />} />
         <Route path="req-mismatchApp" element={<ReqMismatchApp />} />
-        <Route path="req-mismatchApp/:id" element={<ReqMismatchDetailsPage />}/>
-        <Route path="req-mismatchDownload/:id" element={<RequirementMismatchDownload />}/>
+        <Route
+          path="req-mismatchApp/:id"
+          element={<ReqMismatchDetailsPage />}
+        />
+        <Route
+          path="req-mismatchDownload/:id"
+          element={<RequirementMismatchDownload />}
+        />
         <Route path="bookedleadform" element={<BookedLeadForm />} />
-        <Route path="bookedleadformview" element={<BookedLeadFormView />}/>
+        <Route path="bookedleadformview" element={<BookedLeadFormView />} />
         <Route path="editleadform/:id" element={<EditLeadForm />} />
         <Route path="autoleadassignment" element={<AutoLeadAssignment />} />
         <Route path="CreateLeadSource" element={<CreateLeadSource />} />
         <Route path="LeadSourcePage" element={<LeadSourcePage />} />
         <Route path="PartnerList" element={<PartnerList />} />
         <Route path="Campaign" element={<Campaign />} />
+        <Route path="view-subscriber" element={<ViewSubscriber />} />
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}
