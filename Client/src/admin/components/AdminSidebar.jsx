@@ -156,6 +156,11 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen, onLogout }) => {
       icon: <FiBarChart2 />,
       path: "/admin/Campaign",
     },
+    {
+      title: "View-Subscriber",
+      icon: <FiBarChart2 />,
+      path: "/admin/view-subscriber",
+    },
   ];
 
   return (
