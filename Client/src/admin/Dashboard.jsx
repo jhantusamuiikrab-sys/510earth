@@ -21,7 +21,7 @@ const Dashboard = () => {
     {
       title: "Active Listings",
       value: "186",
-      change: "+8.2%",
+      change: "+8.2%", 
       icon: <FiHome />,
     },
     {

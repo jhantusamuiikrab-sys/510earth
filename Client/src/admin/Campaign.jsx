@@ -5,12 +5,61 @@ import styles from '../assets/Content/Campaign.module.css';
 // Base API URL matching your express router
 const API_BASE_URL = 'http://localhost:3000/api/campaigns';
 
+// export default function Campaign() {
+//   const [campaigns, setCampaigns] = useState([]);
+//   const [propertyTypes, setPropertyTypes] = useState([]);
+//   const [propertyNames, setPropertyNames] = useState([]);
+  
+//   const [loading, setLoading] = useState(true);
+//   const [loadingTypes, setLoadingTypes] = useState(false);
+//   const [loadingNames, setLoadingNames] = useState(false);
+//   const [error, setError] = useState(null);
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+
+//   // Form State
+//   const [formData, setFormData] = useState({
+//     addId: '',
+//     formId: '',
+//     campaignName: '',
+//     propertyType: '',
+//     propertyName: '',
+//   });
+
+//   // Fetch campaigns and property types on mount
+//   useEffect(() => {
+//     fetchCampaigns();
+//     fetchPropertyTypes();
+//   }, []);
+
 export default function Campaign() {
-  const [campaigns, setCampaigns] = useState([]);
-  const [propertyTypes, setPropertyTypes] = useState([]);
+  // 1. Initialize states with mock data directly
+  const [campaigns, setCampaigns] = useState([
+    {
+      id: '1',
+      addId: 'AD-99203',
+      campaignName: 'Summer Residential Promo',
+      formId: 'FORM-8812',
+      propertyType: 'Residential',
+      propertyName: 'Green Valley Apartments',
+      setupOn: '2026-09-10',
+      status: 'Active'
+    },
+    {
+      id: '2',
+      addId: 'AD-44102',
+      campaignName: 'Commercial Hub Launch',
+      formId: 'FORM-1029',
+      propertyType: 'Commercial',
+      propertyName: '510 Earth Tower',
+      setupOn: '2026-09-12',
+      status: 'Inactive'
+    }
+  ]);
+
+  const [propertyTypes, setPropertyTypes] = useState(['Residential', 'Commercial', 'Industrial', 'Plot']);
   const [propertyNames, setPropertyNames] = useState([]);
   
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [loadingTypes, setLoadingTypes] = useState(false);
   const [loadingNames, setLoadingNames] = useState(false);
   const [error, setError] = useState(null);
@@ -25,11 +74,18 @@ export default function Campaign() {
     propertyName: '',
   });
 
-  // Fetch campaigns and property types on mount
+  // 2. Mock dependent dropdown selection without API calls
   useEffect(() => {
-    fetchCampaigns();
-    fetchPropertyTypes();
-  }, []);
+    if (formData.propertyType === 'Residential') {
+      setPropertyNames(['Green Valley Apartments', 'Skyline Residency', 'Palm Heights']);
+    } else if (formData.propertyType === 'Commercial') {
+      setPropertyNames(['510 Earth Tower', 'Central Business Hub', 'Metro Plaza']);
+    } else if (formData.propertyType) {
+      setPropertyNames(['Sample Property A', 'Sample Property B']);
+    } else {
+      setPropertyNames([]);
+    }
+  }, [formData.propertyType]);
 
   // Fetch Property Names whenever propertyType changes
   useEffect(() => {
@@ -105,42 +161,65 @@ export default function Campaign() {
   };
 
   // POST API Request
-  const handleAddSetup = async (e) => {
+  // const handleAddSetup = async (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/create`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(result.message || 'Failed to save campaign setup');
+  //     }
+
+  //     alert('Campaign created successfully!');
+
+  //     // Reload table list & reset form
+  //     await fetchCampaigns();
+  //     setFormData({
+  //       addId: '',
+  //       formId: '',
+  //       campaignName: '',
+  //       propertyType: '',
+  //       propertyName: '',
+  //     });
+  //     setPropertyNames([]);
+  //   } catch (err) {
+  //     alert(err.message || 'Something went wrong while saving setup.');
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  const handleAddSetup = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    
+    const newEntry = {
+      id: Date.now().toString(),
+      ...formData,
+      setupOn: new Date().toISOString().split('T')[0],
+      status: 'Active'
+    };
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to save campaign setup');
-      }
-
-      alert('Campaign created successfully!');
-
-      // Reload table list & reset form
-      await fetchCampaigns();
-      setFormData({
-        addId: '',
-        formId: '',
-        campaignName: '',
-        propertyType: '',
-        propertyName: '',
-      });
-      setPropertyNames([]);
-    } catch (err) {
-      alert(err.message || 'Something went wrong while saving setup.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    setCampaigns((prev) => [newEntry, ...prev]);
+    
+    setFormData({
+      addId: '',
+      formId: '',
+      campaignName: '',
+      propertyType: '',
+      propertyName: '',
+    });
+    setPropertyNames([]);
+    alert('Mock campaign added to table UI!');
   };
 
   return (

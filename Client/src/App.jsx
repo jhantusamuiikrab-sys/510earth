@@ -74,6 +74,7 @@ function MainContent() {
         <Route path="/residential" element={<PropertyListingsPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/post-property" element={<PostProperty />} />
+        
 
         {/* ADMIN SECTION */}
         <Route path="/admin/*" element={<AdminRoutes />} />

@@ -25,6 +25,7 @@ import EditLeadForm from "../EditLeadForm";
 import PartnerList from "../PartnerList";
 import Campaign from "../Campaign";
 import ViewSubscriber from "../viewSubscriber";
+import ReassignLeads from "../ReassignLeads"; // Import the ReassignLeads component
 
 
 const ProtectedRoute = ({ children }) => {
@@ -83,6 +84,7 @@ const AdminRoutes = () => {
         <Route path="PartnerList" element={<PartnerList />} />
         <Route path="Campaign" element={<Campaign />} />
         <Route path="view-subscriber" element={<ViewSubscriber />} />
+        <Route path="reassign-leads" element={<ReassignLeads />} /> {/* Add this route for ReassignLeads */}
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}

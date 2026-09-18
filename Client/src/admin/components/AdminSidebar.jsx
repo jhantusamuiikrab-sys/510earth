@@ -161,6 +161,14 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen, onLogout }) => {
       icon: <FiBarChart2 />,
       path: "/admin/view-subscriber",
     },
+
+    {
+       title: "Reassign Leads",
+      icon: <FiBarChart2 />,
+      path: "/admin/reassign-leads",
+    }
+    
+    
   ];
 
   return (
