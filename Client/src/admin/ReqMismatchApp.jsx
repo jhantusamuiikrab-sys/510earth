@@ -9,6 +9,10 @@ const ReqMismatchApp = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Notification Modal State
+  const [selectedLeadNotifications, setSelectedLeadNotifications] = useState(null);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
   const [filters, setFilters] = useState({
@@ -85,9 +89,7 @@ const ReqMismatchApp = () => {
     try {
       const response = await fetch(`${API_URL}/requirement-mismatch/${recordId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           rmStatusName: newStatus,
           rmStatusId: statusMap[newStatus] || 1,
@@ -104,6 +106,46 @@ const ReqMismatchApp = () => {
       console.error('Error updating status:', err);
       alert('Network error while updating status');
       fetchMismatchData(filters);
+    }
+  };
+
+  // Open Notification Modal
+  const handleNotificationClick = (row) => {
+    if (!row.notificationCount || row.notificationCount === 0) {
+      alert("No unread notifications for this lead.");
+      return;
+    }
+
+    setSelectedLeadNotifications(row);
+    setShowNotificationModal(true);
+  };
+
+  // Close Notification Modal and Mark Read in Backend
+  const handleCloseAndMarkRead = async () => {
+    if (!selectedLeadNotifications) return;
+
+    const targetId = selectedLeadNotifications.leadId || selectedLeadNotifications.rmId || selectedLeadNotifications._id;
+
+    try {
+      // Optimistic UI Update: Clear notification count for this lead immediately
+      setTableData((prev) =>
+        prev.map((item) =>
+          (item._id === selectedLeadNotifications._id || item.rmId === selectedLeadNotifications.rmId)
+            ? { ...item, notificationCount: 0, hasNotification: false, unreadComments: [], unreadLinks: [] }
+            : item
+        )
+      );
+
+      // Call Backend API to update ReadingFlag in MongoDB
+      await fetch(`${API_URL}/req-mismatchLink/${targetId}/mark-read`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } catch (err) {
+      console.error("Error marking notifications as read:", err);
+    } finally {
+      setShowNotificationModal(false);
+      setSelectedLeadNotifications(null);
     }
   };
 
@@ -154,43 +196,19 @@ const ReqMismatchApp = () => {
             <form onSubmit={handleSearch} className="filter-grid">
               <div className="form-group">
                 <label>Req Mismatch Fill Date</label>
-                <input 
-                  type="date" 
-                  name="fillDate" 
-                  value={filters.fillDate} 
-                  onChange={handleInputChange} 
-                  className="form-input" 
-                />
+                <input type="date" name="fillDate" value={filters.fillDate} onChange={handleInputChange} className="form-input" />
               </div>
               <div className="form-group">
                 <label>Req Mismatch Assign Date</label>
-                <input 
-                  type="date" 
-                  name="assignDate" 
-                  value={filters.assignDate} 
-                  onChange={handleInputChange} 
-                  className="form-input" 
-                />
+                <input type="date" name="assignDate" value={filters.assignDate} onChange={handleInputChange} className="form-input" />
               </div>
               <div className="form-group">
                 <label>Mobile No</label>
-                <input 
-                  type="text" 
-                  name="mobileNo" 
-                  value={filters.mobileNo} 
-                  onChange={handleInputChange} 
-                  className="form-input" 
-                  placeholder="Enter mobile number" 
-                />
+                <input type="text" name="mobileNo" value={filters.mobileNo} onChange={handleInputChange} className="form-input" placeholder="Enter mobile number" />
               </div>
               <div className="form-group">
                 <label>RMM Status</label>
-                <select 
-                  name="rmmStatus" 
-                  value={filters.rmmStatus} 
-                  onChange={handleInputChange} 
-                  className="form-input"
-                >
+                <select name="rmmStatus" value={filters.rmmStatus} onChange={handleInputChange} className="form-input">
                   <option value="">Select Status</option>
                   <option value="Pending">Pending</option>
                   <option value="Not Possible">Not Possible</option>
@@ -250,61 +268,55 @@ const ReqMismatchApp = () => {
                             </select>
                           </td>
                           <td data-label="Notification" style={{ textAlign: 'center' }}>
-  <button
-    type="button"
-    className="notification-bell-btn"
-    title={row.notificationCount > 0 ? `${row.notificationCount} new updates` : 'No notifications'}
-    onClick={() => handleNotificationClick(row)}
-    style={{
-      background: 'transparent',
-      border: 'none',
-      cursor: 'pointer',
-      fontSize: '18px',
-      padding: '4px 8px',
-      borderRadius: '50%',
-      position: 'relative',
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}
-  >
-    🔔
-    {row.notificationCount > 0 && (
-      <span
-        style={{
-          position: 'absolute',
-          top: '-2px',
-          right: '-2px',
-          backgroundColor: '#ff4d4f',
-          color: '#ffffff',
-          borderRadius: '50%',
-          fontSize: '11px',
-          fontWeight: 'bold',
-          padding: '2px 5px',
-          minWidth: '16px',
-          height: '16px',
-          lineHeight: '12px',
-          textAlign: 'center',
-          boxShadow: '0 0 2px rgba(0,0,0,0.3)'
-        }}
-      >
-        {row.notificationCount}
-      </span>
-    )}
-  </button>
-</td>
+                            <button
+                              type="button"
+                              className="notification-bell-btn"
+                              title={row.notificationCount > 0 ? `${row.notificationCount} unread updates` : 'No unread notifications'}
+                              onClick={() => handleNotificationClick(row)}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontSize: '18px',
+                                padding: '4px 8px',
+                                borderRadius: '50%',
+                                position: 'relative',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                              }}
+                            >
+                              🔔
+                              {row.notificationCount > 0 && (
+                                <span
+                                  style={{
+                                    position: 'absolute',
+                                    top: '-2px',
+                                    right: '-2px',
+                                    backgroundColor: '#ff4d4f',
+                                    color: '#ffffff',
+                                    borderRadius: '50%',
+                                    fontSize: '11px',
+                                    fontWeight: 'bold',
+                                    padding: '2px 5px',
+                                    minWidth: '16px',
+                                    height: '16px',
+                                    lineHeight: '12px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 0 2px rgba(0,0,0,0.3)'
+                                  }}
+                                >
+                                  {row.notificationCount}
+                                </span>
+                              )}
+                            </button>
+                          </td>
                           <td data-label="Actions">
                             <div className="action-buttons">
-                              <button 
-                                className="btn btn-sm btn-outline"
-                                onClick={() => handleViewDetails(row)}
-                              >
+                              <button className="btn btn-sm btn-outline" onClick={() => handleViewDetails(row)}>
                                 View
                               </button>
-                              <button 
-                                className="btn btn-sm btn-secondary"
-                                onClick={() => handleDownloadClick(row)}
-                              >
+                              <button className="btn btn-sm btn-secondary" onClick={() => handleDownloadClick(row)}>
                                 Download
                               </button>
                             </div>
@@ -324,7 +336,55 @@ const ReqMismatchApp = () => {
             )}
           </section>
         </main>
-      </div>     
+      </div>
+
+      {/* Unread Notifications Popup Modal */}
+      {showNotificationModal && selectedLeadNotifications && (
+        <div className="rm-modal-overlay">
+          <div className="rm-modal-container" style={{ maxWidth: '600px' }}>
+            <div className="rm-modal-header">
+              <h3>Unread Updates: {selectedLeadNotifications.customerName || 'Customer'}</h3>
+              <button className="rm-modal-close" onClick={handleCloseAndMarkRead}>&times;</button>
+            </div>
+            <div className="rm-modal-body" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+              {/* Unread Comments */}
+              {selectedLeadNotifications.unreadComments && selectedLeadNotifications.unreadComments.length > 0 && (
+                <div style={{ marginBottom: '16px' }}>
+                  <h4 style={{ margin: '0 0 8px 0', color: '#1890ff' }}>New Comments</h4>
+                  <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                    {selectedLeadNotifications.unreadComments.map((c, i) => (
+                      <li key={c._id || i} style={{ marginBottom: '6px' }}>
+                        {c.commentdescription}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Unread Links */}
+              {selectedLeadNotifications.unreadLinks && selectedLeadNotifications.unreadLinks.length > 0 && (
+                <div>
+                  <h4 style={{ margin: '0 0 8px 0', color: '#52c41a' }}>New Property Links</h4>
+                  <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                    {selectedLeadNotifications.unreadLinks.map((l, i) => (
+                      <li key={l._id || i} style={{ marginBottom: '6px' }}>
+                        <a href={l.linkdescription} target="_blank" rel="noopener noreferrer">
+                          {l.linkdescription}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <div className="rm-modal-footer">
+              <button type="button" className="rm-modal-btn submit" onClick={handleCloseAndMarkRead}>
+                Mark as Read & Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -85,7 +85,7 @@ export const getAllRequirementMismatch = async (req, res) => {
     let query = {};
 
     if (mobileNo) {
-      query.phoneNumber = { $regex: mobileNo,$options: "i" };
+      query.phoneNumber = { $regex: mobileNo, $options: "i" };
     }
     if (rmmStatus) {
       query.rmStatusName = rmmStatus;
@@ -97,7 +97,7 @@ export const getAllRequirementMismatch = async (req, res) => {
     const rmIds = records.map(r => r.rmId).filter(Boolean);
 
     const linkInfos = await ReqMisLinkInfo.find({
-      $or: [{ leadId: { $in: leadIds } }, { rmId: {$in: rmIds } }]
+      $or: [{ leadId: { $in: leadIds } }, { rmId: { $in: rmIds } }]
     }).lean();
 
     const enrichedRecords = records.map((record) => {
@@ -105,13 +105,18 @@ export const getAllRequirementMismatch = async (req, res) => {
         (link) => (link.leadId && link.leadId === record.leadId) || (link.rmId && link.rmId === record.rmId)
       );
 
-      let commentCount = match?.commentsList?.length || (match?.searchComments ? 1 : 0);
-      let linkCount = match?.searchLinksList?.length || (match?.searchLink ? 1 : 0);
+      // Count only items where ReadingFlag is false (or default false)
+      const unreadComments = (match?.Comment || []).filter(c => c.ReadingFlag !== true);
+      const unreadLinks = (match?.Link || []).filter(l => l.ReadingFlag !== true);
+
+      const count = unreadComments.length + unreadLinks.length;
 
       return {
         ...record,
-        hasNotification: commentCount > 0 || linkCount > 0,
-        notificationCount: commentCount + linkCount
+        hasNotification: count > 0,
+        notificationCount: count,
+        unreadComments,
+        unreadLinks
       };
     });
 

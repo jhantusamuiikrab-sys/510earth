@@ -56,6 +56,12 @@ const ReqMismatchDetailView = () => {
         } else {
           setLeadData(baseData);
         }
+
+        // Mark unread entries as read when viewing full details
+        await fetch(`${API_URL}/req-mismatchLink/${targetId}/mark-read`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' }
+        });
       } catch (err) {
         console.error('Fetch detail error:', err);
         setError('Network error. Unable to load details.');
@@ -292,7 +298,6 @@ const ReqMismatchDetailView = () => {
         </div>
 
         <div className="rm-bottom-tables-grid">
-          {/* Comments Table mapped to leadData.Comment */}
           <div className="rm-subtable-wrapper">
             <table className="rm-subtable">
               <thead>
@@ -326,7 +331,6 @@ const ReqMismatchDetailView = () => {
             </table>
           </div>
 
-          {/* Links Table mapped to leadData.Link */}
           <div className="rm-subtable-wrapper">
             <table className="rm-subtable">
               <thead>

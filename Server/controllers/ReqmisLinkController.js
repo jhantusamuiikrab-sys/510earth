@@ -298,3 +298,47 @@ export const CommentsAndLinksById = async (req, res) => {
     });
   }
 };
+
+export const markNotificationsAsRead = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const queryConditions = getQueryConditions(id);
+
+    const record = queryConditions.length > 0 ? await ReqMisLinkInfo.findOne({ $or: queryConditions }) : null;
+
+    if (!record) {
+      return res.status(404).json({
+        success: false,
+        message: "Link/Comment record not found.",
+      });
+    }
+
+    // Set ReadingFlag to true for all entries in Comment and Link arrays
+    if (record.Comment && record.Comment.length > 0) {
+      record.Comment.forEach(item => {
+        item.ReadingFlag = true;
+      });
+    }
+
+    if (record.Link && record.Link.length > 0) {
+      record.Link.forEach(item => {
+        item.ReadingFlag = true;
+      });
+    }
+
+    await record.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Notifications marked as read successfully.",
+      data: record
+    });
+  } catch (error) {
+    console.error("Error marking notifications as read:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to mark notifications as read.",
+      error: error.message
+    });
+  }
+};
