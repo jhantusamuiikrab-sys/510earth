@@ -23,7 +23,8 @@ import LeadDistributionRouter from "./routes/LeadDistributionRoutes.js";
 import subscriberRoute from "./routes/subscriberRoute.js";
 import PartnerRouter from "./routes/partnerRoutes.js"; // Import the partner routes
 import CampaignRouter from "./routes/campaignRoutes.js"; // Import the campaign routes
-//import ReassignLeads from "./routes/ReassignLeads";
+import ReAssignmentRouter from "./routes/leadReassignRoutes.js";
+import reqMisLinkRouter from "./routes/ReqMisLinkRoutes.js";
 
 dotenv.config();
 
@@ -61,7 +62,8 @@ app.use("/api/lead-distributin", LeadDistributionRouter);
 app.use("/api/create", subscriberRoute); 
 app.use("/api/partners", PartnerRouter); // Add this line to include partner routes
 app.use("/api/campaigns", CampaignRouter); // Add this line to include campaign routes
-app.use
+app.use("/api/reassign-leads", ReAssignmentRouter); // Add this line to include reassignment routes
+app.use("/api/req-mismatchLink", reqMisLinkRouter); // Add this line to include requirement mismatch link routes
 app.use(express.urlencoded({ extended: true }));
 
 app.use(

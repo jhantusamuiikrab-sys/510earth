@@ -25,7 +25,9 @@ import EditLeadForm from "../EditLeadForm";
 import PartnerList from "../PartnerList";
 import Campaign from "../Campaign";
 import ViewSubscriber from "../viewSubscriber";
-import ReassignLeads from "../ReassignLeads"; // Import the ReassignLeads component
+import ReassignLeads from "../ReassignLeads"; 
+import ReqMismatchLinkForm from "../ReqMismatchLinkForm";
+import ReqMismatchDetailView from "../ReqMismatchDetailView";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -66,7 +68,7 @@ const AdminRoutes = () => {
         <Route path="zones" element={<ZoneManagement />} />
         <Route path="suitablebusiness" element={<SuitableBusiness />} />
         <Route path="req-mismatch" element={<ReqMismatchForm />} />
-        <Route path="req-mismatchApp" element={<ReqMismatchApp />} />
+        <Route path="req-mismatchApp" element={<ReqMismatchApp />} />        
         <Route
           path="req-mismatchApp/:id"
           element={<ReqMismatchDetailsPage />}
@@ -84,7 +86,9 @@ const AdminRoutes = () => {
         <Route path="PartnerList" element={<PartnerList />} />
         <Route path="Campaign" element={<Campaign />} />
         <Route path="view-subscriber" element={<ViewSubscriber />} />
-        <Route path="reassign-leads" element={<ReassignLeads />} /> {/* Add this route for ReassignLeads */}
+        <Route path="reassign-leads" element={<ReassignLeads />} /> 
+        <Route path="req-mismatchLink" element={<ReqMismatchLinkForm />} />
+        <Route path="req-mismatchLink/:id" element={<ReqMismatchDetailView />} />
       </Route>
 
       {/* DEFAULT ADMIN ROUTE */}

@@ -430,3 +430,21 @@ body {
     font-size: 0.8rem;
   }
 }
+
+.rmm-status-dropdown {
+  padding: 6px 12px;
+  border: 1px solid #64b5f6;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #2b3a4a;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rmm-status-dropdown:focus {
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+}

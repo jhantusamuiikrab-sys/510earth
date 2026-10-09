@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Added hook import
+import { useNavigate } from 'react-router-dom';
 import '../assets/Content/ReqMismatchApp.css';
 
 const ReqMismatchApp = () => {
-  const navigate = useNavigate(); // 2. Initialized navigate hook
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,6 @@ const ReqMismatchApp = () => {
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-  // Filter Form State
   const [filters, setFilters] = useState({
     fillDate: '',
     assignDate: '',
@@ -19,12 +18,6 @@ const ReqMismatchApp = () => {
     rmmStatus: ''
   });
 
-  const handleDownloadClick = (row) => {
-  const leadId = row._id || row.id || '1388';
-  navigate(`/admin/req-mismatchDownload/${leadId}`, { state: { leadData: row } });
-};
-
-  // 1. Fetch API Data Function
   const fetchMismatchData = async (searchParams = {}) => {
     try {
       setLoading(true);
@@ -52,12 +45,10 @@ const ReqMismatchApp = () => {
     }
   };
 
-  // 2. Initial load
   useEffect(() => {
     fetchMismatchData();
   }, []);
 
-  // 3. Handle Form Filter Inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -68,13 +59,101 @@ const ReqMismatchApp = () => {
     fetchMismatchData(filters);
   };
 
-  // 4. Navigation Handler
-  const handleViewDetails = (row) => {
-  const leadId = row._id || row.id || '1389';
-  navigate(`/admin/req-mismatchApp/${leadId}`, { state: { leadData: row } });
+  // Handler to update RMM Status directly from the table row dropdown
+  // const handleStatusChange = async (row, newStatus) => {
+  //   const leadId = row._id || row.id || row.rmId;
+
+  //   // Optimistically update UI
+  //   setTableData((prevData) =>
+  //     prevData.map((item) =>
+  //       (item._id === row._id || item.id === row.id)
+  //         ? { ...item, rmStatusName: newStatus }
+  //         : item
+  //     )
+  //   );
+
+  //   try {
+  //     const response = await fetch(`${API_URL}/requirement-mismatch/${leadId}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ rmStatusName: newStatus }),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (!result.success) {
+  //       alert(result.message || 'Failed to update status');
+  //       fetchMismatchData(filters); // Revert back on error
+  //     }
+  //   } catch (err) {
+  //     console.error('Error updating status:', err);
+  //     alert('Network error while updating status');
+  //     fetchMismatchData(filters);
+  //   }
+  // };
+
+  const handleStatusChange = async (row, newStatus) => {
+  // Map status names to IDs matching your backend defaults
+  const statusMap = {
+    'Pending': 1,
+    'Not Possible': 2,
+    'Searching': 3,
+    'Completed': 4
+  };
+
+  const recordId = row._id || row.id || row.rmId || row.leadId;
+
+  if (!recordId) {
+    alert("Record ID is missing.");
+    return;
+  }
+
+  // Optimistic UI Update
+  setTableData((prevData) =>
+    prevData.map((item) =>
+      (item._id === row._id || item.rmId === row.rmId)
+        ? { ...item, rmStatusName: newStatus, rmStatusId: statusMap[newStatus] || 1 }
+        : item
+    )
+  );
+
+  try {
+    const response = await fetch(`${API_URL}/requirement-mismatch/${recordId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        rmStatusName: newStatus,
+        rmStatusId: statusMap[newStatus] || 1,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      alert(result.message || 'Failed to update status');
+      fetchMismatchData(filters); // Revert UI back on failure
+    }
+  } catch (err) {
+    console.error('Error updating status:', err);
+    alert('Network error while updating status');
+    fetchMismatchData(filters); // Revert UI back on failure
+  }
 };
 
-  // Helper to format MongoDB ISO dates to readable local strings
+  const handleViewDetails = (row) => {
+    const leadId = row._id || row.id || '1389';
+    navigate(`/admin/req-mismatchApp/${leadId}`, { state: { leadData: row } });
+  };
+
+  const handleDownloadClick = (row) => {
+    const leadId = row._id || row.id || '1388';
+    navigate(`/admin/req-mismatchDownload/${leadId}`, { state: { leadData: row } });
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return '-';
     const date = new Date(dateString);
@@ -84,7 +163,6 @@ const ReqMismatchApp = () => {
   return (
     <div className="app-container">
       <div className="main-wrapper">
-        {/* Header */}
         <header className="header">
           <button className="mobile-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             ☰
@@ -102,7 +180,6 @@ const ReqMismatchApp = () => {
           </div>
         </header>
 
-        {/* Page Body */}
         <main className="main-content">
           <div className="page-header">
             <span className="page-kicker">OVERVIEW</span>
@@ -110,7 +187,6 @@ const ReqMismatchApp = () => {
             <p>Manage and track lead requirement mismatch applications efficiently.</p>
           </div>
 
-          {/* Metric Cards */}
           <div className="metrics-grid">
             <div className="metric-card">
               <div className="metric-header">
@@ -142,7 +218,6 @@ const ReqMismatchApp = () => {
             </div>
           </div>
 
-          {/* Filter Section */}
           <section className="card-panel">
             <h3 className="panel-title">Filter Requirement Mismatch Leads</h3>
             <form onSubmit={handleSearch} className="filter-grid">
@@ -187,6 +262,8 @@ const ReqMismatchApp = () => {
                 >
                   <option value="">Select Status</option>
                   <option value="Pending">Pending</option>
+                  <option value="Not Possible">Not Possible</option>
+                  <option value="Searching">Searching</option>
                   <option value="Completed">Completed</option>
                 </select>
               </div>
@@ -196,7 +273,6 @@ const ReqMismatchApp = () => {
             </form>
           </section>
 
-          {/* Data Table */}
           <section className="card-panel">
             {loading ? (
               <div style={{ textAlign: 'center', padding: '20px' }}>Loading mismatch records...</div>
@@ -230,9 +306,17 @@ const ReqMismatchApp = () => {
                             <span className="chip">{row.type || row.propertyType || '-'}</span>
                           </td>
                           <td data-label="RMM Status">
-                            <span className={`status-badge status-${(row.rmStatusName || 'pending').toLowerCase()}`}>
-                              {row.rmStatusName || 'Pending'}
-                            </span>
+                            {/* Interactive Dropdown matching the requested UI options */}
+                            <select
+                              value={row.rmStatusName || 'Pending'}
+                              onChange={(e) => handleStatusChange(row, e.target.value)}
+                              className="rmm-status-dropdown"
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="Not Possible">Not Possible</option>
+                              <option value="Searching">Searching</option>
+                              <option value="Completed">Completed</option>
+                            </select>
                           </td>
                           <td data-label="Actions">
                             <div className="action-buttons">
@@ -243,11 +327,11 @@ const ReqMismatchApp = () => {
                                 View
                               </button>
                               <button 
-  className="btn btn-sm btn-secondary"
-  onClick={() => handleDownloadClick(row)}
->
-  Download
-</button>
+                                className="btn btn-sm btn-secondary"
+                                onClick={() => handleDownloadClick(row)}
+                              >
+                                Download
+                              </button>
                             </div>
                           </td>
                         </tr>

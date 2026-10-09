@@ -10,6 +10,7 @@ const reqMisMatchRouter = express.Router();
 
 reqMisMatchRouter.post("/", createRequirementMismatch);
 reqMisMatchRouter.patch("/:id", updateRequirementMismatch);
+reqMisMatchRouter.put("/:id", updateRequirementMismatch); // Added PUT support
 // reqMisMatchRouter.get("/:id", getRequirementMismatch);
 reqMisMatchRouter.get("/", getAllRequirementMismatch);
 

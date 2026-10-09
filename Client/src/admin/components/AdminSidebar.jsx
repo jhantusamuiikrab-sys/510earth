@@ -166,8 +166,13 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen, onLogout }) => {
        title: "Reassign Leads",
       icon: <FiBarChart2 />,
       path: "/admin/reassign-leads",
-    }
+    },
     
+    {
+      title: "RmPanel",
+      icon: <FiBarChart2 />, 
+      path: "/admin/req-mismatchLink",
+    }
     
   ];
 
