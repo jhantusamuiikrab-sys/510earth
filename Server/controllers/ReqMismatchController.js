@@ -1,4 +1,5 @@
 import RequirementMismatchInfo from "../models/RequirementMismatchInfo.js";
+import ReqMisLinkInfo from "../models/ReqMisLinkInfo.js";
 import mongoose from "mongoose";
 
 /**
@@ -10,7 +11,6 @@ export const createRequirementMismatch = async (req, res) => {
   try {
     const data = req.body;
 
-    // 1. Basic Validation
     if (!data.customerName || !data.phoneNumber) {
       return res.status(400).json({
         success: false,
@@ -18,7 +18,6 @@ export const createRequirementMismatch = async (req, res) => {
       });
     }
 
-    // 2. Auto-generate sequential rmId if not provided
     let rmId = data.rmId;
     if (!rmId) {
       const lastRecord = await RequirementMismatchInfo.findOne({}, { rmId: 1 })
@@ -27,7 +26,6 @@ export const createRequirementMismatch = async (req, res) => {
       rmId = lastRecord && lastRecord.rmId ? lastRecord.rmId + 1 : 1001;
     }
 
-    // 3. Format Array fields to String to match Schema types
     const preferredLocationStr = Array.isArray(data.preferredLocations)
       ? data.preferredLocations.filter(Boolean).join(", ")
       : data.preferredLocation || null;
@@ -36,21 +34,16 @@ export const createRequirementMismatch = async (req, res) => {
       ? data.pvDoneOwnself.filter(Boolean).join(", ")
       : data.pvDoneOwnself || null;
 
-    // 4. Construct DB Record aligned strictly with your schema
     const newMismatchRecord = new RequirementMismatchInfo({
       ...data,
       rmId,
       leadId: data.leadId ? Number(data.leadId) : null,
       preferredLocation: preferredLocationStr,
       pvDoneOwnself: pvDoneOwnselfStr,
-
-      // Handle String/Date conversions safely
       custDOB: data.custDOB || null,
       custAnniversaryDate: data.custAnniversaryDate || null,
       ucPossessionDate: data.ucPossessionDate || null,
       reqAssignDate: data.reqAssignDate ? new Date(data.reqAssignDate) : new Date(),
-
-      // System Flags
       isActive: data.isActive !== undefined ? data.isActive : true,
       status: data.status ? Number(data.status) : 1,
       rmStatusId: data.rmStatusId ? Number(data.rmStatusId) : 1,
@@ -83,58 +76,52 @@ export const createRequirementMismatch = async (req, res) => {
 };
 
 /**
- * @desc    Get Requirement Mismatch Record by Lead ID or rmId
- * @route   GET /api/requirement-mismatch/:id
+ * @desc    Get All Requirement Mismatch Records (with Notification Counts)
+ * @route   GET /api/requirement-mismatch
  */
-// export const getRequirementMismatch = async (req, res) => {
-
-//   try {
-//     const { id } = req.params;
-//     const record = await RequirementMismatchInfo.findOne({
-//       $or: [{ rmId: Number(id) || 0 }, { leadId: Number(id) || 0 }],
-//     });
-
-//     if (!record) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Requirement Mismatch record not found.",
-//       });
-//     }
-
-//     return res.status(200).json({
-//       success: true,
-//       data: record,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to fetch record.",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// GET /api/requirement-mismatch
 export const getAllRequirementMismatch = async (req, res) => {
   try {
     const { fillDate, assignDate, mobileNo, rmmStatus } = req.query;
     let query = {};
 
     if (mobileNo) {
-      query.phoneNumber = { $regex: mobileNo, $options: "i" };
+      query.phoneNumber = { $regex: mobileNo,$options: "i" };
     }
     if (rmmStatus) {
       query.rmStatusName = rmmStatus;
     }
 
-    const records = await RequirementMismatchInfo.find(query).sort({ createdAt: -1 });
+    const records = await RequirementMismatchInfo.find(query).sort({ createdAt: -1 }).lean();
+
+    const leadIds = records.map(r => r.leadId).filter(Boolean);
+    const rmIds = records.map(r => r.rmId).filter(Boolean);
+
+    const linkInfos = await ReqMisLinkInfo.find({
+      $or: [{ leadId: { $in: leadIds } }, { rmId: {$in: rmIds } }]
+    }).lean();
+
+    const enrichedRecords = records.map((record) => {
+      const match = linkInfos.find(
+        (link) => (link.leadId && link.leadId === record.leadId) || (link.rmId && link.rmId === record.rmId)
+      );
+
+      let commentCount = match?.commentsList?.length || (match?.searchComments ? 1 : 0);
+      let linkCount = match?.searchLinksList?.length || (match?.searchLink ? 1 : 0);
+
+      return {
+        ...record,
+        hasNotification: commentCount > 0 || linkCount > 0,
+        notificationCount: commentCount + linkCount
+      };
+    });
 
     return res.status(200).json({
       success: true,
-      count: records.length,
-      data: records,
+      count: enrichedRecords.length,
+      data: enrichedRecords,
     });
   } catch (error) {
+    console.error("Error fetching records:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch records.",
@@ -143,6 +130,10 @@ export const getAllRequirementMismatch = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Update Requirement Mismatch Record
+ * @route   PUT /api/requirement-mismatch/:id
+ */
 export const updateRequirementMismatch = async (req, res) => {
   try {
     const { id } = req.params;
@@ -152,7 +143,6 @@ export const updateRequirementMismatch = async (req, res) => {
     const numericId = Number(id);
     const isNumeric = !isNaN(numericId);
 
-    // Construct precise search queries without returning invalid queries
     const orConditions = [];
 
     if (isObjectId) {
@@ -164,13 +154,11 @@ export const updateRequirementMismatch = async (req, res) => {
       orConditions.push({ leadId: numericId });
     }
 
-    // Fallback: search as a string against potential custom key names
     orConditions.push({ customId: id });
     orConditions.push({ reqId: id });
 
     const query = { $or: orConditions };
 
-    // Format array fields safely
     if (Array.isArray(updateData.preferredLocations)) {
       updateData.preferredLocation = updateData.preferredLocations.filter(Boolean).join(", ");
     }
@@ -178,7 +166,6 @@ export const updateRequirementMismatch = async (req, res) => {
       updateData.pvDoneOwnself = updateData.pvDoneOwnself.filter(Boolean).join(", ");
     }
 
-    // Handle empty date inputs to avoid CastErrors
     updateData.custDOB = updateData.custDOB || null;
     updateData.custAnniversaryDate = updateData.custAnniversaryDate || null;
     updateData.ucPossessionDate = updateData.ucPossessionDate || null;

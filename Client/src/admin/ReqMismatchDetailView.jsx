@@ -24,29 +24,48 @@ const ReqMismatchDetailView = () => {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
   useEffect(() => {
-    if (!leadData && id) {
-      const fetchLeadDetails = async () => {
-        try {
-          setLoading(true);
-          const response = await fetch(`${API_URL}/req-mismatchLink/${id}`);
-          const result = await response.json();
+    const fetchAllData = async () => {
+      if (!id) return;
 
-          if (result.success && result.data) {
-            setLeadData(result.data);
-          } else {
-            setError(result.message || 'Failed to fetch lead details.');
+      try {
+        setLoading(true);
+
+        let baseData = location.state?.leadData || null;
+
+        if (!baseData) {
+          const detailRes = await fetch(`${API_URL}/req-mismatchLink/${id}`);
+          const detailResult = await detailRes.json();
+          if (detailResult.success && detailResult.data) {
+            baseData = detailResult.data;
           }
-        } catch (err) {
-          console.error('Fetch detail error:', err);
-          setError('Network error. Unable to load lead details.');
-        } finally {
-          setLoading(false);
         }
-      };
 
-      fetchLeadDetails();
-    }
-  }, [id, leadData, API_URL]);
+        const targetId = baseData?.leadId || baseData?.rmId || id;
+
+        const commentsRes = await fetch(`${API_URL}/req-mismatchLink/${targetId}/comments-links`);
+        const commentsResult = await commentsRes.json();
+
+        if (commentsResult.success && commentsResult.data) {
+          setLeadData({
+            ...baseData,
+            Comment: commentsResult.data.Comment || [],
+            Link: commentsResult.data.Link || [],
+            searchComments: commentsResult.data.searchComments || baseData?.searchComments || null,
+            searchLink: commentsResult.data.searchLink || baseData?.searchLink || null
+          });
+        } else {
+          setLeadData(baseData);
+        }
+      } catch (err) {
+        console.error('Fetch detail error:', err);
+        setError('Network error. Unable to load details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, [id, API_URL]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -54,9 +73,8 @@ const ReqMismatchDetailView = () => {
     return isNaN(date.getTime()) ? dateString : date.toLocaleString();
   };
 
-  // Comment Modal Handlers
   const handleOpenCommentModal = () => {
-    setCommentText(leadData?.searchComments || '');
+    setCommentText('');
     setShowCommentModal(true);
   };
 
@@ -71,7 +89,7 @@ const ReqMismatchDetailView = () => {
 
     try {
       setIsSubmittingComment(true);
-      const targetId = id || leadData?._id || leadData?.leadId || leadData?.rmId;
+      const targetId = leadData?.leadId || leadData?.rmId || id || leadData?._id;
 
       const response = await fetch(`${API_URL}/req-mismatchLink/${targetId}/comment`, {
         method: 'PUT',
@@ -87,7 +105,7 @@ const ReqMismatchDetailView = () => {
       if (result.success && result.data) {
         setLeadData((prev) => ({
           ...prev,
-          ...result.data,
+          Comment: result.data.Comment || prev?.Comment || [],
           searchComments: result.data.searchComments
         }));
         handleCloseCommentModal();
@@ -102,9 +120,8 @@ const ReqMismatchDetailView = () => {
     }
   };
 
-  // Property Search Link Handlers
   const handleOpenSearchLinkModal = () => {
-    setLinkText(leadData?.searchLink || '');
+    setLinkText('');
     setShowLinkModal(true);
   };
 
@@ -114,42 +131,41 @@ const ReqMismatchDetailView = () => {
   };
 
   const handleSearchLinkSubmit = async (e) => {
-  e.preventDefault();
-  if (!linkText.trim()) return;
+    e.preventDefault();
+    if (!linkText.trim()) return;
 
-  try {
-    setIsSubmittingLink(true);
-    // Prioritize leadId / rmId over raw MongoDB _id string
-    const targetId = leadData?.leadId || leadData?.rmId || id || leadData?._id;
+    try {
+      setIsSubmittingLink(true);
+      const targetId = leadData?.leadId || leadData?.rmId || id || leadData?._id;
 
-    const response = await fetch(`${API_URL}/req-mismatchLink/${targetId}/search-link`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        searchLink: linkText,
-        updatedBy: 'Admin'
-      })
-    });
+      const response = await fetch(`${API_URL}/req-mismatchLink/${targetId}/search-link`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          searchLink: linkText,
+          updatedBy: 'Admin'
+        })
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (result.success && result.data) {
-      setLeadData((prev) => ({
-        ...prev,
-        ...result.data,
-        searchLink: result.data.searchLink
-      }));
-      handleCloseLinkModal();
-    } else {
-      alert(result.message || 'Failed to save property search link.');
+      if (result.success && result.data) {
+        setLeadData((prev) => ({
+          ...prev,
+          Link: result.data.Link || prev?.Link || [],
+          searchLink: result.data.searchLink
+        }));
+        handleCloseLinkModal();
+      } else {
+        alert(result.message || 'Failed to save property search link.');
+      }
+    } catch (err) {
+      console.error('Error submitting search link:', err);
+      alert('Failed to submit search link due to server error.');
+    } finally {
+      setIsSubmittingLink(false);
     }
-  } catch (err) {
-    console.error('Error submitting search link:', err);
-    alert('Failed to submit search link due to server error.');
-  } finally {
-    setIsSubmittingLink(false);
-  }
-};
+  };
 
   if (loading) {
     return <div className="rm-detail-wrapper"><div className="rm-state-msg">Loading lead details...</div></div>;
@@ -181,7 +197,6 @@ const ReqMismatchDetailView = () => {
           Requirement Mismatch {leadData.propertyType || 'Residential'} Application Form
         </h2>
 
-        {/* Structured Form Grid */}
         <div className="rm-grid-table">
           <div className="rm-grid-row">
             <div className="rm-label-col">Date</div>
@@ -268,7 +283,6 @@ const ReqMismatchDetailView = () => {
           </div>
         </div>
 
-        {/* Action Controls */}
         <div className="rm-action-bar">
           <button type="button" className="rm-btn rm-btn-download">Download</button>
           <button type="button" className="rm-btn rm-btn-comment" onClick={handleOpenCommentModal}>Add Comment</button>
@@ -277,19 +291,27 @@ const ReqMismatchDetailView = () => {
           </button>
         </div>
 
-        {/* Comments and Links Section */}
         <div className="rm-bottom-tables-grid">
+          {/* Comments Table mapped to leadData.Comment */}
           <div className="rm-subtable-wrapper">
             <table className="rm-subtable">
               <thead>
                 <tr>
                   <th style={{ width: '40px' }}>#</th>
-                  <th style={{ width: '120px' }}>Date</th>
+                  <th style={{ width: '130px' }}>Date</th>
                   <th>Comments</th>
                 </tr>
               </thead>
               <tbody>
-                {leadData.searchComments ? (
+                {leadData.Comment && leadData.Comment.length > 0 ? (
+                  leadData.Comment.map((item, index) => (
+                    <tr key={item._id || index}>
+                      <td>{index + 1}</td>
+                      <td>{formatDate(item.createdAt || item.createdOn)}</td>
+                      <td>{item.commentdescription}</td>
+                    </tr>
+                  ))
+                ) : leadData.searchComments ? (
                   <tr>
                     <td>1</td>
                     <td>{formatDate(leadData.updatedOn || leadData.createdOn)}</td>
@@ -304,17 +326,30 @@ const ReqMismatchDetailView = () => {
             </table>
           </div>
 
+          {/* Links Table mapped to leadData.Link */}
           <div className="rm-subtable-wrapper">
             <table className="rm-subtable">
               <thead>
                 <tr>
                   <th style={{ width: '40px' }}>#</th>
-                  <th style={{ width: '120px' }}>Date</th>
+                  <th style={{ width: '130px' }}>Date</th>
                   <th>Property Links</th>
                 </tr>
               </thead>
               <tbody>
-                {leadData.searchLink ? (
+                {leadData.Link && leadData.Link.length > 0 ? (
+                  leadData.Link.map((item, index) => (
+                    <tr key={item._id || index}>
+                      <td>{index + 1}</td>
+                      <td>{formatDate(item.createdAt || item.createdOn)}</td>
+                      <td>
+                        <a href={item.linkdescription} target="_blank" rel="noopener noreferrer">
+                          {item.linkdescription}
+                        </a>
+                      </td>
+                    </tr>
+                  ))
+                ) : leadData.searchLink ? (
                   <tr>
                     <td>1</td>
                     <td>{formatDate(leadData.updatedOn || leadData.createdOn)}</td>
@@ -335,7 +370,6 @@ const ReqMismatchDetailView = () => {
         </div>
       </div>
 
-      {/* Comment Modal */}
       {showCommentModal && (
         <div className="rm-modal-overlay">
           <div className="rm-modal-container">
@@ -369,7 +403,6 @@ const ReqMismatchDetailView = () => {
         </div>
       )}
 
-      {/* Add Property Search Link Modal */}
       {showLinkModal && (
         <div className="rm-modal-overlay">
           <div className="rm-modal-container">

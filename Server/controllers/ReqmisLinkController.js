@@ -2,11 +2,21 @@ import RequirementMismatchInfo from "../models/RequirementMismatchInfo.js";
 import ReqMisLinkInfo from "../models/ReqMisLinkInfo.js";
 import mongoose from "mongoose";
 
+const getQueryConditions = (id) => {
+  const queryConditions = [];
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    queryConditions.push({ _id: new mongoose.Types.ObjectId(id) });
+  }
+  const numericId = Number(id);
+  if (!isNaN(numericId)) {
+    queryConditions.push({ leadId: numericId }, { rmId: numericId });
+  }
+  return queryConditions;
+};
+
 export const getPendingReqMisForms = async (req, res) => {
   try {
     const { mobileNo, fillDate } = req.query;
-
-    // Base query only fetching records with status 'Searching'
     const query = { rmStatusName: "Searching" };
 
     if (mobileNo) {
@@ -24,7 +34,7 @@ export const getPendingReqMisForms = async (req, res) => {
     }
 
     const records = await RequirementMismatchInfo.find(query).sort({ createdOn: -1 });
-    
+
     return res.status(200).json({
       success: true,
       count: records.length,
@@ -44,12 +54,11 @@ export const getReqMisFormById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Search by leadId (cast to Number if leadId is stored as a Number in your schema)
-    const record = await RequirementMismatchInfo.findOne({ 
+    const record = await RequirementMismatchInfo.findOne({
       $or: [
-        { leadId: Number(id) }, 
-        { _id: id } // Fallback to Mongo _id if id isn't a valid leadId integer
-      ] 
+        { leadId: Number(id) || 0 },
+        { _id: mongoose.Types.ObjectId.isValid(id) ? id : null }
+      ]
     });
 
     if (!record) {
@@ -85,38 +94,35 @@ export const addCommentToReqMisForm = async (req, res) => {
       });
     }
 
-    // Build conditional query array based on ID type
-    const queryConditions = [];
+    const queryConditions = getQueryConditions(id);
+    let record = queryConditions.length > 0 ? await ReqMisLinkInfo.findOne({ $or: queryConditions }) : null;
 
-    // Check if ID is a valid MongoDB ObjectId
-    if (mongoose.Types.ObjectId.isValid(id)) {
-      queryConditions.push({ _id: new mongoose.Types.ObjectId(id) });
-    }
+    const newCommentObj = {
+      commentdescription: searchComments,
+      ReadingFlag: false,
+    };
 
-    // Check if ID is numeric
-    const numericId = Number(id);
-    if (!isNaN(numericId)) {
-      queryConditions.push({ leadId: numericId }, { rmId: numericId });
-    }
-
-    let record = await ReqMisLinkInfo.findOne({ $or: queryConditions });
-
-    // If record is not found in ReqMisLinkInfo, attempt to fetch parent details from RequirementMismatchInfo
-    if (!record && mongoose.Types.ObjectId.isValid(id)) {
-      const mainRecord = await RequirementMismatchInfo.findById(id);
+    if (!record) {
+      let mainRecord = null;
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        mainRecord = await RequirementMismatchInfo.findById(id);
+      }
+      const numericId = Number(id);
+      if (!mainRecord && !isNaN(numericId)) {
+        mainRecord = await RequirementMismatchInfo.findOne({
+          $or: [{ leadId: numericId }, { rmId: numericId }]
+        });
+      }
 
       if (mainRecord) {
-        // Find next available rmId or use timestamp-based numeric ID
-        const nextRmId = Date.now();
-
         record = new ReqMisLinkInfo({
-          rmId: mainRecord.rmId || nextRmId,
+          rmId: mainRecord.rmId || Date.now(),
           leadId: mainRecord.leadId || null,
-          agentId: mainRecord.agentId || null,
           agentName: mainRecord.agentName || null,
           customerName: mainRecord.customerName || null,
           propertyType: mainRecord.propertyType || null,
           rmStatusName: mainRecord.rmStatusName || "Searching",
+          Comment: [newCommentObj],
           searchComments: searchComments,
           updatedBy: updatedBy || "Admin"
         });
@@ -125,7 +131,7 @@ export const addCommentToReqMisForm = async (req, res) => {
 
         return res.status(200).json({
           success: true,
-          message: "Comment saved successfully.",
+          message: "Comment added successfully.",
           data: record,
         });
       }
@@ -138,15 +144,22 @@ export const addCommentToReqMisForm = async (req, res) => {
       });
     }
 
-    // Update existing record
-    record.searchComments = searchComments;
-    record.updatedBy = updatedBy || "Admin";
-    await record.save();
+    const updatedRecord = await ReqMisLinkInfo.findByIdAndUpdate(
+      record._id,
+      {
+        $push: { Comment: newCommentObj },
+        $set: {
+          searchComments: searchComments,
+          updatedBy: updatedBy || "Admin"
+        }
+      },
+      { new: true }
+    );
 
     return res.status(200).json({
       success: true,
-      message: "Comment updated successfully.",
-      data: record,
+      message: "Comment added successfully.",
+      data: updatedRecord,
     });
   } catch (error) {
     console.error("Error adding comment:", error);
@@ -170,28 +183,20 @@ export const addSearchLinkToReqMisForm = async (req, res) => {
       });
     }
 
-    const queryConditions = [];
-
-    // Valid MongoDB ObjectId search
-    if (mongoose.Types.ObjectId.isValid(id)) {
-      queryConditions.push({ _id: new mongoose.Types.ObjectId(id) });
-    }
-
-    // Numeric ID search for leadId / rmId
-    const numericId = Number(id);
-    if (!isNaN(numericId)) {
-      queryConditions.push({ leadId: numericId }, { rmId: numericId });
-    }
-
-    // Try finding existing link record
+    const queryConditions = getQueryConditions(id);
     let record = queryConditions.length > 0 ? await ReqMisLinkInfo.findOne({ $or: queryConditions }) : null;
 
-    // Fallback: search main collection if not yet in ReqMisLinkInfo
+    const newLinkObj = {
+      linkdescription: searchLink,
+      ReadingFlag: false,
+    };
+
     if (!record) {
       let mainRecord = null;
       if (mongoose.Types.ObjectId.isValid(id)) {
         mainRecord = await RequirementMismatchInfo.findById(id);
       }
+      const numericId = Number(id);
       if (!mainRecord && !isNaN(numericId)) {
         mainRecord = await RequirementMismatchInfo.findOne({
           $or: [{ leadId: numericId }, { rmId: numericId }]
@@ -202,11 +207,11 @@ export const addSearchLinkToReqMisForm = async (req, res) => {
         record = new ReqMisLinkInfo({
           rmId: mainRecord.rmId || Date.now(),
           leadId: mainRecord.leadId || null,
-          agentId: mainRecord.agentId || null,
           agentName: mainRecord.agentName || null,
           customerName: mainRecord.customerName || null,
           propertyType: mainRecord.propertyType || null,
           rmStatusName: mainRecord.rmStatusName || "Searching",
+          Link: [newLinkObj],
           searchLink: searchLink,
           updatedBy: updatedBy || "Admin"
         });
@@ -224,19 +229,26 @@ export const addSearchLinkToReqMisForm = async (req, res) => {
     if (!record) {
       return res.status(404).json({
         success: false,
-        message: "Record not found in system.",
+        message: "Record not found.",
       });
     }
 
-    // Update existing record
-    record.searchLink = searchLink;
-    record.updatedBy = updatedBy || "Admin";
-    await record.save();
+    const updatedRecord = await ReqMisLinkInfo.findByIdAndUpdate(
+      record._id,
+      {
+        $push: { Link: newLinkObj },
+        $set: {
+          searchLink: searchLink,
+          updatedBy: updatedBy || "Admin"
+        }
+      },
+      { new: true }
+    );
 
     return res.status(200).json({
       success: true,
-      message: "Search link updated successfully.",
-      data: record,
+      message: "Search link added successfully.",
+      data: updatedRecord,
     });
   } catch (error) {
     console.error("Error adding search link:", error);
@@ -244,6 +256,45 @@ export const addSearchLinkToReqMisForm = async (req, res) => {
       success: false,
       message: "Failed to add search link.",
       error: error.message,
+    });
+  }
+};
+
+export const CommentsAndLinksById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const queryConditions = getQueryConditions(id);
+
+    const record = queryConditions.length > 0 ? await ReqMisLinkInfo.findOne({ $or: queryConditions }) : null;
+
+    if (!record) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          Comment: [],
+          Link: [],
+          searchComments: null,
+          searchLink: null
+        }
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        Comment: record.Comment || [],
+        Link: record.Link || [],
+        searchComments: record.searchComments || null,
+        searchLink: record.searchLink || null,
+        updatedOn: record.updatedOn || record.createdOn
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching comments and links:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch comments and links.",
+      error: error.message
     });
   }
 };

@@ -59,90 +59,53 @@ const ReqMismatchApp = () => {
     fetchMismatchData(filters);
   };
 
-  // Handler to update RMM Status directly from the table row dropdown
-  // const handleStatusChange = async (row, newStatus) => {
-  //   const leadId = row._id || row.id || row.rmId;
-
-  //   // Optimistically update UI
-  //   setTableData((prevData) =>
-  //     prevData.map((item) =>
-  //       (item._id === row._id || item.id === row.id)
-  //         ? { ...item, rmStatusName: newStatus }
-  //         : item
-  //     )
-  //   );
-
-  //   try {
-  //     const response = await fetch(`${API_URL}/requirement-mismatch/${leadId}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ rmStatusName: newStatus }),
-  //     });
-
-  //     const result = await response.json();
-
-  //     if (!result.success) {
-  //       alert(result.message || 'Failed to update status');
-  //       fetchMismatchData(filters); // Revert back on error
-  //     }
-  //   } catch (err) {
-  //     console.error('Error updating status:', err);
-  //     alert('Network error while updating status');
-  //     fetchMismatchData(filters);
-  //   }
-  // };
-
   const handleStatusChange = async (row, newStatus) => {
-  // Map status names to IDs matching your backend defaults
-  const statusMap = {
-    'Pending': 1,
-    'Not Possible': 2,
-    'Searching': 3,
-    'Completed': 4
-  };
+    const statusMap = {
+      'Pending': 1,
+      'Not Possible': 2,
+      'Searching': 3,
+      'Completed': 4
+    };
 
-  const recordId = row._id || row.id || row.rmId || row.leadId;
+    const recordId = row._id || row.id || row.rmId || row.leadId;
 
-  if (!recordId) {
-    alert("Record ID is missing.");
-    return;
-  }
-
-  // Optimistic UI Update
-  setTableData((prevData) =>
-    prevData.map((item) =>
-      (item._id === row._id || item.rmId === row.rmId)
-        ? { ...item, rmStatusName: newStatus, rmStatusId: statusMap[newStatus] || 1 }
-        : item
-    )
-  );
-
-  try {
-    const response = await fetch(`${API_URL}/requirement-mismatch/${recordId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        rmStatusName: newStatus,
-        rmStatusId: statusMap[newStatus] || 1,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      alert(result.message || 'Failed to update status');
-      fetchMismatchData(filters); // Revert UI back on failure
+    if (!recordId) {
+      alert("Record ID is missing.");
+      return;
     }
-  } catch (err) {
-    console.error('Error updating status:', err);
-    alert('Network error while updating status');
-    fetchMismatchData(filters); // Revert UI back on failure
-  }
-};
+
+    setTableData((prevData) =>
+      prevData.map((item) =>
+        (item._id === row._id || item.rmId === row.rmId)
+          ? { ...item, rmStatusName: newStatus, rmStatusId: statusMap[newStatus] || 1 }
+          : item
+      )
+    );
+
+    try {
+      const response = await fetch(`${API_URL}/requirement-mismatch/${recordId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          rmStatusName: newStatus,
+          rmStatusId: statusMap[newStatus] || 1,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        alert(result.message || 'Failed to update status');
+        fetchMismatchData(filters);
+      }
+    } catch (err) {
+      console.error('Error updating status:', err);
+      alert('Network error while updating status');
+      fetchMismatchData(filters);
+    }
+  };
 
   const handleViewDetails = (row) => {
     const leadId = row._id || row.id || '1389';
@@ -184,38 +147,6 @@ const ReqMismatchApp = () => {
           <div className="page-header">
             <span className="page-kicker">OVERVIEW</span>
             <h1>Req Mismatch App Form</h1>
-            <p>Manage and track lead requirement mismatch applications efficiently.</p>
-          </div>
-
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <div className="metric-header">
-                <span className="metric-icon">📑</span>
-                <span className="badge badge-success">+12.5%</span>
-              </div>
-              <div className="metric-value">{tableData.length}</div>
-              <div className="metric-label">Total Leads</div>
-            </div>
-            <div className="metric-card">
-              <div className="metric-header">
-                <span className="metric-icon">⏳</span>
-                <span className="badge badge-warning">Active</span>
-              </div>
-              <div className="metric-value">
-                {tableData.filter((item) => (item.rmStatusName || '').toLowerCase() === 'pending').length}
-              </div>
-              <div className="metric-label">Pending Reviews</div>
-            </div>
-            <div className="metric-card">
-              <div className="metric-header">
-                <span className="metric-icon">✅</span>
-                <span className="badge badge-success">+14.4%</span>
-              </div>
-              <div className="metric-value">
-                {tableData.filter((item) => (item.rmStatusName || '').toLowerCase() === 'completed').length}
-              </div>
-              <div className="metric-label">Resolved Requests</div>
-            </div>
           </div>
 
           <section className="card-panel">
@@ -289,6 +220,7 @@ const ReqMismatchApp = () => {
                       <th>Phone No</th>
                       <th>Type</th>
                       <th>RMM Status</th>
+                      <th style={{ textAlign: 'center' }}>Notification</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -306,7 +238,6 @@ const ReqMismatchApp = () => {
                             <span className="chip">{row.type || row.propertyType || '-'}</span>
                           </td>
                           <td data-label="RMM Status">
-                            {/* Interactive Dropdown matching the requested UI options */}
                             <select
                               value={row.rmStatusName || 'Pending'}
                               onChange={(e) => handleStatusChange(row, e.target.value)}
@@ -318,6 +249,50 @@ const ReqMismatchApp = () => {
                               <option value="Completed">Completed</option>
                             </select>
                           </td>
+                          <td data-label="Notification" style={{ textAlign: 'center' }}>
+  <button
+    type="button"
+    className="notification-bell-btn"
+    title={row.notificationCount > 0 ? `${row.notificationCount} new updates` : 'No notifications'}
+    onClick={() => handleNotificationClick(row)}
+    style={{
+      background: 'transparent',
+      border: 'none',
+      cursor: 'pointer',
+      fontSize: '18px',
+      padding: '4px 8px',
+      borderRadius: '50%',
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    🔔
+    {row.notificationCount > 0 && (
+      <span
+        style={{
+          position: 'absolute',
+          top: '-2px',
+          right: '-2px',
+          backgroundColor: '#ff4d4f',
+          color: '#ffffff',
+          borderRadius: '50%',
+          fontSize: '11px',
+          fontWeight: 'bold',
+          padding: '2px 5px',
+          minWidth: '16px',
+          height: '16px',
+          lineHeight: '12px',
+          textAlign: 'center',
+          boxShadow: '0 0 2px rgba(0,0,0,0.3)'
+        }}
+      >
+        {row.notificationCount}
+      </span>
+    )}
+  </button>
+</td>
                           <td data-label="Actions">
                             <div className="action-buttons">
                               <button 
@@ -338,7 +313,7 @@ const ReqMismatchApp = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>
                           No records found.
                         </td>
                       </tr>
