@@ -285,3 +285,31 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+@media print {
+  /* Hide unnecessary elements during print */
+  .rm-top-bar,
+  .rm-card-header,
+  .rm-action-bar,
+  .rm-modal-overlay {
+    display: none !important;
+  }
+
+  /* Optimize container and grid layout for PDF output */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .rm-detail-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .rm-card-container {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}

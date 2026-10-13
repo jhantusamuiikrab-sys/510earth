@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import '../assets/Content/ReqMismatchDetailView.css';
 
 const ReqMismatchDetailView = () => {
@@ -22,6 +24,238 @@ const ReqMismatchDetailView = () => {
   const [isSubmittingLink, setIsSubmittingLink] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+  
+const handleDownloadPDF = async() => {
+  if (!leadData) {
+    alert("No data available to download.");
+    return;
+  }
+
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
+  });
+
+  // Company branding
+  const logo = new Image();
+  logo.src = "/images/510earth.png";
+
+  await new Promise((resolve, reject) => {
+    logo.onload = resolve;
+    logo.onerror = reject;
+  });
+
+  doc.addImage(logo, "PNG", 15, 12, 45, 32);
+
+  // Corporate office details
+  doc.setFontSize(9);
+  doc.setTextColor(0, 0, 0);
+
+  doc.text("CORPORATE OFFICE", 112, 15);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+
+  const officeDetails = [
+    "Municipal Premises No. 540, 1st floor, Block-GD, Plot No-50,",
+    "P.O-East Kolkata Township, P.S- Kasba, District South 24 Parganas,",
+    "Rajarhat Main Road, Kolkata-700107",
+    "Contact No - +91-9073338396",
+  ];
+
+  officeDetails.forEach((line, index) => {
+    doc.text(line, 112, 20 + index * 4);
+  });
+
+  doc.setFont("helvetica", "bold");
+  doc.text(
+    "West Bengal RERA Registration No - WBRERA/A/SOU/2023/000185",
+    112,
+    41
+  );
+  doc.text(
+    "Maharashtra RERA Registration No - A52100043083",
+    112,
+    46
+  );
+
+  // Horizontal separator
+  doc.setDrawColor(34, 101, 180);
+  doc.setLineWidth(0.5);
+  doc.line(15, 52, 195, 52);
+
+  // Form heading
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+
+  doc.text(
+    `Requirement Mismatch ${leadData.propertyType || "Residential"} Application Form`,
+    105,
+    59,
+    { align: "center" }
+  );
+
+  // Helper for empty values
+  const getValue = (value) => {
+    if (value === undefined || value === null || value === "") {
+      return "-";
+    }
+
+    if (Array.isArray(value)) {
+      return value.length ? value.join(", ") : "-";
+    }
+
+    if (typeof value === "object") {
+      return Object.values(value).join(", ") || "-";
+    }
+
+    return String(value);
+  };
+
+  const tableRows = [
+    [
+      "Date",
+      getValue(
+        formatDate(
+          leadData.createdOn ||
+          leadData.createdAt ||
+          leadData.reqAssignDate
+        )
+      ),
+      "Agent Name",
+      getValue(leadData.agentName),
+    ],
+    [
+      "Customer Name",
+      getValue(leadData.customerName),
+      "Phone",
+      getValue(leadData.phoneNumber),
+    ],
+    [
+      "Customer City",
+      getValue(leadData.customerCityName),
+      "Property Type",
+      getValue(leadData.propertyType),
+    ],
+    [
+      "Preferred BHK",
+      getValue(leadData.preferredBHK),
+      "Preferred Floor",
+      getValue(leadData.preferredFloor),
+    ],
+    [
+      "SQ ft Range",
+      `${getValue(leadData.sqFtFrom)} - ${getValue(leadData.sqFtTo)}`,
+      "Budget",
+      `${getValue(leadData.budgetFrom)} - ${getValue(leadData.budgetTo)}`,
+    ],
+    [
+      "Construction Status",
+      getValue(leadData.constructionStatus),
+      "In Case UC",
+      getValue(leadData.ucPossessionDate),
+    ],
+    [
+      "Building Type",
+      getValue(leadData.buildingType),
+      "Vastu Pref*",
+      getValue(leadData.isVastuPrefrences),
+    ],
+    [
+      "Amenities*",
+      getValue(leadData.amenities),
+      "Parking*",
+      getValue(
+        leadData.coveredParking ||
+        leadData.openParking ||
+        leadData.mechanicalParking
+      ),
+    ],
+    [
+      "Property Offered",
+      getValue(leadData.propertyOffered),
+      "Property Visited",
+      getValue(leadData.propertyVisited),
+    ],
+    [
+      "Property Interested",
+      getValue(leadData.propertyInterested),
+      "Property Visited (Done by Self)",
+      getValue(leadData.pvDoneOwnself),
+    ],
+    [
+      "Pref Location, 3-4 Location",
+      getValue(leadData.preferredLocation),
+      "Why this Location/Purpose?",
+      getValue(leadData.preferredLocationPurpose),
+    ],
+    [
+      "Brokerage",
+      getValue(leadData.isBrokerage),
+      "Brokerage(%)",
+      getValue(leadData.brokeragePercentage),
+    ],
+  ];
+
+  // Generate the bordered table
+  autoTable(doc, {
+    startY: 65,
+    head: [],
+    body: tableRows,
+    theme: "grid",
+
+    margin: {
+      left: 10,
+      right: 10,
+      bottom: 15,
+    },
+
+    tableWidth: 190,
+
+    styles: {
+      font: "helvetica",
+      fontSize: 9,
+      textColor: [0, 0, 0],
+      lineColor: [35, 35, 35],
+      lineWidth: 0.35,
+      cellPadding: 2,
+      valign: "middle",
+      overflow: "linebreak",
+    },
+
+    columnStyles: {
+      0: {
+        cellWidth: 44,
+        fontStyle: "normal",
+      },
+      1: {
+        cellWidth: 51,
+      },
+      2: {
+        cellWidth: 43,
+        fontStyle: "normal",
+      },
+      3: {
+        cellWidth: 52,
+      },
+    },
+
+    didDrawPage: () => {
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+    },
+  });
+
+  // Download the PDF
+  const customerName = (leadData.customerName || "Customer")
+    .replace(/[^a-zA-Z0-9_-]/g, "_");
+
+  doc.save(`RequirementMismatchInfoForm_${customerName}.pdf`);
+};
+
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -290,7 +524,7 @@ const ReqMismatchDetailView = () => {
         </div>
 
         <div className="rm-action-bar">
-          <button type="button" className="rm-btn rm-btn-download">Download</button>
+         <button type="button" className="rm-btn rm-btn-download" onClick={handleDownloadPDF}>Download</button>
           <button type="button" className="rm-btn rm-btn-comment" onClick={handleOpenCommentModal}>Add Comment</button>
           <button type="button" className="rm-btn rm-btn-searchlink" onClick={handleOpenSearchLinkModal}>
             Add Property Search Link
@@ -312,14 +546,16 @@ const ReqMismatchDetailView = () => {
                   leadData.Comment.map((item, index) => (
                     <tr key={item._id || index}>
                       <td>{index + 1}</td>
-                      <td>{formatDate(item.createdAt || item.createdOn)}</td>
+                      {/* <td>{formatDate(item.createdAt || item.createdOn)}</td> */}
+                      <td>{formatDate(item.createdAt || item.createdOn || leadData.updatedOn || leadData.createdOn)}</td>
                       <td>{item.commentdescription}</td>
                     </tr>
                   ))
                 ) : leadData.searchComments ? (
                   <tr>
                     <td>1</td>
-                    <td>{formatDate(leadData.updatedOn || leadData.createdOn)}</td>
+                    {/* <td>{formatDate(leadData.updatedOn || leadData.createdOn)}</td> */}
+                    <td>{formatDate(item.createdAt || item.createdOn || leadData.updatedOn || leadData.createdOn)}</td>
                     <td>{leadData.searchComments}</td>
                   </tr>
                 ) : (
@@ -345,7 +581,8 @@ const ReqMismatchDetailView = () => {
                   leadData.Link.map((item, index) => (
                     <tr key={item._id || index}>
                       <td>{index + 1}</td>
-                      <td>{formatDate(item.createdAt || item.createdOn)}</td>
+                      {/* <td>{formatDate(item.createdAt || item.createdOn)}</td> */}
+                      <td>{formatDate(item.createdAt || item.createdOn || leadData.updatedOn || leadData.createdOn)}</td>
                       <td>
                         <a href={item.linkdescription} target="_blank" rel="noopener noreferrer">
                           {item.linkdescription}
@@ -356,7 +593,8 @@ const ReqMismatchDetailView = () => {
                 ) : leadData.searchLink ? (
                   <tr>
                     <td>1</td>
-                    <td>{formatDate(leadData.updatedOn || leadData.createdOn)}</td>
+                    {/* <td>{formatDate(leadData.updatedOn || leadData.createdOn)}</td> */}
+                    <td>{formatDate(item.createdAt || item.createdOn || leadData.updatedOn || leadData.createdOn)}</td>
                     <td>
                       <a href={leadData.searchLink} target="_blank" rel="noopener noreferrer">
                         {leadData.searchLink}
